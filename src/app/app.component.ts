@@ -14,10 +14,9 @@ export class AppComponent implements OnInit {
     uid: string;
     email: string;
     photoURL: string;
-    loggedIn: boolean;
+    loggedIn: boolean = false;
 
     constructor(private afAuth: AngularFireAuth) {
-        this.loggedIn = false;
     }
 
     signIn(data: User) {
