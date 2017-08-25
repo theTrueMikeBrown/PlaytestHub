@@ -2,6 +2,7 @@
 import { AngularFireAuth } from 'angularfire2/auth';
 import { FirebaseUISignInSuccess } from 'firebaseui-angular';
 import { User } from 'firebase';
+import { Game } from './game';
 
 @Component({
   selector: 'app-root',

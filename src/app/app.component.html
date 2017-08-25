@@ -5,7 +5,13 @@
     <firebase-ui (signInSuccess)="successCallback($event)"></firebase-ui>
   </div>
   <div *ngIf="loggedIn">
-    <button (click)="logout()">Logout</button>
-    <h1>Welcome to PlaytestHub, {{displayName}}</h1>
+    <div class="upperRight">
+      <a class="upperRight-button" href="#" (click)="logout()" title="Log out, {{displayName}}">
+        <span class="glyphicon glyphicon-log-out"></span>
+      </a>
+    </div>
+    <h1>PlaytestHub</h1>
+    <hr />
+    <games-list></games-list>
   </div>
 </div>

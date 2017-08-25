@@ -9,6 +9,8 @@ import { AngularFireModule } from 'angularfire2';
 import { environment } from '../environments/environment';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 
+import { GamesListComponent } from './games-list.component';
+
 const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
     providers: [
         AuthProvider.Google,
@@ -20,7 +22,8 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
+        GamesListComponent
     ],
     imports: [
         BrowserModule,
