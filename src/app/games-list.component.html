@@ -2,6 +2,6 @@
   <h4>Games</h4>
   <div *ngFor="let game of games | async"
        (click)="gotoDetail(game)" class="search-result">
-    {{game.name}}
+    <game-stats [game]="game"></game-stats>
   </div>
 </div>
