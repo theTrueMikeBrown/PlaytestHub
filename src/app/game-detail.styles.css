@@ -1,0 +1,25 @@
+﻿.title {
+  font-weight: bold;
+}
+
+.info {
+  font-style: italic;
+}
+
+.stats {
+  border-bottom: 1pt solid #284;
+}
+
+.detailBox {
+  border: 1pt solid #284;
+  background-color: #E5FFF6;
+  padding: .5em;
+}
+
+.details {
+  margin: 1em;
+}
+
+.left {
+  text-align: left;
+}

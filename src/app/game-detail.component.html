@@ -1,0 +1,31 @@
+﻿<div class="details" *ngIf="game">
+  <div class="upperLeft">
+    <a class="action-button" routerLink="/games">
+      <span class="glyphicon glyphicon-home"></span>
+    </a>
+  </div>
+
+  <h2 class="title">{{game.name}}</h2>
+  <div>
+    <span class="info">{{game.minPlayerCount}}-{{game.maxPlayerCount}} players, {{game.minTimeInMinutes}}-{{game.maxTimeInMinutes}} minutes</span>
+  </div>
+  <h4>by: {{game.owner}}</h4>
+  <div class="left">
+    <div>
+      <h4>Description:</h4>
+      <div class="detailBox">{{game.description}}</div>
+    </div>
+    <div>
+      <h4>Components:</h4>
+      <div class="detailBox">{{game.components}}</div>
+    </div>
+    <div>
+      <h4>Files:</h4>
+      <div class="detailBox">
+        <div class="info"><a href="{{game.rulesUrl}}">Rules file</a></div>
+        <div class="info"><a href="{{game.pnpUrl}}">PNP file</a></div>
+      </div>
+    </div>
+  </div>
+  <div><h4>Times playtested: {{game.playcount}}</h4></div>
+</div>

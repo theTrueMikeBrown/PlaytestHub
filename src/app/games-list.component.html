@@ -1,7 +1,7 @@
 ﻿<div id="list-component">
   <h4>Games</h4>
   <div *ngFor="let game of games | async"
-       (click)="gotoDetail(game)" class="search-result">
+       (click)="gotoDetail(game.id)" class="search-result">
     <game-stats [game]="game"></game-stats>
   </div>
 </div>

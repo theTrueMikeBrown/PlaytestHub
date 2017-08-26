@@ -2,6 +2,7 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { AuthMethods, AuthProvider, FirebaseUIAuthConfig, FirebaseUIModule, AuthProviderWithCustomConfig } from 'firebaseui-angular';
@@ -11,6 +12,8 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 
 import { GamesListComponent } from './games-list.component';
 import { GameStatsComponent } from './game-stats.component';
+import { GameDetailComponent } from './game-detail.component';
+import { GameService } from './game.service';
 
 const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
     providers: [
@@ -25,7 +28,8 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
     declarations: [
         AppComponent,
         GamesListComponent,
-        GameStatsComponent
+        GameStatsComponent,
+        GameDetailComponent
     ],
     imports: [
         BrowserModule,
@@ -33,9 +37,24 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
         HttpModule,
         AngularFireModule.initializeApp(environment.firebaseConfig),
         AngularFireAuthModule,
-        FirebaseUIModule.forRoot(firebaseUiAuthConfig)
+        FirebaseUIModule.forRoot(firebaseUiAuthConfig),
+        RouterModule.forRoot([
+            {
+                path: 'games',
+                component: GamesListComponent
+            },
+            {
+                path: '',
+                redirectTo: '/games',
+                pathMatch: 'full'
+            },
+            {
+                path: 'detail/:id',
+                component: GameDetailComponent
+            },
+        ])
     ],
-    providers: [],
+    providers: [GameService],
     bootstrap: [AppComponent]
 })
 export class AppModule {

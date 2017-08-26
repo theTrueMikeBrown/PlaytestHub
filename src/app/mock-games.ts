@@ -11,8 +11,8 @@ export const GAMES: Game[] = [
         maxTimeInMinutes: 240,
         components: "board, 57 cards, 16 pawns in 4 colors",
         description: "this is parcheesi without the dice.",
-        rulesUrl: "www.google.com?rules=sorry",
-        pnpUrl: "www.google.com?pnp=sorry",
+        rulesUrl: "http://www.google.com?rules=sorry",
+        pnpUrl: "http://www.google.com?pnp=sorry",
         playcount: 0,
     },
     {
@@ -25,8 +25,8 @@ export const GAMES: Game[] = [
         maxTimeInMinutes: 480,
         components: "board, 57 cards, a bunch of pieces, 4d6",
         description: "this is a strategy game with a lot of dice.",
-        rulesUrl: "www.google.com?rules=risk",
-        pnpUrl: "www.google.com?pnp=risk",
+        rulesUrl: "http://www.google.com?rules=risk",
+        pnpUrl: "http://www.google.com?pnp=risk",
         playcount: 0,
     }
 ];
