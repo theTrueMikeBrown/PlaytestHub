@@ -35,6 +35,7 @@ export class AppComponent implements OnInit {
 
     logout() {
         this.afAuth.auth.signOut();
+        location.reload();
     }
 
     successCallback(data: FirebaseUISignInSuccess) {
