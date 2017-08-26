@@ -18,7 +18,7 @@
 }
 
 .action-button:hover {
-  color:#4F8;
+  color: #4F8;
 }
 
 .action-button {
@@ -71,6 +71,10 @@
   margin: 12px 0;
 }
 
+.upperRight-buttons__link:hover {
+  color: #4F8;
+}
+
 .upperRight-buttons__link {
   display: inline-block;
   width: 40px;
@@ -85,6 +89,8 @@
   -o-transition: .3s;
   transition: .3s;
   padding-top: 10px;
+  background-color: #142;
+  color: #3C6;
 }
 
 [data-tooltip]:before {
