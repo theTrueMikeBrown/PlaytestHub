@@ -12,7 +12,7 @@ import { GameService } from './game.service';
     styleUrls: ['./game-detail.styles.css']
 })
 export class GameDetailComponent implements OnInit {
-    game: Game;
+    game: any;
 
     constructor(
         private gameService: GameService,
@@ -23,6 +23,6 @@ export class GameDetailComponent implements OnInit {
     ngOnInit(): void {
         this.route.paramMap
             .switchMap((params: ParamMap) => this.gameService.getGame(+params.get('id')))
-            .subscribe(game => this.game = game);
+            .subscribe(g => g.subscribe(game => this.game = game[0]));
     }
 }

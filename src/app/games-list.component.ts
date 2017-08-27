@@ -10,6 +10,7 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
+import { FirebaseListObservable } from 'angularfire2/database';
 
 import { GameService } from './game.service';
 import { Game } from './game';
@@ -21,15 +22,14 @@ import { Game } from './game';
     providers: [GameService]
 })
 export class GamesListComponent {
-    games: Observable<Game[]>;
+    games: FirebaseListObservable<any[]>;
 
     constructor(
         private gameService: GameService,
         private router: Router) { }
 
     ngOnInit(): void {
-        this.gameService.getGames()
-            .then(games => this.games = Observable.of<Game[]>(games));        
+        this.gameService.getGames().then(g => this.games = g)
     }
 
     gotoDetail(id: number): void {

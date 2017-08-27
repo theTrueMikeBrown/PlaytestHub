@@ -9,6 +9,7 @@ import { AuthMethods, AuthProvider, FirebaseUIAuthConfig, FirebaseUIModule, Auth
 import { AngularFireModule } from 'angularfire2';
 import { environment } from '../environments/environment';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
 
 import { GamesListComponent } from './games-list.component';
 import { GameStatsComponent } from './game-stats.component';
@@ -36,6 +37,7 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
         FormsModule,
         HttpModule,
         AngularFireModule.initializeApp(environment.firebaseConfig),
+        AngularFireDatabaseModule,
         AngularFireAuthModule,
         FirebaseUIModule.forRoot(firebaseUiAuthConfig),
         RouterModule.forRoot([
