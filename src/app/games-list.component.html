@@ -1,12 +1,34 @@
-﻿<div id="list-component">
+<div id="list-component">
+  <div class="upperLeft">
+    <a class="action-button" id="patreon-logo" href="https://www.patreon.com/theTrueMikeBrown" title="Support me on Patreon">      
+      <svg width="25px" height="25px" viewBox="0 0 569 546" version="1.1" xmlns="http://www.w3.org/2000/svg">
+       <title>Patreon logo</title>
+       <g>
+        <circle data-color="1" id="Oval" cx="362.589996" cy="204.589996" r="204.589996"></circle>
+        <rect data-color="2" id="Rectangle" x="0" y="0" width="100" height="545.799988"></rect>
+       </g>
+      </svg>
+    </a>
+  </div>
+
   <div class="upperRight">
     <span class="action-button">
       <span class="glyphicon glyphicon-menu-hamburger"></span>
     </span>
     <ul class="upperRight-buttons">
       <li class="upperRight-buttons__item">
-        <a routerLink="/addgame" class="upperRight-buttons__link" data-tooltip="Add New Game">
+        <a routerLink="/addgame" class="upperRight-buttons__link" data-tooltip="Add new game">
           <span class="glyphicon glyphicon-plus"></span>
+        </a>
+      </li>
+      <li class="upperRight-buttons__item">
+        <a routerLink="/games" class="upperRight-buttons__link" data-tooltip="View my games">
+          <span class="glyphicon glyphicon glyphicon-th-large"></span>
+        </a>
+      </li>
+      <li class="upperRight-buttons__item">
+        <a routerLink="/games" class="upperRight-buttons__link" data-tooltip="View my profile">
+          <span class="glyphicon glyphicon glyphicon-user"></span>
         </a>
       </li>
       <li class="upperRight-buttons__item">

@@ -1,7 +1,31 @@
-﻿body {
+body {
   color: #082211;
   background-color: #DFE
 }
+
+#patreon-logo {
+  background: #FFF;
+}
+
+  #patreon-logo:hover {
+    background: #052D49;
+  }
+
+    #patreon-logo:hover svg *[data-color='1'] {
+      fill: #FFF;
+    }
+
+    #patreon-logo:hover svg *[data-color='2'] {
+      fill: #F96854;
+    }
+
+  #patreon-logo svg *[data-color='1'] {
+    fill: #F96854;
+  }
+
+  #patreon-logo svg *[data-color='2'] {
+    fill: #052D49;
+  }
 
 .upperRight {
   position: fixed;
