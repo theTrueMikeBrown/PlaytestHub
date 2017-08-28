@@ -2,7 +2,6 @@
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 
 import { Game } from './game';
-import { GAMES } from './mock-games';
 
 @Injectable()
 export class GameService {
@@ -42,6 +41,7 @@ export class GameService {
                 rulesUrl: "http://www.google.com?rules=sorry",
                 pnpUrl: "http://www.google.com?pnp=sorry",
                 priority: 0,
+				inactive: false,
             }
         let game2: Game =
             {
@@ -57,6 +57,7 @@ export class GameService {
                 rulesUrl: "http://www.google.com?rules=risk",
                 pnpUrl: "http://www.google.com?pnp=risk",
                 priority: 0,
+				inactive: false,
             };
 
         let itemObservable = this.db.list('/games');
