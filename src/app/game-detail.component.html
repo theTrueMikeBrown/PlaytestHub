@@ -5,6 +5,19 @@
     </a>
   </div>
 
+  <div class="upperRight">
+    <span class="action-button">
+      <span class="glyphicon glyphicon-menu-hamburger"></span>
+    </span>
+    <ul class="upperRight-buttons">
+      <li class="upperRight-buttons__item">
+        <a routerLink="/games" class="upperRight-buttons__link" data-tooltip="Playtest">
+          <span class="glyphicon glyphicon-ok"></span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
   <h2 class="title">{{game.name}}</h2>
   <div>
     <span class="info">{{game.minPlayerCount}}-{{game.maxPlayerCount}} players, {{game.minTimeInMinutes}}-{{game.maxTimeInMinutes}} minutes</span>
@@ -27,5 +40,5 @@
       </div>
     </div>
   </div>
-  <div><h4>Times playtested: {{game.playcount}}</h4></div>
+  <div><h4>Priority: {{game.priority}}</h4></div>
 </div>

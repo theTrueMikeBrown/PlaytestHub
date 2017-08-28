@@ -14,6 +14,7 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { GamesListComponent } from './games-list.component';
 import { GameStatsComponent } from './game-stats.component';
 import { GameDetailComponent } from './game-detail.component';
+import { AddGameComponent } from './add-game.component';
 import { GameService } from './game.service';
 
 const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
@@ -30,7 +31,8 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
         AppComponent,
         GamesListComponent,
         GameStatsComponent,
-        GameDetailComponent
+        GameDetailComponent,
+        AddGameComponent
     ],
     imports: [
         BrowserModule,
@@ -54,6 +56,11 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
                 path: 'detail/:id',
                 component: GameDetailComponent
             },
+            {
+                path: 'addgame',
+                component: AddGameComponent
+            },
+
         ])
     ],
     providers: [GameService],

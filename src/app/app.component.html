@@ -5,26 +5,6 @@
     <firebase-ui (signInSuccess)="successCallback($event)"></firebase-ui>
   </div>
   <div *ngIf="loggedIn">
-    <div class="upperRight">
-      <span class="action-button">
-        <span class="glyphicon glyphicon-menu-hamburger"></span>
-      </span>
-      <ul class="upperRight-buttons">
-        <li class="upperRight-buttons__item" style="margin-top: 25px;">
-          <a routerLink="/games" class="upperRight-buttons__link" data-tooltip="Games">
-            <span class="glyphicon glyphicon-home"></span>
-          </a>
-        </li>
-        <li class="upperRight-buttons__item">
-          <a routerLink="/games"
-             (click)="logout()"
-             class="upperRight-buttons__link"
-             data-tooltip="Log out">
-            <span class="glyphicon glyphicon-log-out"></span>
-          </a>
-        </li>
-      </ul>
-    </div>
     <h1>PlaytestHub</h1>
     <hr />
     <router-outlet></router-outlet>

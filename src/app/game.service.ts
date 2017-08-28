@@ -6,11 +6,7 @@ import { GAMES } from './mock-games';
 
 @Injectable()
 export class GameService {
-    db: AngularFireDatabase;
-
-    constructor(db: AngularFireDatabase) {
-        this.db = db;
-    }
+    constructor(private db: AngularFireDatabase) { }
 
     getGame(id: number): Promise<any> {
         return Promise.resolve(this.db.list('/games', {
@@ -22,7 +18,12 @@ export class GameService {
     }
 
     getGames(): Promise<FirebaseListObservable<any[]>> {
-        return Promise.resolve(this.db.list('/games'));
+        return Promise.resolve(this.db.list('/games', {
+            query: {
+                orderByChild: 'priority',
+                limitToLast: 10
+            }
+        }));
     }
 
     setGames() {
@@ -40,7 +41,7 @@ export class GameService {
                 description: "this is parcheesi without the dice.",
                 rulesUrl: "http://www.google.com?rules=sorry",
                 pnpUrl: "http://www.google.com?pnp=sorry",
-                playcount: 0,
+                priority: 0,
             }
         let game2: Game =
             {
@@ -55,7 +56,7 @@ export class GameService {
                 description: "this is a strategy game with a lot of dice.",
                 rulesUrl: "http://www.google.com?rules=risk",
                 pnpUrl: "http://www.google.com?pnp=risk",
-                playcount: 0,
+                priority: 0,
             };
 
         let itemObservable = this.db.list('/games');

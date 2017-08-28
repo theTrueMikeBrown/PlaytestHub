@@ -1,4 +1,25 @@
 ﻿<div id="list-component">
+  <div class="upperRight">
+    <span class="action-button">
+      <span class="glyphicon glyphicon-menu-hamburger"></span>
+    </span>
+    <ul class="upperRight-buttons">
+      <li class="upperRight-buttons__item">
+        <a routerLink="/addgame" class="upperRight-buttons__link" data-tooltip="Add New Game">
+          <span class="glyphicon glyphicon-plus"></span>
+        </a>
+      </li>
+      <li class="upperRight-buttons__item">
+        <a routerLink="/games"
+           (click)="logout()"
+           class="upperRight-buttons__link"
+           data-tooltip="Log out">
+          <span class="glyphicon glyphicon-log-out"></span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
   <h4>Games</h4>
   <div *ngFor="let game of games | async"
        (click)="gotoDetail(game.id)" class="search-result">

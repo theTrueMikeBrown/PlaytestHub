@@ -10,5 +10,6 @@
     description: string;
     rulesUrl: string;
     pnpUrl: string;
-    playcount: number;
+    priority: number;
+    inactive: boolean;
 }
