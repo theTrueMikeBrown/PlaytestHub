@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { FirebaseUISignInSuccess } from 'firebaseui-angular';
 import { User } from 'firebase';
@@ -8,8 +8,7 @@ import { LoginInfoService } from './loginInfo.service';
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.css'],
-    providers: [LoginInfoService]
+    styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
     loggedIn: boolean = false;

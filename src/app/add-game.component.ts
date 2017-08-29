@@ -1,4 +1,4 @@
-﻿import { Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { LoginInfoService } from './loginInfo.service';
 
@@ -8,8 +8,7 @@ import { GameService } from './game.service';
 @Component({
     selector: 'add-game',
     templateUrl: './add-game.component.html',
-    styleUrls: ['./add-game.styles.css'],
-    providers: [LoginInfoService]
+    styleUrls: ['./add-game.styles.css']
 })
 export class AddGameComponent {
     game: Game = new Game();
@@ -17,9 +16,11 @@ export class AddGameComponent {
     }
 
     saveGame() {
-        //set this
+        //todo: set this
         this.game.id = 1;
         this.game.owner = this.loginInfoService.getLoginInfo().uid;
+
+        this.gameService.saveGame(this.game);
 
         let navigationExtras: NavigationExtras = {
             queryParams: { 'message': 'Game Saved Successfully!' },

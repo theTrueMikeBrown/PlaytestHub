@@ -1,4 +1,5 @@
-﻿import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { LoginInfo } from './loginInfo';
 
 @Injectable()
 export class LoginInfoService {
@@ -11,6 +12,6 @@ export class LoginInfoService {
     }
 
     setLoginInfo(loginInfo: LoginInfo) {
-        this.LoginInfo = loginInfo;
+        this.loginInfo = loginInfo;
     }
 }
