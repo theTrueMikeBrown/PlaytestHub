@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute  } from '@angular/router';
 
 // Observable class extensions
 import 'rxjs/add/observable/of';
@@ -23,12 +23,19 @@ import { Game } from './game';
 })
 export class GamesListComponent {
     games: FirebaseListObservable<any[]>;
+    message: Observable<string>;
 
     constructor(
         private gameService: GameService,
-        private router: Router) { }
+        private router: Router,
+        private route: ActivatedRoute) {
+    }
 
     ngOnInit(): void {
+        this.message = this.route
+            .queryParamMap
+            .map(params => params.get('message'))
+
         this.gameService.getGames().then(g => this.games = g)
     }
 

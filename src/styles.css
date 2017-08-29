@@ -1,10 +1,12 @@
-body {
+﻿body {
   color: #082211;
   background-color: #DFE
 }
 
 #patreon-logo {
   background: #FFF;
+  padding-top: .4em;
+  padding-left: .18em;
 }
 
   #patreon-logo:hover {

@@ -4,6 +4,11 @@
       <span class="glyphicon glyphicon-trash"></span>
     </a>
   </div>
+  <div class="upperRight">
+    <a class="action-button" (click)="saveGame()">
+      <span class="glyphicon glyphicon-save"></span>
+    </a>
+  </div>
 
   <div class="left">
     <div>Title: <input [(ngModel)]="game.name"></div>
@@ -27,6 +32,6 @@
         <div>PNP file: <input type="url" [(ngModel)]="game.pnpUrl" /></div>
       </div>
     </div>
+    <div><h4>Priority: {{game.priority}}</h4></div>
   </div>
-  <div><h4>Priority: {{game.priority}}</h4></div>
 </div>

@@ -1,5 +1,5 @@
-<div id="list-component">
-  <div class="upperLeft">
+﻿<div id="list-component">
+  <!--<div class="upperLeft">
     <a class="action-button" id="patreon-logo" href="https://www.patreon.com/theTrueMikeBrown" title="Support me on Patreon">      
       <svg width="25px" height="25px" viewBox="0 0 569 546" version="1.1" xmlns="http://www.w3.org/2000/svg">
        <title>Patreon logo</title>
@@ -9,7 +9,7 @@
        </g>
       </svg>
     </a>
-  </div>
+  </div>-->
 
   <div class="upperRight">
     <span class="action-button">
@@ -41,6 +41,8 @@
       </li>
     </ul>
   </div>
+
+  <div *ngIf="message" class="message">{{message | async}}</div>
 
   <h4>Games</h4>
   <div *ngFor="let game of games | async"

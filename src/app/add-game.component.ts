@@ -1,4 +1,5 @@
 ﻿import { Component } from '@angular/core';
+import { Router, NavigationExtras } from '@angular/router';
 
 import { Game } from './game';
 import { GameService } from './game.service';
@@ -10,5 +11,15 @@ import { GameService } from './game.service';
 })
 export class AddGameComponent {
     game: Game = new Game();
-    constructor(private gameService: GameService) { }
+    constructor(private gameService: GameService, private router: Router) { }
+
+    saveGame() {
+        //save the game before navigating away
+
+        let navigationExtras: NavigationExtras = {
+            queryParams: { 'message': 'Game Saved Successfully!' },
+            fragment: 'anchor'
+        };
+        this.router.navigate(['/games'], navigationExtras);
+    }
 }
