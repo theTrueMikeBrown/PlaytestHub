@@ -40,7 +40,8 @@
   position: absolute;
   width: 56px;
   right: 5px;
-  bottom: 15px;
+  bottom: 0px;
+  margin-bottom: 80px;
 }
 
 .upperLeft {
