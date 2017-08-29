@@ -30,14 +30,21 @@
   }
 
 .upperRight {
-  position: fixed;
+  position: absolute;
   width: 56px;
-  right: 15px;
+  right: 5px;
   top: 15px;
 }
 
+.lowerRight {
+  position: absolute;
+  width: 56px;
+  right: 5px;
+  bottom: 15px;
+}
+
 .upperLeft {
-  position: fixed;
+  position: absolute;
   width: 56px;
   left: 15px;
   top: 15px;
