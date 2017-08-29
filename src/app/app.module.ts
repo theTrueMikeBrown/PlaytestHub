@@ -16,6 +16,7 @@ import { GameStatsComponent } from './game-stats.component';
 import { GameDetailComponent } from './game-detail.component';
 import { AddGameComponent } from './add-game.component';
 import { GameService } from './game.service';
+import { LoginInfoService } from './loginInfo.service';
 
 const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
     providers: [
@@ -63,7 +64,7 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
 
         ])
     ],
-    providers: [GameService],
+    providers: [GameService, LoginInfoService],
     bootstrap: [AppComponent]
 })
 export class AppModule {

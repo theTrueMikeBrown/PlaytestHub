@@ -3,28 +3,28 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { FirebaseUISignInSuccess } from 'firebaseui-angular';
 import { User } from 'firebase';
 import { Game } from './game';
+import { LoginInfoService } from './loginInfo.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css'],
+    providers: [LoginInfoService]
 })
 export class AppComponent implements OnInit {
-    displayName: string;
-    uid: string;
-    email: string;
-    photoURL: string;
     loggedIn: boolean = false;
 
-    constructor(private afAuth: AngularFireAuth) {
+    constructor(private afAuth: AngularFireAuth, private loginInfoService: LoginInfoService) {
     }
 
     signIn(data: User) {
         if (data != null) {
-            this.displayName = data.displayName;
-            this.uid = data.uid;
-            this.email = data.email;
-            this.photoURL = data.photoURL;
+            this.loginInfoService.setLoginInfo({
+                displayName: data.displayName,
+                uid: data.uid,
+                email: data.email,
+                photoURL: data.photoURL
+            });
             this.loggedIn = true;
         }
     }
@@ -39,7 +39,6 @@ export class AppComponent implements OnInit {
     }
 
     successCallback(data: FirebaseUISignInSuccess) {
-        console.log(data);
         this.signIn(data.currentUser);
     }
 }
