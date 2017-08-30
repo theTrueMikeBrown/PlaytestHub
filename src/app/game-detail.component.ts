@@ -13,6 +13,7 @@ import { GameService } from './game.service';
 })
 export class GameDetailComponent implements OnInit {
     game: any;
+    owner: any;
 
     constructor(
         private gameService: GameService,
@@ -22,7 +23,13 @@ export class GameDetailComponent implements OnInit {
 
     ngOnInit(): void {
         this.route.paramMap
-            .switchMap((params: ParamMap) => this.gameService.getGame(+params.get('id')))
-            .subscribe(g => g.subscribe(game => this.game = game[0]));
+            .switchMap((params: ParamMap) => this.gameService.getGame(params.get('id')))
+            .subscribe(g => g.subscribe(game => {
+                this.game = game;
+                //this.gameService.getUser(game.owner).then(user => {
+                //    debugger;
+                //    this.owner = user;
+                //});
+            }));
     }
 }

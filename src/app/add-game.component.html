@@ -7,7 +7,7 @@
 
   <div class="lowerRight">
     <a class="action-button" (click)="saveGame()">
-      <span class="glyphicon glyphicon-save"></span>
+      <span class="glyphicon glyphicon-floppy-disk"></span>
     </a>
   </div>
 
@@ -17,7 +17,6 @@
     <div>Max player count: <input type="number" [(ngModel)]="game.maxPlayerCount"></div>
     <div>Min time in minutes: <input type="number" [(ngModel)]="game.minTimeInMinutes"></div>
     <div>Max time in minutes: <input type="number" [(ngModel)]="game.maxTimeInMinutes"></div>
-    <div><h4>by: {{game.owner}}</h4></div>
     <div>
       <h4>Description:</h4>
       <textarea [(ngModel)]="game.description"></textarea>

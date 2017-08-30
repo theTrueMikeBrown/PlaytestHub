@@ -3,32 +3,6 @@
   background-color: #DFE
 }
 
-#patreon-logo {
-  background: #FFF;
-  padding-top: .4em;
-  padding-left: .18em;
-}
-
-  #patreon-logo:hover {
-    background: #052D49;
-  }
-
-    #patreon-logo:hover svg *[data-color='1'] {
-      fill: #FFF;
-    }
-
-    #patreon-logo:hover svg *[data-color='2'] {
-      fill: #F96854;
-    }
-
-  #patreon-logo svg *[data-color='1'] {
-    fill: #F96854;
-  }
-
-  #patreon-logo svg *[data-color='2'] {
-    fill: #052D49;
-  }
-
 .upperRight {
   position: absolute;
   width: 56px;
@@ -40,8 +14,14 @@
   position: absolute;
   width: 56px;
   right: 5px;
-  bottom: 0px;
-  margin-bottom: 80px;
+  bottom: -30px;
+  margin-bottom: 56px;
+}
+
+.lowerLeftHugger {
+  position: fixed;
+  left: 0;
+  bottom: 0;
 }
 
 .upperLeft {
@@ -52,7 +32,8 @@
 }
 
 .action-button:hover {
-  color: #4F8;
+  background-color: #1bf697;
+  color: #142;
 }
 
 .action-button {
@@ -61,12 +42,12 @@
   display: block;
   width: 40px;
   height: 40px;
-  background-color: #142;
-  color: #3C6;
+  background-color: #70feb6;
+  color: #082211;
   border-radius: 50%;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.28), 0 1px 5px 0 rgba(0, 0, 0, 0.24), 0 3px 1px -2px rgba(0, 0, 0, 0.4);
   font-size: 1.5em;
-  padding-top: 0.3em;
+  padding-top: 0.37em;
   text-align: center;
 }
 
@@ -111,7 +92,8 @@
 }
 
 .upperRight-buttons__link:hover {
-  color: #4F8;
+  background-color: #1bf697;
+  color: #142;
 }
 
 .upperRight-buttons__link {
@@ -119,7 +101,6 @@
   width: 40px;
   height: 40px;
   text-decoration: none;
-  background-color: #ffffff;
   border-radius: 50%;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
   transform: scaleY(0.5) scaleX(0.5) translateY(0px) translateX(0px);
@@ -128,8 +109,8 @@
   -o-transition: .3s;
   transition: .3s;
   padding-top: 10px;
-  background-color: #142;
-  color: #3C6;
+  background-color: #70feb6;
+  color: #082211;
 }
 
 [data-tooltip]:before {
