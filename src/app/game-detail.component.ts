@@ -25,11 +25,7 @@ export class GameDetailComponent implements OnInit {
         this.route.paramMap
             .switchMap((params: ParamMap) => this.gameService.getGame(params.get('id')))
             .subscribe(g => g.subscribe(game => {
-                this.game = game;
-                //this.gameService.getUser(game.owner).then(user => {
-                //    debugger;
-                //    this.owner = user;
-                //});
+                this.game = game;                
             }));
     }
 }
