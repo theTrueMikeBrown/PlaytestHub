@@ -28,6 +28,16 @@ export class GameService {
         return Promise.resolve(itemsList);
     }
 
+    getGamesByUser(uid: string): Promise<FirebaseListObservable<any[]>> {
+        var itemsList = this.db.list('/games', {
+            query: {
+                orderByChild: 'owner',
+                equalTo: uid
+            }
+        }).map((array) => array.reverse()) as FirebaseListObservable<any[]>;
+        return Promise.resolve(itemsList);
+    }
+
     saveGame(game: Game) {
         let itemObservable = this.db.list('/games');
         itemObservable.push(game);

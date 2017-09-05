@@ -15,6 +15,7 @@ import { GamesListComponent } from './games-list.component';
 import { GameStatsComponent } from './game-stats.component';
 import { GameDetailComponent } from './game-detail.component';
 import { AddGameComponent } from './add-game.component';
+import { MyGamesComponent } from './my-games.component';
 import { GameService } from './game.service';
 import { LoginInfoService } from './loginInfo.service';
 
@@ -33,7 +34,8 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
         GamesListComponent,
         GameStatsComponent,
         GameDetailComponent,
-        AddGameComponent
+        AddGameComponent,
+        MyGamesComponent
     ],
     imports: [
         BrowserModule,
@@ -61,7 +63,10 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
                 path: 'addgame',
                 component: AddGameComponent
             },
-
+            {
+                path: 'mygames',
+                component: MyGamesComponent
+            },
         ])
     ],
     providers: [GameService, LoginInfoService],

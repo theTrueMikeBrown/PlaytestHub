@@ -1,0 +1,12 @@
+﻿<div id="list-component">
+  <div class="upperLeft">
+    <a class="action-button" routerLink="/games">
+      <span class="glyphicon glyphicon-home"></span>
+    </a>
+  </div>
+  <h4>My Games</h4>
+  <div *ngFor="let game of games | async"
+       (click)="gotoDetail(game.$key)" class="search-result">
+    <game-stats [game]="game"></game-stats>
+  </div>
+</div>
