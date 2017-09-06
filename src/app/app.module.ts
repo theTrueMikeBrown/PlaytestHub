@@ -46,6 +46,7 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
         AngularFireModule.initializeApp(environment.firebaseConfig),
         AngularFireDatabaseModule,
         AngularFireAuthModule,
+        HttpModule,
         FirebaseUIModule.forRoot(firebaseUiAuthConfig),
         RouterModule.forRoot([
             {

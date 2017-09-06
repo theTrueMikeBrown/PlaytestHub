@@ -26,4 +26,8 @@ export class UsersGamesComponent implements OnInit {
             .switchMap((params: ParamMap) => this.gameService.getGamesByUser(params.get('id')))
             .subscribe(g => this.games = g);
     }
+
+    gotoDetail(id: number): void {
+        this.router.navigate(['/detail', id]);
+    }
 }

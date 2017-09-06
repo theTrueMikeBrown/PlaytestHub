@@ -1,4 +1,9 @@
 ﻿<div *ngIf="profile">
+  <div class="upperLeft">
+    <a class="action-button" routerLink="/games">
+      <span class="glyphicon glyphicon-home"></span>
+    </a>
+  </div>
   <h2>{{profile.displayName}}'s profile</h2>
   <div><img src="{{profile.photoURL}}" id="userImage" /></div>
 </div>

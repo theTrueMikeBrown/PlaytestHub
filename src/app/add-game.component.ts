@@ -15,8 +15,8 @@ export class AddGameComponent implements OnInit {
     constructor(private gameService: GameService, private router: Router, private loginInfoService: LoginInfoService) {
     }
 
-    saveGame() {
-        this.gameService.saveGame(this.game);
+    addGame() {
+        this.gameService.addGame(this.game);
 
         let navigationExtras: NavigationExtras = {
             queryParams: { 'message': 'Game Saved Successfully!' },
