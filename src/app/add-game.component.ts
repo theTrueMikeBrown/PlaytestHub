@@ -15,7 +15,7 @@ export class AddGameComponent implements OnInit {
     constructor(private gameService: GameService, private router: Router, private loginInfoService: LoginInfoService) {
     }
 
-    addGame() {
+    addGame(): void {
         this.gameService.addGame(this.game);
 
         let navigationExtras: NavigationExtras = {

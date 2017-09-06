@@ -1,0 +1,37 @@
+﻿<div class="editGame" *ngIf="game">
+  <div class="upperLeft">
+    <a class="action-button" routerLink="/games">
+      <span class="glyphicon glyphicon-home"></span>
+    </a>
+  </div>
+
+  <div class="lowerRight">
+    <a class="action-button" (click)="saveGame()">
+      <span class="glyphicon glyphicon-floppy-disk"></span>
+    </a>
+  </div>
+
+  <div class="left">
+    <div>Title: <input [(ngModel)]="game.name"></div>
+    <div>Min player count: <input type="number" [(ngModel)]="game.minPlayerCount"></div>
+    <div>Max player count: <input type="number" [(ngModel)]="game.maxPlayerCount"></div>
+    <div>Min time in minutes: <input type="number" [(ngModel)]="game.minTimeInMinutes"></div>
+    <div>Max time in minutes: <input type="number" [(ngModel)]="game.maxTimeInMinutes"></div>
+    <div>
+      <h4>Description:</h4>
+      <textarea [(ngModel)]="game.description"></textarea>
+    </div>
+    <div>
+      <h4>Components:</h4>
+      <textarea [(ngModel)]="game.components"></textarea>
+    </div>
+    <div>
+      <h4>Files:</h4>
+      <div class="detailBox">
+        <div>Rules file: <input type="url" [(ngModel)]="game.rulesUrl" /></div>
+        <div>PNP file: <input type="url" [(ngModel)]="game.pnpUrl" /></div>
+      </div>
+    </div>
+    <div><h4>Priority: {{game.priority}}</h4></div>
+  </div>
+</div>
