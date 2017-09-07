@@ -44,3 +44,4 @@ Thumbs.db
 
 /.vs/
 /functions/node_modules/
+/firebase-debug.log

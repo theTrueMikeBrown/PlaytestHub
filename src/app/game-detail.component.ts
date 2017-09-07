@@ -26,7 +26,7 @@ export class GameDetailComponent implements OnInit {
     }
 
     playTestGame(): void {
-
+        this.gameService.addPlaytest(this.game.$key, this.loginInfo.uid);
     }
 
     deleteGame(): void {

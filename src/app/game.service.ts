@@ -9,6 +9,7 @@ import { Game } from './game';
 export class GameService {
     readonly addGameUrl = "https://us-central1-playtesthub.cloudfunctions.net/addGame";
     readonly updateGameUrl = "https://us-central1-playtesthub.cloudfunctions.net/updateGame";
+    readonly addPlaytestUrl = "https://us-central1-playtesthub.cloudfunctions.net/addPlaytest";
 
     constructor(private db: AngularFireDatabase,
                 private http: Http) { }
@@ -42,6 +43,16 @@ export class GameService {
             }
         }).map((array) => array.reverse()) as FirebaseListObservable<any[]>;
         return Promise.resolve(itemsList);
+    }
+
+    addPlaytest(gameId: string, uid: string)
+    {
+        this.http.post(this.addPlaytestUrl, { gameId: gameId, uid: uid })
+            .toPromise()
+            .then(response => response)
+            .catch((error) => {
+                debugger;
+            });
     }
 
     addGame(game: Game) {
