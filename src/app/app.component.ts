@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { FirebaseUISignInSuccess } from 'firebaseui-angular';
 import { User } from 'firebase';
@@ -22,7 +22,8 @@ export class AppComponent implements OnInit {
                 displayName: data.displayName,
                 uid: data.uid,
                 email: data.email,
-                photoURL: data.photoURL
+                photoURL: data.photoURL,
+                id: null
             });
             this.loggedIn = true;
         }

@@ -3,5 +3,5 @@
     uid: string;
     email: string;
     photoURL: string;
-    secretId: string;
+    id: string;
 }

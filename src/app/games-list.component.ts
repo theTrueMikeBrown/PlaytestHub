@@ -2,17 +2,13 @@
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Router, ActivatedRoute  } from '@angular/router';
-import { LoginInfoService } from './loginInfo.service';
-
-// Observable class extensions
+import { FirebaseListObservable } from 'angularfire2/database';
 import 'rxjs/add/observable/of';
-
-// Observable operators
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
-import { FirebaseListObservable } from 'angularfire2/database';
 
+import { LoginInfoService } from './loginInfo.service';
 import { GameService } from './game.service';
 import { Game } from './game';
 import { LoginInfo } from './loginInfo';
