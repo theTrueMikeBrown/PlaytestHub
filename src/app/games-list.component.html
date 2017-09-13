@@ -32,7 +32,7 @@
 
   <div *ngIf="message" class="message">{{message | async}}</div>
 
-  <h4>Games</h4>
+  <h4>Games to playtest</h4>
   <div *ngFor="let game of games | async"
        (click)="gotoDetail(game.$key)" class="search-result">
     <game-stats [game]="game"></game-stats>

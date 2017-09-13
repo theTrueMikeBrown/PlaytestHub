@@ -14,7 +14,7 @@
   position: absolute;
   width: 56px;
   right: 5px;
-  bottom: -30px;
+  bottom: 0px;
   margin-bottom: 56px;
 }
 
@@ -150,4 +150,13 @@
 
 hr {
   border-top: .25em solid #142;
+}
+
+.left {
+  text-align: left;
+  margin: .5em;
+}
+
+.section {
+  margin-top: 1em;
 }

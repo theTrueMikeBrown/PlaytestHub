@@ -20,10 +20,6 @@
   margin: 1em;
 }
 
-.left {
-  text-align: left;
-}
-
-.addGame .left div {
+.left div {
   margin: .5em;
 }

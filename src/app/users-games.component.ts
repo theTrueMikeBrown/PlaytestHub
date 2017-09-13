@@ -4,6 +4,7 @@ import { LoginInfoService } from './loginInfo.service';
 import { FirebaseListObservable } from 'angularfire2/database';
 
 import { Game } from './game';
+import { LoginInfo } from './loginInfo';
 import { DbService } from './db.service';
 
 @Component({
@@ -13,6 +14,8 @@ import { DbService } from './db.service';
 })
 export class UsersGamesComponent implements OnInit {
     games: FirebaseListObservable<any[]>;
+    loginInfo: LoginInfo;
+
     constructor(private dbService: DbService,
         private router: Router,
         private route: ActivatedRoute,
@@ -20,7 +23,7 @@ export class UsersGamesComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        let loginInfo = this.loginInfoService.getLoginInfo();
+        this.loginInfo = this.loginInfoService.getLoginInfo();
 
         this.route.paramMap
             .switchMap((params: ParamMap) => this.dbService.getGamesByUser(params.get('id')))
