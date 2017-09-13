@@ -13,15 +13,28 @@ import { DbService } from './db.service';
 })
 export class UsersProfileComponent implements OnInit {
     profile: any;
+    playtests: FirebaseListObservable<any[]>;
     constructor(private router: Router,
         private route: ActivatedRoute,
         private dbService: DbService) {}
 
     ngOnInit(): void {
         this.route.paramMap
-            .switchMap((params: ParamMap) => this.dbService.getUser(params.get('id')))
-            .subscribe(g => g.subscribe(profile => {
-                this.profile = profile;
-            }))
+            .switchMap((params: ParamMap) => {
+                let id: string = params.get('id');
+                this.dbService
+                    .getUser(id)
+                    .then(p => {
+                        p.subscribe(profile => {
+                            this.profile = profile;
+                        });
+                    });
+
+                let result = this.dbService
+                    .getPlaytestsByUserId(id)
+                    .then(p => this.playtests = p);
+
+                return result;
+            }).subscribe(g => { });        
     }
 }

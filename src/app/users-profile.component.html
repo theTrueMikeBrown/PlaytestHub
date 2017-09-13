@@ -5,5 +5,18 @@
     </a>
   </div>
   <h2>{{profile.displayName}}'s profile</h2>
-  <div><img src="{{profile.photoURL}}" id="userImage" /></div>
+  <div class="left">
+    <div id="userImage">
+      <img *ngIf="profile.photoURL" src="{{profile.photoURL}}" id="userImage" />
+      <div *ngIf="!profile.photoURL">No user image</div>
+    </div>
+    <div class="section">
+      <a href="http://localhost:4200/user/{{profile.id}}/games">View {{profile.displayName}}'s games</a>
+    </div>
+    <div *ngIf="playtests" class="section">
+      <div *ngFor="let playtest of playtests | async">
+        <span>Playtesting:</span> {{playtest.gameName}}, since {{playtest.dateString}}
+      </div>
+    </div>
+  </div>
 </div>

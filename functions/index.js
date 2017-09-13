@@ -36,7 +36,7 @@ exports.addGame = functions.https.onRequest((req, res) => {
 exports.addPlaytest = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         const gameId = req.body.gameId;
-        const uid = req.body.uid;
+        const id = req.body.id;
         var db = admin.database();
 
         db.ref('/games/' + gameId)
@@ -47,7 +47,7 @@ exports.addPlaytest = functions.https.onRequest((req, res) => {
                 if (obj.priority >= 0) {
 
                     //make sure that the old playtest (if one exists) is propery dealt with
-                    db.ref('/playtests/' + uid)
+                    db.ref('/playtests/' + id)
                         .once('value')
                         .then((s) => {
                             var playTest = s.val();
@@ -74,7 +74,7 @@ exports.addPlaytest = functions.https.onRequest((req, res) => {
                             //record the playtest, and reduce the score.
                             var date = new Date().valueOf();
                             db.ref('/games/' + gameId).update({ priority: obj.priority - 1 });
-                            db.ref('/playtests/' + uid).set({ gameId: gameId, uid: uid, started: date });
+                            db.ref('/playtests/' + id).set({ gameId: gameId, id: id, started: date });
                             res.status(200).send("success");
                         });
                 }

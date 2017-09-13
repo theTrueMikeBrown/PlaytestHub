@@ -1,5 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import "rxjs/add/operator/map";
 import { Http } from '@angular/http';
 
@@ -14,7 +14,7 @@ export class DbService {
     readonly saveUserUrl = "https://us-central1-playtesthub.cloudfunctions.net/saveUser";
 
     constructor(private db: AngularFireDatabase,
-                private http: Http) { }
+        private http: Http) { }
 
     getGame(key: string): Promise<any> {
         let game = this.db.object('/games/' + key);
@@ -27,13 +27,38 @@ export class DbService {
                 orderByChild: 'priority',
                 limitToLast: 10
             }
+        })
+            .map((array) => array.filter(i => !i.inactive).reverse()) as FirebaseListObservable<any[]>;
+        return Promise.resolve(itemsList);
+    }
+
+    getPlaytestsByUserId(id: string): Promise<FirebaseListObservable<any[]>> {
+        var itemsList =
+            this.db.list('/playtests', {
+                query: {
+                    orderByChild: 'id',
+                    equalTo: id
+                }
             })
-            .map((array) => array.filter(i=>!i.inactive).reverse()) as FirebaseListObservable<any[]>;
+            .map((array) => {
+                return array.map((item) => {
+                    item.dateString = new Date(item.started).toDateString();
+                    item.gameName = "loading...";
+
+                    var gamePromise = this.getGame(item.gameId);
+                    gamePromise.then(g => {
+                        g.subscribe(game => {
+                            item.gameName = game.name;
+                        });                        
+                    });                    
+                    return item;
+                });
+            }) as FirebaseListObservable<any[]>;
         return Promise.resolve(itemsList);
     }
 
     getGamesByUser(id: string): Promise<FirebaseListObservable<any[]>> {
-        var itemsList = this.db.list('/games', {
+        let itemsList = this.db.list('/games', {
             query: {
                 orderByChild: 'owner',
                 equalTo: id
@@ -42,8 +67,7 @@ export class DbService {
         return Promise.resolve(itemsList);
     }
 
-    addPlaytest(gameId: string, id: string)
-    {
+    addPlaytest(gameId: string, id: string) {
         this.http.post(this.addPlaytestUrl, { gameId: gameId, id: id })
             .toPromise()
             .then(response => response)
@@ -72,7 +96,7 @@ export class DbService {
 
 
     getUser(key: string): Promise<any> {
-        let user = this.db.object('/users/' + key);
+        let user: FirebaseObjectObservable<any> = this.db.object('/users/' + key);
         return Promise.resolve(user);
     }
 
