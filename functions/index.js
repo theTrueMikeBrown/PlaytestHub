@@ -4,6 +4,19 @@ const cors = require('cors')({ origin: true });
 
 admin.initializeApp(functions.config().firebase);
 
+exports.saveUser = functions.https.onRequest((req, res) => {
+    cors(req, res, () => {
+        const user = req.body;
+        admin.database()
+            .ref('/users')
+            .child(user.id)
+            .set(user)
+            .then((snap) => {
+                res.status(200).send("success");
+            });
+    });
+});
+
 exports.addGame = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         const game = req.body;

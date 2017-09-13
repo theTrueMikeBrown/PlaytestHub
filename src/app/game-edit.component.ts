@@ -4,7 +4,7 @@ import { LoginInfoService } from './loginInfo.service';
 import { FirebaseListObservable } from 'angularfire2/database';
 
 import { LoginInfo } from './loginInfo';
-import { GameService } from './game.service';
+import { DbService } from './db.service';
 import { Game } from './game';
 
 @Component({
@@ -16,15 +16,15 @@ export class GameEditComponent implements OnInit {
     game: Game;
     constructor(private router: Router,
         private route: ActivatedRoute,
-        private gameService: GameService) { }
+        private dbService: DbService) { }
     
     saveGame(): void {
-        this.gameService.updateGame(this.game);
+        this.dbService.updateGame(this.game);
     }
 
     ngOnInit(): void {
         this.route.paramMap
-            .switchMap((params: ParamMap) => this.gameService.getGame(params.get('id')))
+            .switchMap((params: ParamMap) => this.dbService.getGame(params.get('id')))
             .subscribe(g => g.subscribe(game => {
                 this.game = game;
             }))

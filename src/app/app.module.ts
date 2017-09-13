@@ -18,7 +18,7 @@ import { AddGameComponent } from './add-game.component';
 import { UsersGamesComponent } from './users-games.component';
 import { UsersProfileComponent } from './users-profile.component';
 import { GameEditComponent } from './game-edit.component';
-import { GameService } from './game.service';
+import { DbService } from './db.service';
 import { LoginInfoService } from './loginInfo.service';
 
 const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
@@ -82,7 +82,7 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
             },
         ])
     ],
-    providers: [GameService, LoginInfoService],
+    providers: [DbService, LoginInfoService],
     bootstrap: [AppComponent]
 })
 export class AppModule {

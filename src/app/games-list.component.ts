@@ -9,7 +9,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 
 import { LoginInfoService } from './loginInfo.service';
-import { GameService } from './game.service';
+import { DbService } from './db.service';
 import { Game } from './game';
 import { LoginInfo } from './loginInfo';
 
@@ -17,7 +17,7 @@ import { LoginInfo } from './loginInfo';
     selector: 'games-list',
     templateUrl: './games-list.component.html',
     styleUrls: ['./games-list.styles.css'],
-    providers: [GameService]
+    providers: [DbService]
 })
 export class GamesListComponent {
     games: FirebaseListObservable<any[]>;
@@ -25,7 +25,7 @@ export class GamesListComponent {
     loginInfo: LoginInfo;
 
     constructor(
-        private gameService: GameService,
+        private dbService: DbService,
         private router: Router,
         private route: ActivatedRoute,
         private loginInfoService: LoginInfoService) {
@@ -37,7 +37,7 @@ export class GamesListComponent {
             .map(params => params.get('message'))
         this.loginInfo = this.loginInfoService.getLoginInfo();
 
-        this.gameService.getGames().then(g => this.games = g)
+        this.dbService.getGames().then(g => this.games = g)
     }
 
     gotoDetail(id: number): void {

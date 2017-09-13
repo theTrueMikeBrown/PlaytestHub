@@ -3,7 +3,7 @@ import { Router, NavigationExtras } from '@angular/router';
 import { LoginInfoService } from './loginInfo.service';
 
 import { Game } from './game';
-import { GameService } from './game.service';
+import { DbService } from './db.service';
 
 @Component({
     selector: 'add-game',
@@ -12,11 +12,11 @@ import { GameService } from './game.service';
 })
 export class AddGameComponent implements OnInit {
     game: Game = new Game();
-    constructor(private gameService: GameService, private router: Router, private loginInfoService: LoginInfoService) {
+    constructor(private dbService: DbService, private router: Router, private loginInfoService: LoginInfoService) {
     }
 
     addGame(): void {
-        this.gameService.addGame(this.game);
+        this.dbService.addGame(this.game);
 
         let navigationExtras: NavigationExtras = {
             queryParams: { 'message': 'Game Saved Successfully!' },
@@ -26,7 +26,7 @@ export class AddGameComponent implements OnInit {
 
     ngOnInit(): void {
         let loginInfo = this.loginInfoService.getLoginInfo();
-        this.game.owner = loginInfo.uid;
+        this.game.owner = loginInfo.id;
         this.game.ownerName = loginInfo.displayName;
         this.game.priority = 0;
     }

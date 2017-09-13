@@ -4,7 +4,7 @@ import { LoginInfoService } from './loginInfo.service';
 import { FirebaseListObservable } from 'angularfire2/database';
 
 import { Game } from './game';
-import { GameService } from './game.service';
+import { DbService } from './db.service';
 
 @Component({
     selector: 'users-games',
@@ -13,7 +13,7 @@ import { GameService } from './game.service';
 })
 export class UsersGamesComponent implements OnInit {
     games: FirebaseListObservable<any[]>;
-    constructor(private gameService: GameService,
+    constructor(private dbService: DbService,
         private router: Router,
         private route: ActivatedRoute,
         private loginInfoService: LoginInfoService) {
@@ -23,7 +23,7 @@ export class UsersGamesComponent implements OnInit {
         let loginInfo = this.loginInfoService.getLoginInfo();
 
         this.route.paramMap
-            .switchMap((params: ParamMap) => this.gameService.getGamesByUser(params.get('id')))
+            .switchMap((params: ParamMap) => this.dbService.getGamesByUser(params.get('id')))
             .subscribe(g => this.games = g);
     }
 

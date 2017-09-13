@@ -7,10 +7,11 @@ import { Game } from './game';
 import { LoginInfo } from './loginInfo';
 
 @Injectable()
-export class GameService {
+export class DbService {
     readonly addGameUrl = "https://us-central1-playtesthub.cloudfunctions.net/addGame";
     readonly updateGameUrl = "https://us-central1-playtesthub.cloudfunctions.net/updateGame";
     readonly addPlaytestUrl = "https://us-central1-playtesthub.cloudfunctions.net/addPlaytest";
+    readonly saveUserUrl = "https://us-central1-playtesthub.cloudfunctions.net/saveUser";
 
     constructor(private db: AngularFireDatabase,
                 private http: Http) { }
@@ -31,19 +32,19 @@ export class GameService {
         return Promise.resolve(itemsList);
     }
 
-    getGamesByUser(uid: string): Promise<FirebaseListObservable<any[]>> {
+    getGamesByUser(id: string): Promise<FirebaseListObservable<any[]>> {
         var itemsList = this.db.list('/games', {
             query: {
                 orderByChild: 'owner',
-                equalTo: uid
+                equalTo: id
             }
         }).map((array) => array.reverse()) as FirebaseListObservable<any[]>;
         return Promise.resolve(itemsList);
     }
 
-    addPlaytest(gameId: string, uid: string)
+    addPlaytest(gameId: string, id: string)
     {
-        this.http.post(this.addPlaytestUrl, { gameId: gameId, uid: uid })
+        this.http.post(this.addPlaytestUrl, { gameId: gameId, id: id })
             .toPromise()
             .then(response => response)
             .catch((error) => {
@@ -88,7 +89,11 @@ export class GameService {
     }
 
     saveUser(loginInfo: LoginInfo) {
-        let users = this.db.list('/users');
-        users.set(loginInfo.id, loginInfo);
+        this.http.post(this.saveUserUrl, loginInfo)
+            .toPromise()
+            .then(response => response)
+            .catch((error) => {
+                debugger;
+            });
     }
 }

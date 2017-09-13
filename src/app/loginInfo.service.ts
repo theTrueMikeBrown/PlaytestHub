@@ -2,26 +2,23 @@
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 
 import { LoginInfo } from './loginInfo';
-import { GameService } from './game.service';
+import { DbService } from './db.service';
 
 @Injectable()
 export class LoginInfoService {
     loginInfo: LoginInfo;
 
     constructor(private db: AngularFireDatabase,
-                private gameService: GameService) { }
+                private dbService: DbService) { }
 
     getLoginInfo(): LoginInfo {
         return this.loginInfo;
     }
 
     setLoginInfo(loginInfo: LoginInfo) {
-        //check to see if it exists
-        // if it does - get the guid to use as a public key
-        // if it doesn't - make a guid and store it
         this.loginInfo = loginInfo;
 
-        var userPromise = this.gameService.getUserBySecretId(loginInfo.uid);
+        var userPromise = this.dbService.getUserBySecretId(loginInfo.uid);
         userPromise.then((userList) => {
 
             userList.subscribe(user => {
@@ -37,7 +34,7 @@ export class LoginInfoService {
                     }
 
                     loginInfo.id = uuidv4();
-                    this.gameService.saveUser(loginInfo);
+                    this.dbService.saveUser(loginInfo);
                 }
             });
         });

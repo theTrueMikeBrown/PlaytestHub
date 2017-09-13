@@ -6,7 +6,7 @@ import 'rxjs/add/operator/switchMap';
 
 import { LoginInfo } from './loginInfo';
 import { Game } from './game';
-import { GameService } from './game.service';
+import { DbService } from './db.service';
 
 @Component({
     selector: 'game-detail',
@@ -19,32 +19,32 @@ export class GameDetailComponent implements OnInit {
     loginInfo: LoginInfo;
 
     constructor(
-        private gameService: GameService,
+        private dbService: DbService,
         private route: ActivatedRoute,
         private location: Location,
         private loginInfoService: LoginInfoService) {
     }
 
     playTestGame(): void {
-        this.gameService.addPlaytest(this.game.$key, this.loginInfo.uid);
+        this.dbService.addPlaytest(this.game.$key, this.loginInfo.id);
     }
 
     deleteGame(): void {
         this.game.inactive = true;
         this.game.id = this.game.$key;
-        this.gameService.updateGame(this.game);
+        this.dbService.updateGame(this.game);
     }
 
     undeleteGame(): void {
         this.game.inactive = false;
         this.game.id = this.game.$key;
-        this.gameService.updateGame(this.game);
+        this.dbService.updateGame(this.game);
     }
 
     ngOnInit(): void {
         this.loginInfo = this.loginInfoService.getLoginInfo();
         this.route.paramMap
-            .switchMap((params: ParamMap) => this.gameService.getGame(params.get('id')))
+            .switchMap((params: ParamMap) => this.dbService.getGame(params.get('id')))
             .subscribe(g => g.subscribe(game => {
                 this.game = game;                
             }));
