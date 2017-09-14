@@ -12,6 +12,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 
 import { GamesListComponent } from './games-list.component';
+import { LeaveFeedbackComponent } from './leave-feedback.component';
 import { GameStatsComponent } from './game-stats.component';
 import { GameDetailComponent } from './game-detail.component';
 import { AddGameComponent } from './add-game.component';
@@ -39,7 +40,8 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
         AddGameComponent,
         UsersGamesComponent,
         UsersProfileComponent,
-        GameEditComponent
+        GameEditComponent,
+        LeaveFeedbackComponent
     ],
     imports: [
         BrowserModule,
@@ -79,6 +81,10 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
             {
                 path: 'games/:id/edit',
                 component: GameEditComponent
+            },
+            {
+                path: 'leaveFeedback',
+                component: LeaveFeedbackComponent
             },
         ])
     ],
