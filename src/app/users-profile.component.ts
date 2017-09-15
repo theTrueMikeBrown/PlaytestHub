@@ -12,13 +12,17 @@ import { DbService } from './db.service';
     styleUrls: ['./users-profile.styles.css']
 })
 export class UsersProfileComponent implements OnInit {
+    loginInfo: LoginInfo;
     profile: any;
     playtests: FirebaseListObservable<any[]>;
     constructor(private router: Router,
         private route: ActivatedRoute,
-        private dbService: DbService) {}
+        private dbService: DbService,
+        private loginInfoService: LoginInfoService) {}
 
     ngOnInit(): void {
+        this.loginInfo = this.loginInfoService.getLoginInfo();
+
         this.route.paramMap
             .switchMap((params: ParamMap) => {
                 let id: string = params.get('id');

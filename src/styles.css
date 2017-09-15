@@ -3,6 +3,10 @@
   background-color: #DFE
 }
 
+.indent {
+  margin-left: 1em;
+}
+
 .upperRight {
   position: absolute;
   width: 56px;

@@ -11,11 +11,19 @@
       <div *ngIf="!profile.photoURL">No user image</div>
     </div>
     <div class="section">
-      <a href="http://localhost:4200/user/{{profile.id}}/games">View {{profile.displayName}}'s games</a>
+      <a href="/user/{{profile.id}}/games">View {{profile.displayName}}'s games</a>
     </div>
     <div *ngIf="playtests" class="section">
       <div *ngFor="let playtest of playtests | async">
-        <span>Playtesting:</span> {{playtest.gameName}}, since {{playtest.dateString}}
+        <span>Playtesting:</span>
+        <a href="/detail/{{playtest.gameId}}">{{playtest.gameName}}</a>,
+        <span> since {{playtest.dateString}}</span>
+      </div>
+      <div class="indent" *ngIf="profile.id===loginInfo.id">
+        <a routerLink="/leaveFeedback">
+          <span class="glyphicon glyphicon glyphicon-pencil"></span>
+          Leave Feedback
+        </a>
       </div>
     </div>
   </div>
