@@ -6,6 +6,7 @@ import { FirebaseListObservable } from 'angularfire2/database';
 import { LoginInfo } from './loginInfo';
 import { DbService } from './db.service';
 import { Game } from './game';
+import { Feedback } from './feedback';
 
 @Component({
     selector: 'leave-feedback',
@@ -13,12 +14,35 @@ import { Game } from './game';
     styleUrls: ['./leave-feedback.styles.css']
 })
 export class LeaveFeedbackComponent implements OnInit {
+    feedback: Feedback = {
+        feelings: ['', '', ''],
+        categorization: ['', '', ''],
+        general: ['', ''],
+        length: ['', '', ''],
+        art: ['', ''],
+        rules: ['', '', ''],
+        mechanics: ['', '', ''],
+        final: ['', '', '', ''],
+    };
+
     constructor(private router: Router,
         private route: ActivatedRoute,
-        private dbService: DbService) { }
-    
+        private dbService: DbService) {
+    }
+
     saveFeedback(): void {
-//        this.dbService.updateGame(this.game);
+        this.dbService.saveFeedback(this.feedback);
+    }
+
+    submitFeedback(): void {
+        let errors: string[] = this.dbService.submitFeedback(this.feedback);
+        if (errors.length === 0) {
+            let navigationExtras: NavigationExtras = {
+                queryParams: { 'message': 'Game Submitted Successfully!' },
+            };
+            this.router.navigate(['/games'], navigationExtras);
+        }
+        alert("Errors: " + errors.join(", "));
     }
 
     ngOnInit(): void {

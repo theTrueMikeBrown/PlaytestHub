@@ -5,12 +5,6 @@
     </a>
   </div>
 
-  <div class="lowerRight">
-    <a class="action-button" (click)="saveGame()">
-      <span class="glyphicon glyphicon-floppy-disk"></span>
-    </a>
-  </div>
-
   <div class="left">
     <div>Title: <input [(ngModel)]="game.name"></div>
     <div>Min player count: <input type="number" [(ngModel)]="game.minPlayerCount"></div>
@@ -33,5 +27,10 @@
       </div>
     </div>
     <div><h4>Priority: {{game.priority}}</h4></div>
+  </div>
+  <div class="lowerRightBottom">
+    <a class="action-button" (click)="saveGame()">
+      <span class="glyphicon glyphicon-floppy-disk"></span>
+    </a>
   </div>
 </div>

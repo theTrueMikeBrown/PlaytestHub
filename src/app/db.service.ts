@@ -5,6 +5,7 @@ import { Http } from '@angular/http';
 
 import { Game } from './game';
 import { LoginInfo } from './loginInfo';
+import { Feedback } from './feedback';
 
 @Injectable()
 export class DbService {
@@ -12,6 +13,9 @@ export class DbService {
     readonly updateGameUrl = "https://us-central1-playtesthub.cloudfunctions.net/updateGame";
     readonly addPlaytestUrl = "https://us-central1-playtesthub.cloudfunctions.net/addPlaytest";
     readonly saveUserUrl = "https://us-central1-playtesthub.cloudfunctions.net/saveUser";
+    //TODO: make these exist for real
+    readonly saveFeedbackUrl = "https://us-central1-playtesthub.cloudfunctions.net/saveFeedback";
+    readonly submitFeedbackUrl = "https://us-central1-playtesthub.cloudfunctions.net/submitFeedback";
 
     constructor(private db: AngularFireDatabase,
         private http: Http) { }
@@ -40,20 +44,20 @@ export class DbService {
                     equalTo: id
                 }
             })
-            .map((array) => {
-                return array.map((item) => {
-                    item.dateString = new Date(item.started).toDateString();
-                    item.gameName = "loading...";
+                .map((array) => {
+                    return array.map((item) => {
+                        item.dateString = new Date(item.started).toDateString();
+                        item.gameName = "loading...";
 
-                    var gamePromise = this.getGame(item.gameId);
-                    gamePromise.then(g => {
-                        g.subscribe(game => {
-                            item.gameName = game.name;
-                        });                        
-                    });                    
-                    return item;
-                });
-            }) as FirebaseListObservable<any[]>;
+                        var gamePromise = this.getGame(item.gameId);
+                        gamePromise.then(g => {
+                            g.subscribe(game => {
+                                item.gameName = game.name;
+                            });
+                        });
+                        return item;
+                    });
+                }) as FirebaseListObservable<any[]>;
         return Promise.resolve(itemsList);
     }
 
@@ -119,5 +123,53 @@ export class DbService {
             .catch((error) => {
                 debugger;
             });
+    }
+
+    saveFeedback(feedback: Feedback) {
+        this.http.post(this.saveFeedbackUrl, feedback)
+            .toPromise()
+            .then(response => response)
+            .catch((error) => {
+                debugger;
+            });
+    }
+
+    submitFeedback(feedback: Feedback): string[] {
+        let errors: string[] = this.validate(feedback);
+        if (errors.length === 0) {
+            this.http.post(this.submitFeedbackUrl, feedback)
+                .toPromise()
+                .then(response => response)
+                .catch((error) => {
+                    debugger;
+                });
+            return [];
+        }
+        return errors;
+    }
+
+    validate(feedback: Feedback): string[] {
+        var validateFeedback = (f: Feedback, name: string, length: number) => {
+            let array: string[] = f[name];
+            if (!array) { return name + " doesn't exist."; }
+            if (array.length !== length) { return name + " doesn't have enough data."; }
+            for (var i = 0; i < length; i++) {
+                if (!array[i]) {
+                    return "Question " + (i + 1) + " of " + name + " is not filled out.";
+                }
+            }
+            return null;
+        };
+
+        return [
+            validateFeedback(feedback, 'feelings', 3),
+            validateFeedback(feedback, 'categorization', 3),
+            validateFeedback(feedback, 'general', 2),
+            validateFeedback(feedback, 'length', 3),
+            validateFeedback(feedback, 'art', 2),
+            validateFeedback(feedback, 'rules', 3),
+            validateFeedback(feedback, 'mechanics', 3),
+            validateFeedback(feedback, 'final', 4)
+        ].filter(n => n);
     }
 }

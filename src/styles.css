@@ -14,12 +14,19 @@
   top: 15px;
 }
 
+.lowerRightBottom {
+  position: relative;
+  width: 56px;
+  margin-bottom: 56px;
+  float: right;
+}
+
 .lowerRight {
   position: absolute;
   width: 56px;
-  right: 5px;
-  bottom: 0px;
   margin-bottom: 56px;
+  right: 5px;
+  bottom: 5px;
 }
 
 .lowerLeftHugger {
@@ -164,3 +171,51 @@ hr {
 .section {
   margin-top: 1em;
 }
+
+#feedbackForm ul {
+  text-align: left;
+  margin: .5em 0;
+  padding-left: .5em;
+}
+
+#feedbackForm ul {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#feedbackForm li {
+  margin: .5em;
+  display: block;
+}
+
+#feedbackForm textarea {
+  width: 100%;
+}
+
+#feedbackForm input {
+  width: 100%;
+}
+
+.tooltipanchor {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+  .tooltipanchor .tooltiptext {
+    visibility: hidden;
+    width: 760%;
+    background-color: #70feb6;
+    color: #082211;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    left: -90px;
+    font-size: .8em;
+    padding-left: .25em;
+  }
+
+  .tooltipanchor:hover .tooltiptext {
+    visibility: visible;
+  }
