@@ -26,7 +26,13 @@ export class GameDetailComponent implements OnInit {
     }
 
     playTestGame(): void {
-        this.dbService.addPlaytest(this.game.$key, this.loginInfo.id);
+        this.dbService.addPlaytest(
+            {
+                gameId: this.game.$key,
+                id: this.loginInfo.id,
+                started: 0,
+                gameName: this.game.name
+            });
     }
 
     deleteGame(): void {

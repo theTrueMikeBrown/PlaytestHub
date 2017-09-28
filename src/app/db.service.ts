@@ -1,9 +1,12 @@
 ﻿import { Injectable } from '@angular/core';
 import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import "rxjs/add/operator/map";
+import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
 import { Http } from '@angular/http';
 
 import { Game } from './game';
+import { Playtest } from './playtest';
 import { LoginInfo } from './loginInfo';
 import { Feedback } from './feedback';
 
@@ -13,9 +16,9 @@ export class DbService {
     readonly updateGameUrl = "https://us-central1-playtesthub.cloudfunctions.net/updateGame";
     readonly addPlaytestUrl = "https://us-central1-playtesthub.cloudfunctions.net/addPlaytest";
     readonly saveUserUrl = "https://us-central1-playtesthub.cloudfunctions.net/saveUser";
-    //TODO: make these exist for real
     readonly saveFeedbackUrl = "https://us-central1-playtesthub.cloudfunctions.net/saveFeedback";
     readonly submitFeedbackUrl = "https://us-central1-playtesthub.cloudfunctions.net/submitFeedback";
+    readonly approveFeedbackUrl = "https://us-central1-playtesthub.cloudfunctions.net/approvesFeedback";
 
     constructor(private db: AngularFireDatabase,
         private http: Http) { }
@@ -36,29 +39,43 @@ export class DbService {
         return Promise.resolve(itemsList);
     }
 
-    getPlaytestsByUserId(id: string): Promise<FirebaseListObservable<any[]>> {
-        var itemsList =
-            this.db.list('/playtests', {
-                query: {
-                    orderByChild: 'id',
-                    equalTo: id
-                }
-            })
-                .map((array) => {
-                    return array.map((item) => {
-                        item.dateString = new Date(item.started).toDateString();
-                        item.gameName = "loading...";
-
-                        var gamePromise = this.getGame(item.gameId);
-                        gamePromise.then(g => {
-                            g.subscribe(game => {
-                                item.gameName = game.name;
-                            });
-                        });
-                        return item;
+    getPlaytestByUserId(id: string): Promise<Observable<any>> {
+        let subject: Subject<any> = new Subject;
+        var item = this.db.object('/playtests/' + id)
+            .subscribe(item => {
+                item.dateString = new Date(item.started).toDateString();                
+                var gamePromise = this.getGame(item.gameId);
+                gamePromise.then(g => {
+                    g.subscribe(game => {
+                        item.gameName = game.name;
+                        subject.next(item);
                     });
-                }) as FirebaseListObservable<any[]>;
-        return Promise.resolve(itemsList);
+                });
+            });
+        return Promise.resolve(subject);
+            
+        //var itemsList =
+        //    this.db.list('/playtests', {
+        //        query: {
+        //            orderByChild: 'id',
+        //            equalTo: id
+        //        }
+        //    })
+        //        .map((array) => {
+        //            return array.map((item) => {
+        //                item.dateString = new Date(item.started).toDateString();
+        //                item.gameName = "loading...";
+
+        //                var gamePromise = this.getGame(item.gameId);
+        //                gamePromise.then(g => {
+        //                    g.subscribe(game => {
+        //                        item.gameName = game.name;
+        //                    });
+        //                });
+        //                return item;
+        //            });
+        //        }) as FirebaseListObservable<any[]>;
+        //return Promise.resolve(itemsList);
     }
 
     getGamesByUser(id: string): Promise<FirebaseListObservable<any[]>> {
@@ -71,8 +88,8 @@ export class DbService {
         return Promise.resolve(itemsList);
     }
 
-    addPlaytest(gameId: string, id: string) {
-        this.http.post(this.addPlaytestUrl, { gameId: gameId, id: id })
+    addPlaytest(playtest: Playtest) {
+        this.http.post(this.addPlaytestUrl, playtest)
             .toPromise()
             .then(response => response)
             .catch((error) => {
@@ -105,7 +122,7 @@ export class DbService {
     }
 
     getUserBySecretId(key: string): Promise<FirebaseListObservable<any>> {
-        let list = this.db //.object('/users/' + key);
+        let list = this.db
             .list("/users/", {
                 query: {
                     orderByChild: "uid",
@@ -171,5 +188,14 @@ export class DbService {
             validateFeedback(feedback, 'mechanics', 3),
             validateFeedback(feedback, 'final', 4)
         ].filter(n => n);
+    }
+
+    approveFeedback(feedback: Feedback, uid: string) {
+        this.http.post(this.approveFeedbackUrl, { feedback: feedback, uid: uid })
+            .toPromise()
+            .then(response => response)
+            .catch((error) => {
+                debugger;
+            });
     }
 }

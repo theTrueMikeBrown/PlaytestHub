@@ -124,3 +124,62 @@ exports.updateGame = functions.https.onRequest((req, res) => {
             });
     });
 });
+
+function doSave(feedback) {
+    if (!feedback.id) {
+        admin.database()
+            .ref('/feedback')
+            .push(feedback)
+            .then((snap) => {
+                const key = snap.key;
+                feedback.id = key;
+                admin.database().ref('/feedback/' + key).update(feedback);
+                res.status(200).send("success");
+            });
+    }
+    else {
+        admin.database()
+            .ref('/feedback')
+            .child(feedback.id)
+            .set(feedback)
+            .then((snap) => {
+                res.status(200).send("success");
+            });
+    }
+}
+
+exports.saveFeedback = functions.https.onRequest((req, res) => {
+    cors(req, res, () => {
+        const feedback = req.body;
+        feedback.approved = false;
+        feedback.submitted = false;
+        doSave(feedback);
+    });
+});
+
+exports.submitFeedback = functions.https.onRequest((req, res) => {
+    cors(req, res, () => {
+        const feedback = req.body;
+        feedback.approved = false;
+        feedback.submitted = true;
+        doSave(feedback);
+    });
+});
+
+exports.approveFeedback = functions.https.onRequest((req, res) => {
+    cors(req, res, () => {
+        const feedback = req.body.feedback;
+        const uid = req.body.uid
+        admin.database()
+            .ref('/moderators/' + uid)
+            .once('value')
+            .then((snap) => {
+                var mod = snap.val();
+                if (mod) {
+                    feedback.approved = true;
+                    feedback.submitted = true;
+                    doSave(feedback);
+                }
+            });
+    });
+}); 

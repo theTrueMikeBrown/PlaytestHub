@@ -7,4 +7,7 @@
     rules: string[];
     mechanics: string[];
     final: string[];
+    userId: string;
+    gameId: string;
+    id: string;
 }

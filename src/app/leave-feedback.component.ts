@@ -23,11 +23,16 @@ export class LeaveFeedbackComponent implements OnInit {
         rules: ['', '', ''],
         mechanics: ['', '', ''],
         final: ['', '', '', ''],
+        userId: '',
+        gameId: '',
+        id: ''
     };
+    gameName: string = '';
 
     constructor(private router: Router,
         private route: ActivatedRoute,
-        private dbService: DbService) {
+        private dbService: DbService,
+        private loginInfoService: LoginInfoService) {
     }
 
     saveFeedback(): void {
@@ -46,5 +51,24 @@ export class LeaveFeedbackComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        let loginInfo: LoginInfo = this.loginInfoService.getLoginInfo();
+
+        this.dbService.getUserBySecretId(loginInfo.uid).then(userList => {
+            userList.subscribe(user => {
+                if (user[0]) {
+                    this.feedback.userId = user[0].id;
+
+                    this.dbService.getPlaytestByUserId(user[0].id)
+                        .then(playtest => {
+                        playtest.subscribe(playtest => {
+                            if (playtest) {
+                                this.feedback.gameId = playtest.gameId;
+                                this.gameName = playtest.gameName;
+                            }
+                        });
+                    });
+                }
+            });            
+        });
     }
 }

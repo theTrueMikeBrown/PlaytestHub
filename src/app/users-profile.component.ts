@@ -5,6 +5,7 @@ import { FirebaseListObservable } from 'angularfire2/database';
 
 import { LoginInfo } from './loginInfo';
 import { DbService } from './db.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
     selector: 'users-profile',
@@ -14,11 +15,11 @@ import { DbService } from './db.service';
 export class UsersProfileComponent implements OnInit {
     loginInfo: LoginInfo;
     profile: any;
-    playtests: FirebaseListObservable<any[]>;
+    playtest: Observable<any>;
     constructor(private router: Router,
         private route: ActivatedRoute,
         private dbService: DbService,
-        private loginInfoService: LoginInfoService) {}
+        private loginInfoService: LoginInfoService) { }
 
     ngOnInit(): void {
         this.loginInfo = this.loginInfoService.getLoginInfo();
@@ -35,10 +36,9 @@ export class UsersProfileComponent implements OnInit {
                     });
 
                 let result = this.dbService
-                    .getPlaytestsByUserId(id)
-                    .then(p => this.playtests = p);
-
+                    .getPlaytestByUserId(id)
+                    .then(p => this.playtest = p);
                 return result;
-            }).subscribe(g => { });        
+            }).subscribe(g => { });
     }
 }
