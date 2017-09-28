@@ -53,22 +53,22 @@ export class LeaveFeedbackComponent implements OnInit {
     ngOnInit(): void {
         let loginInfo: LoginInfo = this.loginInfoService.getLoginInfo();
 
-        this.dbService.getUserBySecretId(loginInfo.uid).then(userList => {
-            userList.subscribe(user => {
-                if (user[0]) {
-                    this.feedback.userId = user[0].id;
+        this.dbService.getUserBySecretId(loginInfo.uid).then(u => {
+            u.subscribe(user => {
+                if (user) {
+                    this.feedback.userId = user.id;
 
-                    this.dbService.getPlaytestByUserId(user[0].id)
+                    this.dbService.getPlaytestByUserId(user.id)
                         .then(playtest => {
-                        playtest.subscribe(playtest => {
-                            if (playtest) {
-                                this.feedback.gameId = playtest.gameId;
-                                this.gameName = playtest.gameName;
-                            }
+                            playtest.subscribe(playtest => {
+                                if (playtest) {
+                                    this.feedback.gameId = playtest.gameId;
+                                    this.gameName = playtest.gameName;
+                                }
+                            });
                         });
-                    });
                 }
-            });            
+            });
         });
     }
 }

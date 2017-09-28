@@ -23,7 +23,7 @@ export class DbService {
     constructor(private db: AngularFireDatabase,
         private http: Http) { }
 
-    getGame(key: string): Promise<any> {
+    getGame(key: string): Promise<FirebaseObjectObservable<any>> {
         let game = this.db.object('/games/' + key);
         return Promise.resolve(game);
     }
@@ -53,29 +53,6 @@ export class DbService {
                 });
             });
         return Promise.resolve(subject);
-            
-        //var itemsList =
-        //    this.db.list('/playtests', {
-        //        query: {
-        //            orderByChild: 'id',
-        //            equalTo: id
-        //        }
-        //    })
-        //        .map((array) => {
-        //            return array.map((item) => {
-        //                item.dateString = new Date(item.started).toDateString();
-        //                item.gameName = "loading...";
-
-        //                var gamePromise = this.getGame(item.gameId);
-        //                gamePromise.then(g => {
-        //                    g.subscribe(game => {
-        //                        item.gameName = game.name;
-        //                    });
-        //                });
-        //                return item;
-        //            });
-        //        }) as FirebaseListObservable<any[]>;
-        //return Promise.resolve(itemsList);
     }
 
     getGamesByUser(id: string): Promise<FirebaseListObservable<any[]>> {
@@ -116,21 +93,27 @@ export class DbService {
     }
 
 
-    getUser(key: string): Promise<any> {
+    getUser(key: string): Promise<FirebaseObjectObservable<any>> {
         let user: FirebaseObjectObservable<any> = this.db.object('/users/' + key);
         return Promise.resolve(user);
     }
 
-    getUserBySecretId(key: string): Promise<FirebaseListObservable<any>> {
+    getUserBySecretId(key: string): Promise<Observable<any>> {
+        let subject: Subject<any> = new Subject;
         let list = this.db
             .list("/users/", {
                 query: {
                     orderByChild: "uid",
                     equalTo: key
                 }
+            })
+            .subscribe(list => {
+                if (list && list[0]) {
+                    subject.next(list[0]);
+                }
             });
 
-        return Promise.resolve(list);
+        return Promise.resolve(subject);
     }
 
     saveUser(loginInfo: LoginInfo) {
