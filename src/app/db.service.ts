@@ -18,7 +18,16 @@ export class DbService {
     readonly saveUserUrl = "https://us-central1-playtesthub.cloudfunctions.net/saveUser";
     readonly saveFeedbackUrl = "https://us-central1-playtesthub.cloudfunctions.net/saveFeedback";
     readonly submitFeedbackUrl = "https://us-central1-playtesthub.cloudfunctions.net/submitFeedback";
-    readonly approveFeedbackUrl = "https://us-central1-playtesthub.cloudfunctions.net/approvesFeedback";
+    readonly approveFeedbackUrl = "https://us-central1-playtesthub.cloudfunctions.net/approveFeedback";
+
+    //Project Console: https://console.firebase.google.com/project/playtesthub/overview
+    //Function URL (saveUser): https://us-central1-playtesthub.cloudfunctions.net/saveUser
+    //Function URL (addGame): https://us-central1-playtesthub.cloudfunctions.net/addGame
+    //Function URL (addPlaytest): https://us-central1-playtesthub.cloudfunctions.net/addPlaytest
+    //Function URL (updateGame): https://us-central1-playtesthub.cloudfunctions.net/updateGame
+    //Function URL (saveFeedback): https://us-central1-playtesthub.cloudfunctions.net/saveFeedback
+    //Function URL (submitFeedback): https://us-central1-playtesthub.cloudfunctions.net/submitFeedback
+    //Function URL (approveFeedback): https://us-central1-playtesthub.cloudfunctions.net/approveFeedback
 
     constructor(private db: AngularFireDatabase,
         private http: Http) { }

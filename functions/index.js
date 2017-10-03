@@ -125,7 +125,7 @@ exports.updateGame = functions.https.onRequest((req, res) => {
     });
 });
 
-function doSave(feedback) {
+function doSave(feedback, res) {
     if (!feedback.id) {
         admin.database()
             .ref('/feedback')
@@ -153,7 +153,7 @@ exports.saveFeedback = functions.https.onRequest((req, res) => {
         const feedback = req.body;
         feedback.approved = false;
         feedback.submitted = false;
-        doSave(feedback);
+        doSave(feedback, res);
     });
 });
 
@@ -162,7 +162,7 @@ exports.submitFeedback = functions.https.onRequest((req, res) => {
         const feedback = req.body;
         feedback.approved = false;
         feedback.submitted = true;
-        doSave(feedback);
+        doSave(feedback, res);
     });
 });
 
@@ -178,7 +178,7 @@ exports.approveFeedback = functions.https.onRequest((req, res) => {
                 if (mod) {
                     feedback.approved = true;
                     feedback.submitted = true;
-                    doSave(feedback);
+                    doSave(feedback, res);
                 }
             });
     });

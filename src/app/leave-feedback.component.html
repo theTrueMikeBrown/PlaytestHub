@@ -2,6 +2,12 @@
   <h2>Feedback</h2>
   <h4 *ngIf="gameName">for {{gameName}}</h4>
 
+  <div class="upperLeft">
+    <a class="action-button" routerLink="/games">
+      <span class="glyphicon glyphicon-home"></span>
+    </a>
+  </div>
+
   <h3>Feelings</h3>
   <ul>
     <li>What was the most fun part of the game?<br /><textarea [(ngModel)]="feedback.feelings[0]"></textarea></li>
@@ -74,8 +80,13 @@
   </ul>
 
   <div class="lowerRightBottom">
-    <a class="action-button" (click)="saveGame()">
+    <a class="action-button" (click)="saveFeedback()">
       <span class="glyphicon glyphicon-floppy-disk"></span>
+    </a>
+  </div>
+  <div class="lowerRightBottom">
+    <a class="action-button" (click)="submitFeedback()">
+      <span class="glyphicon glyphicon-send"></span>
     </a>
   </div>
 </div>

@@ -47,7 +47,9 @@ export class LeaveFeedbackComponent implements OnInit {
             };
             this.router.navigate(['/games'], navigationExtras);
         }
-        alert("Errors: " + errors.join(", "));
+        else {
+            alert("Errors: " + errors.join(", "));
+        }
     }
 
     ngOnInit(): void {
