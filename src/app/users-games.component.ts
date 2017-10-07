@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras, ActivatedRoute, ParamMap } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
 import { LoginInfoService } from './loginInfo.service';
-import { FirebaseListObservable } from 'angularfire2/database';
 
 import { Game } from './game';
 import { LoginInfo } from './loginInfo';
@@ -13,7 +13,7 @@ import { DbService } from './db.service';
     styleUrls: ['./users-games.styles.css']
 })
 export class UsersGamesComponent implements OnInit {
-    games: FirebaseListObservable<any[]>;
+    games: Observable<Game[]>;
     loginInfo: LoginInfo;
 
     constructor(private dbService: DbService,

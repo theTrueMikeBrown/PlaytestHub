@@ -2,7 +2,6 @@
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Router, ActivatedRoute  } from '@angular/router';
-import { FirebaseListObservable } from 'angularfire2/database';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
@@ -20,7 +19,7 @@ import { LoginInfo } from './loginInfo';
     providers: [DbService]
 })
 export class GamesListComponent {
-    games: FirebaseListObservable<any[]>;
+    games: Observable<Game[]>;
     message: Observable<string>;
     loginInfo: LoginInfo;
 
@@ -37,7 +36,9 @@ export class GamesListComponent {
             .map(params => params.get('message'))
         this.loginInfo = this.loginInfoService.getLoginInfo();
 
-        this.dbService.getGames().then(g => this.games = g)
+        this.dbService.getGames().then(g => {
+            this.games = g;
+        })
     }
 
     gotoDetail(id: number): void {

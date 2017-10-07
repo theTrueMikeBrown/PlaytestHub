@@ -28,7 +28,7 @@ export class GameDetailComponent implements OnInit {
     playTestGame(): void {
         this.dbService.addPlaytest(
             {
-                gameId: this.game.$key,
+                gameId: this.game.id,
                 id: this.loginInfo.id,
                 started: 0,
                 gameName: this.game.name
@@ -36,14 +36,14 @@ export class GameDetailComponent implements OnInit {
     }
 
     deleteGame(): void {
-        this.game.inactive = true;
-        this.game.id = this.game.$key;
+        this.game.active = false;
+        this.game.id = this.game.id;
         this.dbService.updateGame(this.game);
     }
 
     undeleteGame(): void {
-        this.game.inactive = false;
-        this.game.id = this.game.$key;
+        this.game.active = true;
+        this.game.id = this.game.id;
         this.dbService.updateGame(this.game);
     }
 

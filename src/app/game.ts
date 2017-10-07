@@ -12,5 +12,5 @@
     rulesUrl: string;
     pnpUrl: string;
     priority: number;
-    inactive: boolean;
+    active: boolean;
 }

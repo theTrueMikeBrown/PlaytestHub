@@ -16,7 +16,7 @@
         </a>
       </li>
       <li *ngIf="loginInfo.id === game.owner" class="upperRight-buttons__item">
-        <a routerLink="/games/{{game.$key}}/edit" class="upperRight-buttons__link" data-tooltip="Edit">
+        <a routerLink="/games/{{game.id}}/edit" class="upperRight-buttons__link" data-tooltip="Edit">
           <span class="glyphicon glyphicon-edit"></span>
         </a>
       </li>

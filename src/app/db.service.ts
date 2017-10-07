@@ -1,11 +1,13 @@
 ﻿import { Injectable } from '@angular/core';
-import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import "rxjs/add/operator/map";
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { Http } from '@angular/http';
 
 import { Game } from './game';
+import { User } from './user';
 import { Playtest } from './playtest';
 import { LoginInfo } from './loginInfo';
 import { Feedback } from './feedback';
@@ -19,59 +21,32 @@ export class DbService {
     readonly saveFeedbackUrl = "https://us-central1-playtesthub.cloudfunctions.net/saveFeedback";
     readonly submitFeedbackUrl = "https://us-central1-playtesthub.cloudfunctions.net/submitFeedback";
     readonly approveFeedbackUrl = "https://us-central1-playtesthub.cloudfunctions.net/approveFeedback";
-
-    //Project Console: https://console.firebase.google.com/project/playtesthub/overview
-    //Function URL (saveUser): https://us-central1-playtesthub.cloudfunctions.net/saveUser
-    //Function URL (addGame): https://us-central1-playtesthub.cloudfunctions.net/addGame
-    //Function URL (addPlaytest): https://us-central1-playtesthub.cloudfunctions.net/addPlaytest
-    //Function URL (updateGame): https://us-central1-playtesthub.cloudfunctions.net/updateGame
-    //Function URL (saveFeedback): https://us-central1-playtesthub.cloudfunctions.net/saveFeedback
-    //Function URL (submitFeedback): https://us-central1-playtesthub.cloudfunctions.net/submitFeedback
-    //Function URL (approveFeedback): https://us-central1-playtesthub.cloudfunctions.net/approveFeedback
-
-    constructor(private db: AngularFireDatabase,
+    
+    constructor(private db: AngularFirestore,
         private http: Http) { }
 
-    getGame(key: string): Promise<FirebaseObjectObservable<any>> {
-        let game = this.db.object('/games/' + key);
-        return Promise.resolve(game);
+    getGame(key: string): Promise<Observable<Game>> {
+        let game = this.db.doc<Game>('games/' + key);
+        return Promise.resolve(game.valueChanges());
     }
 
-    getGames(): Promise<FirebaseListObservable<any[]>> {
-        var itemsList = this.db.list('/games', {
-            query: {
-                orderByChild: 'priority',
-                limitToLast: 10
-            }
-        })
-            .map((array) => array.filter(i => !i.inactive).reverse()) as FirebaseListObservable<any[]>;
-        return Promise.resolve(itemsList);
+    getGames(): Promise<Observable<Game[]>> {
+        let itemsList = this.db.collection<Game>('games', ref =>
+            ref.where('active', '==', true)
+               .orderBy('priority', 'desc')
+               .limit(10));
+        return Promise.resolve(itemsList.valueChanges());
     }
 
-    getPlaytestByUserId(id: string): Promise<Observable<any>> {
-        let subject: Subject<any> = new Subject;
-        var item = this.db.object('/playtests/' + id)
-            .subscribe(item => {
-                item.dateString = new Date(item.started).toDateString();                
-                var gamePromise = this.getGame(item.gameId);
-                gamePromise.then(g => {
-                    g.subscribe(game => {
-                        item.gameName = game.name;
-                        subject.next(item);
-                    });
-                });
-            });
-        return Promise.resolve(subject);
+    getPlaytestByUserId(id: string): Promise<Observable<Playtest>> {
+        let playtest = this.db.doc<Playtest>('playtests/' + id);
+        return Promise.resolve(playtest.valueChanges());
     }
 
-    getGamesByUser(id: string): Promise<FirebaseListObservable<any[]>> {
-        let itemsList = this.db.list('/games', {
-            query: {
-                orderByChild: 'owner',
-                equalTo: id
-            }
-        }).map((array) => array.reverse()) as FirebaseListObservable<any[]>;
-        return Promise.resolve(itemsList);
+    getGamesByUser(id: string): Promise<Observable<Game[]>> {
+        let itemsList = this.db.collection<Game>('games', ref =>
+            ref.where('owner', '==', id));
+        return Promise.resolve(itemsList.valueChanges());
     }
 
     addPlaytest(playtest: Playtest) {
@@ -102,26 +77,25 @@ export class DbService {
     }
 
 
-    getUser(key: string): Promise<FirebaseObjectObservable<any>> {
-        let user: FirebaseObjectObservable<any> = this.db.object('/users/' + key);
+    getUser(key: string): Promise<Observable<User>> {
+        let user : Observable<User> = this.db.doc<User>('users/' + key).valueChanges();
         return Promise.resolve(user);
     }
 
-    getUserBySecretId(key: string): Promise<Observable<any>> {
-        let subject: Subject<any> = new Subject;
+    getUserBySecretId(key: string): Promise<Observable<User>> {
+        let subject: Subject<User> = new Subject;
         let list = this.db
-            .list("/users/", {
-                query: {
-                    orderByChild: "uid",
-                    equalTo: key
-                }
-            })
+            .collection<User>("users", ref =>
+                ref.where('uid', '==', key))
+            .valueChanges()
             .subscribe(list => {
                 if (list && list[0]) {
                     subject.next(list[0]);
                 }
+                else {
+                    subject.next(null);
+                }
             });
-
         return Promise.resolve(subject);
     }
 

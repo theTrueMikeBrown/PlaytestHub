@@ -29,5 +29,6 @@ export class AddGameComponent implements OnInit {
         this.game.owner = loginInfo.id;
         this.game.ownerName = loginInfo.displayName;
         this.game.priority = 0;
+        this.game.active = true;
     }
 }

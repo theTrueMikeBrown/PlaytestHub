@@ -1,5 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 
 import { LoginInfo } from './loginInfo';
 import { DbService } from './db.service';
@@ -8,7 +8,7 @@ import { DbService } from './db.service';
 export class LoginInfoService {
     loginInfo: LoginInfo;
 
-    constructor(private db: AngularFireDatabase,
+    constructor(private db: AngularFirestore,
         private dbService: DbService) { }
 
     getLoginInfo(): LoginInfo {

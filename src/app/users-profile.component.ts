@@ -1,7 +1,6 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras, ActivatedRoute, ParamMap } from '@angular/router';
 import { LoginInfoService } from './loginInfo.service';
-import { FirebaseListObservable } from 'angularfire2/database';
 
 import { LoginInfo } from './loginInfo';
 import { DbService } from './db.service';
