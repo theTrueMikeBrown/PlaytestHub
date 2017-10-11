@@ -4,4 +4,5 @@
     photoUrl: string;
     uid: string;
     id: string;
+    isModerator: boolean;
 }

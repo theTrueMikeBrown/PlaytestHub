@@ -6,7 +6,8 @@ admin.initializeApp(functions.config().firebase);
 
 exports.saveUser = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
-        const user = req.body;
+        var user = req.body;
+        user.isModerator = false;
         admin.firestore()
             .collection('users')
             .doc(user.id)
@@ -106,9 +107,9 @@ exports.updateGame = functions.https.onRequest((req, res) => {
             .collection('games').doc(game.id).get()
             .then((snap) => {
                 var bigNum = 1000;
+                if (snap.exists) {
+                    var oldGame = snap.data();
 
-                var oldGame = snap.data();
-                if (oldGame) {
                     cleanGame.priority = oldGame.priority;
                     if (game.inactive && !oldGame.inactive) {
                         cleanGame.priority -= bigNum;
@@ -171,13 +172,17 @@ exports.approveFeedback = functions.https.onRequest((req, res) => {
         const feedback = req.body.feedback;
         const uid = req.body.uid
         admin.firestore()
-            .collection('moderators').doc(uid).get()
+            .collection('users')
+            .where("uid", "==", uid)
+            .get()
             .then((snap) => {
-                var mod = snap.data();
-                if (mod) {
-                    feedback.approved = true;
-                    feedback.submitted = true;
-                    doSave(feedback, res);
+                if (snap.size == 1) {
+                    var mod = snap.docs[0].isModerator;
+                    if (mod) {
+                        feedback.approved = true;
+                        feedback.submitted = true;
+                        doSave(feedback, res);
+                    }
                 }
             });
     });

@@ -121,6 +121,13 @@ export class DbService {
             });
     }
 
+    getFeedbackReadyForApproval(): Promise<Observable<Feedback[]>> {
+        let itemsList = this.db.collection<Feedback>('feedback', ref =>
+            ref.where('submitted', '==', true)
+               .where('approved', '==', false));
+        return Promise.resolve(itemsList.valueChanges());
+    }
+
     saveFeedback(feedback: Feedback) {
         this.http.post(this.saveFeedbackUrl, feedback)
             .toPromise()
@@ -144,7 +151,7 @@ export class DbService {
         return errors;
     }
 
-    validate(feedback: Feedback): string[] {
+    private validate(feedback: Feedback): string[] {
         var validateFeedback = (f: Feedback, name: string, length: number) => {
             let array: string[] = f[name];
             if (!array) { return name + " doesn't exist."; }

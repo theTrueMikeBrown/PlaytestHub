@@ -35,7 +35,7 @@ export class GamesListComponent {
             .queryParamMap
             .map(params => params.get('message'))
         this.loginInfo = this.loginInfoService.getLoginInfo();
-
+        
         this.dbService.getGames().then(g => {
             this.games = g;
         })
