@@ -10,4 +10,6 @@
     userId: string;
     gameId: string;
     id: string;
+    approved: boolean;
+    submitted: boolean;
 }

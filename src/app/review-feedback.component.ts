@@ -25,6 +25,7 @@ export class ReviewFeedbackComponent implements OnInit {
 
     approveFeedback(): void {
         //todo:
+        this.feedback.approved = true;
         this.dbService.saveFeedback(this.feedback);
     }
 
@@ -41,27 +42,14 @@ export class ReviewFeedbackComponent implements OnInit {
             alert("Errors: " + errors.join(", "));
         }
     }
-
+        
     ngOnInit(): void {
-        //todo: load feedback
         let loginInfo: LoginInfo = this.loginInfoService.getLoginInfo();
 
-        this.dbService.getUserBySecretId(loginInfo.uid).then(u => {
-            u.subscribe(user => {
-                if (user) {
-                    this.feedback.userId = user.id;
-
-                    this.dbService.getPlaytestByUserId(user.id)
-                        .then(playtest => {
-                            playtest.subscribe(playtest => {
-                                if (playtest) {
-                                    this.feedback.gameId = playtest.gameId;
-                                    this.gameName = playtest.gameName;
-                                }
-                            });
-                        });
-                }
-            });
-        });
+        this.route.paramMap
+            .switchMap((params: ParamMap) => this.dbService.getFeedback(params.get('id')))
+            .subscribe(f => f.subscribe(feedback => {
+                this.feedback = feedback;
+            }));        
     }
 }

@@ -43,4 +43,9 @@ export class GamesListComponent {
     gotoDetail(id: number): void {
         this.router.navigate(['/detail', id]);
     }
+
+    moderate(): void {
+        let id: string = "VVmmaaus3xceRiWgLZbT";
+        this.router.navigate(['/reviewFeedback', id]);
+    }
 }

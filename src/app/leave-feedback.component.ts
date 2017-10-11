@@ -24,7 +24,9 @@ export class LeaveFeedbackComponent implements OnInit {
         final: ['', '', '', ''],
         userId: '',
         gameId: '',
-        id: ''
+        id: '',
+        approved: false,
+        submitted: false
     };
     gameName: string = '';
 
@@ -54,6 +56,7 @@ export class LeaveFeedbackComponent implements OnInit {
     ngOnInit(): void {
         let loginInfo: LoginInfo = this.loginInfoService.getLoginInfo();
 
+        //TODO: populate with already written feedback if trying again.
         this.dbService.getUserBySecretId(loginInfo.uid).then(u => {
             u.subscribe(user => {
                 if (user) {

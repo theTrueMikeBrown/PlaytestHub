@@ -13,7 +13,6 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 
 import { GamesListComponent } from './games-list.component';
-import { FeedbackListComponent } from './feedback-list.component';
 import { LeaveFeedbackComponent } from './leave-feedback.component';
 import { ReviewFeedbackComponent } from './review-feedback.component';
 import { GameStatsComponent } from './game-stats.component';
@@ -38,7 +37,6 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
     declarations: [
         AppComponent,
         GamesListComponent,
-        FeedbackListComponent,
         GameStatsComponent,
         GameDetailComponent,
         AddGameComponent,
@@ -93,12 +91,8 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
                 component: LeaveFeedbackComponent
             },
             {
-                path: 'reviewFeedback',
+                path: 'reviewFeedback/:id',
                 component: ReviewFeedbackComponent
-            },
-            {
-                path: 'feedbackList',
-                component: FeedbackListComponent
             },
         ])
     ],

@@ -1,50 +1,12 @@
 ﻿<div id="list-component" *ngIf="loginInfo">
-  <div class="upperRight">
-    <span class="action-button">
-      <span class="glyphicon glyphicon-menu-hamburger"></span>
-    </span>
-    <ul class="upperRight-buttons">
-      <li class="upperRight-buttons__item">
-        <a routerLink="/addgame" class="upperRight-buttons__link" data-tooltip="Add new game">
-          <span class="glyphicon glyphicon-plus"></span>
-        </a>
-      </li>
-      <li class="upperRight-buttons__item">
-        <a routerLink="/user/{{loginInfo.id}}/games" class="upperRight-buttons__link" data-tooltip="View my games">
-          <span class="glyphicon glyphicon-th-large"></span>
-        </a>
-      </li>
-      <li class="upperRight-buttons__item">
-        <a routerLink="/user/{{loginInfo.id}}/profile" class="upperRight-buttons__link" data-tooltip="View my profile">
-          <span class="glyphicon glyphicon-user"></span>
-        </a>
-      </li>
-      <li class="upperRight-buttons__item">
-        <a routerLink="/leaveFeedback" class="upperRight-buttons__link" data-tooltip="Leave Feedback">
-          <span class="glyphicon glyphicon-pencil"></span>
-        </a>
-      </li>
-      <li class="upperRight-buttons__item">
-        <a routerLink="/viewFeedbackToReview" class="upperRight-buttons__link" data-tooltip="View Feedback to Review">
-          <span class="glyphicon glyphicon-ok-circle"></span>
-        </a>
-      </li>
-      <li class="upperRight-buttons__item">
-        <a routerLink="/games"
-           (click)="logout()"
-           class="upperRight-buttons__link"
-           data-tooltip="Log out">
-          <span class="glyphicon glyphicon-log-out"></span>
-        </a>
-      </li>
-    </ul>
+  <div class="upperLeft">
+    <a class="action-button" routerLink="/games">
+      <span class="glyphicon glyphicon-home"></span>
+    </a>
   </div>
-
-  <div *ngIf="message" class="message">{{message | async}}</div>
-
-  <h4>Games to playtest</h4>
-  <div *ngFor="let game of games | async"
-       (click)="gotoDetail(game.id)" class="search-result">
-    <game-stats [game]="game"></game-stats>
+  <h4>Feedback Awaiting Approval</h4>
+  <div *ngFor="let feedback of feedback | async"
+       (click)="gotoDetail(feedback.id)" class="search-result">
+    <feedback-stats [feedback]="feedback"></feedback-stats>
   </div>
 </div>

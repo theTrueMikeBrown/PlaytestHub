@@ -30,6 +30,11 @@ export class DbService {
         return Promise.resolve(game.valueChanges());
     }
 
+    getFeedback(key: string): Promise<Observable<Feedback>> {
+        let feedback = this.db.doc<Feedback>('feedback/' + key);
+        return Promise.resolve(feedback.valueChanges());
+    }
+
     getGames(): Promise<Observable<Game[]>> {
         let itemsList = this.db.collection<Game>('games', ref =>
             ref.where('active', '==', true)
