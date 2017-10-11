@@ -58,10 +58,9 @@ export class LeaveFeedbackComponent implements OnInit {
             u.subscribe(user => {
                 if (user) {
                     this.feedback.userId = user.id;
-
                     this.dbService.getPlaytestByUserId(user.id)
-                        .then(playtest => {
-                            playtest.subscribe(playtest => {
+                        .then(p => {
+                            p.subscribe(playtest => {
                                 if (playtest) {
                                     this.feedback.gameId = playtest.gameId;
                                     this.gameName = playtest.gameName;

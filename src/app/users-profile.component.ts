@@ -42,12 +42,7 @@ export class UsersProfileComponent implements OnInit {
                     .then(p => {
                         p.subscribe(playtest => {
                             playtest.dateString = new Date(playtest.started).toDateString();
-                            this.dbService.getGame(playtest.gameId).then(g => {
-                                g.subscribe(game => {
-                                    playtest.gameName = game.name;
-                                    this.playtest = playtest;
-                                });
-                            });
+                            this.playtest = playtest;
                         });
                     });
                 return result;
