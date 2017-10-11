@@ -3,4 +3,5 @@
     id: string;
     started: number;
     gameName: string;
+    dateString: string;
 }

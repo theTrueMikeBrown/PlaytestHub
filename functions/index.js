@@ -48,10 +48,9 @@ exports.addPlaytest = functions.https.onRequest((req, res) => {
                     //make sure that the old playtest (if one exists) is propery dealt with
                     db.collection('playtests').doc(id).get()
                         .then((s) => {
-                            var playTest = s.data();
-
                             //if an old one exists
-                            if (playTest && playTest.gameId) {
+                            if (s.exists) {
+                                var playTest = s.data();
                                 //if the old one was for a different game
                                 if (playTest.gameId != gameId) {
                                     //Fix the old game's priority
@@ -63,15 +62,20 @@ exports.addPlaytest = functions.https.onRequest((req, res) => {
                                 }
                                 else {
                                     //you can't reset your playtest duration this way
-                                    return;
                                     res.status(406).send("Already playtesting that game.");
+                                    return;
                                 }
                             }
 
                             //record the playtest, and reduce the score.
                             var date = new Date().valueOf();
                             db.collection('games').doc(gameId).update({ priority: obj.priority - 1 });
-                            db.collection('playtests').doc(id).set({ gameId: gameId, id: id, started: date });
+
+                            var pt = { gameId: gameId, id: id, started: date };
+                            console.log('saving playtest: { gameId: ' + gameId + ', id: ' + id + ', started: ' + date + ' }');
+                            db.collection('playtests').doc(id).set(pt);
+                            console.log('done');
+
                             res.status(200).send("success");
                         });
                 }
@@ -86,6 +90,7 @@ exports.updateGame = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         const game = req.body;
         var cleanGame = {
+            id: game.id,
             name: game.name,
             minPlayerCount: game.minPlayerCount,
             maxPlayerCount: game.maxPlayerCount,
@@ -95,7 +100,8 @@ exports.updateGame = functions.https.onRequest((req, res) => {
             description: game.description,
             rulesUrl: game.rulesUrl,
             pnpUrl: game.pnpUrl,
-            inactive: game.inactive
+            priority: 0,
+            active: game.active
         };
 
         admin.firestore()

@@ -31,7 +31,8 @@ export class GameDetailComponent implements OnInit {
                 gameId: this.game.id,
                 id: this.loginInfo.id,
                 started: 0,
-                gameName: this.game.name
+                gameName: this.game.name,
+                dateString: null
             });
     }
 

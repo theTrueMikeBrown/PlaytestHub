@@ -15,8 +15,8 @@
     </div>
     <div *ngIf="playtest" class="section">
       <span>Playtesting:</span>
-      <a href="/detail/{{(playtest | async)?.gameId}}">{{(playtest | async)?.gameName}}</a>,
-      <span> since {{(playtest | async)?.dateString}}</span>
+      <a href="/detail/{{playtest.gameId}}">{{playtest.gameName}}</a>,
+      <span> since {{playtest.dateString}}</span>
       <div class="indent" *ngIf="profile.id===loginInfo.id">
         <a routerLink="/leaveFeedback">
           <span class="glyphicon glyphicon glyphicon-pencil"></span>

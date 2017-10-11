@@ -21,7 +21,7 @@ export class DbService {
     readonly saveFeedbackUrl = "https://us-central1-playtesthub.cloudfunctions.net/saveFeedback";
     readonly submitFeedbackUrl = "https://us-central1-playtesthub.cloudfunctions.net/submitFeedback";
     readonly approveFeedbackUrl = "https://us-central1-playtesthub.cloudfunctions.net/approveFeedback";
-    
+
     constructor(private db: AngularFirestore,
         private http: Http) { }
 
@@ -33,8 +33,8 @@ export class DbService {
     getGames(): Promise<Observable<Game[]>> {
         let itemsList = this.db.collection<Game>('games', ref =>
             ref.where('active', '==', true)
-               .orderBy('priority', 'desc')
-               .limit(10));
+                .orderBy('priority', 'desc')
+                .limit(10));
         return Promise.resolve(itemsList.valueChanges());
     }
 
@@ -58,7 +58,17 @@ export class DbService {
             });
     }
 
+    private appendHttp(url: string): string {
+        if (!/^https?:\/\//i.test(url)) {
+            url = 'http://' + url;
+        }
+        return url;
+    };
+
     addGame(game: Game) {
+        game.pnpUrl = this.appendHttp(game.pnpUrl);
+        game.rulesUrl = this.appendHttp(game.rulesUrl);
+
         this.http.post(this.addGameUrl, game)
             .toPromise()
             .then(response => response)
@@ -68,6 +78,9 @@ export class DbService {
     }
 
     updateGame(game: Game) {
+        game.pnpUrl = this.appendHttp(game.pnpUrl);
+        game.rulesUrl = this.appendHttp(game.rulesUrl);
+
         this.http.post(this.updateGameUrl, game)
             .toPromise()
             .then(response => response)
@@ -78,7 +91,7 @@ export class DbService {
 
 
     getUser(key: string): Promise<Observable<User>> {
-        let user : Observable<User> = this.db.doc<User>('users/' + key).valueChanges();
+        let user: Observable<User> = this.db.doc<User>('users/' + key).valueChanges();
         return Promise.resolve(user);
     }
 

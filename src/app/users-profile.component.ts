@@ -6,6 +6,9 @@ import { LoginInfo } from './loginInfo';
 import { DbService } from './db.service';
 import { Observable } from 'rxjs/Observable';
 
+import { User } from './user';
+import { Playtest } from './playtest';
+
 @Component({
     selector: 'users-profile',
     templateUrl: './users-profile.component.html',
@@ -13,8 +16,8 @@ import { Observable } from 'rxjs/Observable';
 })
 export class UsersProfileComponent implements OnInit {
     loginInfo: LoginInfo;
-    profile: any;
-    playtest: Observable<any>;
+    profile: User;
+    playtest: Playtest;
     constructor(private router: Router,
         private route: ActivatedRoute,
         private dbService: DbService,
@@ -36,7 +39,17 @@ export class UsersProfileComponent implements OnInit {
 
                 let result = this.dbService
                     .getPlaytestByUserId(id)
-                    .then(p => this.playtest = p);
+                    .then(p => {
+                        p.subscribe(playtest => {
+                            playtest.dateString = new Date(playtest.started).toDateString();
+                            this.dbService.getGame(playtest.gameId).then(g => {
+                                g.subscribe(game => {
+                                    playtest.gameName = game.name;
+                                    this.playtest = playtest;
+                                });
+                            });
+                        });
+                    });
                 return result;
             }).subscribe(g => { });
     }
