@@ -4,4 +4,5 @@
     email: string;
     photoURL: string;
     id: string;
+    isModerator: boolean;
 }

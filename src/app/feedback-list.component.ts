@@ -13,12 +13,12 @@ import { Game } from './game';
 import { LoginInfo } from './loginInfo';
 
 @Component({
-    selector: 'games-list',
-    templateUrl: './games-list.component.html',
-    styleUrls: ['./games-list.styles.css'],
+    selector: 'feedback-list',
+    templateUrl: './feedback-list.component.html',
+    styleUrls: ['./feedback-list.styles.css'],
     providers: [DbService]
 })
-export class GamesListComponent {
+export class FeedbackListComponent {
     games: Observable<Game[]>;
     message: Observable<string>;
     loginInfo: LoginInfo;

@@ -23,6 +23,7 @@ export class LoginInfoService {
             u.subscribe(user => {
                 if (user) {
                     this.loginInfo.id = user.id;
+                    this.loginInfo.isModerator = user.isModerator;
                 }
                 else {
                     var uuidv4 = (): string => {

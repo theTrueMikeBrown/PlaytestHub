@@ -12,13 +12,13 @@
   <ul>
     <li>What was the most fun part of the game?<br /><textarea [readonly]="true" [ngModel]="feedback.feelings[0]"></textarea></li>
     <li>What was the worst part of the game?<br /><textarea [readonly]="true" [ngModel]="feedback.feelings[1]"></textarea></li>
-    <li>Would you want to play the game again?<br /><select [readonly]="true" [ngModel]="feedback.feelings[2]"><option>Yes</option><option>No</option></select></li>
+    <li>Would you want to play the game again?<br /><select [disabled]="true" [ngModel]="feedback.feelings[2]"><option>Yes</option><option>No</option></select></li>
   </ul>
 
   <h3>Categorization</h3>
   <ul>
     <li>What category would you put the game in?<br /><input [readonly]="true" [ngModel]="feedback.categorization[0]" /></li>
-    <li>How do you feel toward that category of game?<br /><select [readonly]="true" [ngModel]="feedback.categorization[1]"><option>I like it</option><option>I am ambivalent toward it</option><option>I dislike it</option></select></li>
+    <li>How do you feel toward that category of game?<br /><select [disabled]="true" [ngModel]="feedback.categorization[1]"><option>I like it</option><option>I am ambivalent toward it</option><option>I dislike it</option></select></li>
     <li>List some similar games you have played.<br /><textarea [readonly]="true" [ngModel]="feedback.categorization[2]"></textarea></li>
   </ul>
 
@@ -73,7 +73,7 @@
           <b>1</b> - Not even a game. I will never play it. Clearly broken.
         </span>
       </span><br />
-      <select [readonly]="true" [ngModel]="feedback.final[0]"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select>
+      <select [disabled]="true" [ngModel]="feedback.final[0]"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select>
     </li>
     <li>What one change would you make to the game?<br /><textarea [readonly]="true" [ngModel]="feedback.final[1]"></textarea></li>
     <li>Any extra feedback that you would like to give?<br /><textarea [readonly]="true" [ngModel]="feedback.final[2]"></textarea></li>
