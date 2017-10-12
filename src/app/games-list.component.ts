@@ -45,6 +45,7 @@ export class GamesListComponent {
     }
 
     moderate(): void {
+
         let id: string = "VVmmaaus3xceRiWgLZbT";
         this.router.navigate(['/reviewFeedback', id]);
     }

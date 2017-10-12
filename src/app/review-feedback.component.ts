@@ -24,23 +24,28 @@ export class ReviewFeedbackComponent implements OnInit {
     }
 
     approveFeedback(): void {
-        //todo:
         this.feedback.approved = true;
         this.dbService.saveFeedback(this.feedback);
+
+        //TODO: make it give points to the leaver, and make the leaver's playtest disappear.
+
+        let navigationExtras: NavigationExtras = {
+            queryParams: { 'message': 'Feedback Approved!' },
+        };
+        this.router.navigate(['/games'], navigationExtras);
     }
 
     rejectFeedback(): void {
-        //todo:
-        let errors: string[] = this.dbService.submitFeedback(this.feedback);
-        if (errors.length === 0) {
-            let navigationExtras: NavigationExtras = {
-                queryParams: { 'message': 'Game Submitted Successfully!' },
-            };
-            this.router.navigate(['/games'], navigationExtras);
-        }
-        else {
-            alert("Errors: " + errors.join(", "));
-        }
+        this.feedback.approved = true;
+        this.feedback.submitted = false;
+        this.dbService.saveFeedback(this.feedback);
+
+        //todo: make it send a message to the feedback leaver telling them why it was rejected (this.rejectReason).
+
+        let navigationExtras: NavigationExtras = {
+            queryParams: { 'message': 'Feedback Approved!' },
+        };
+        this.router.navigate(['/games'], navigationExtras);
     }
         
     ngOnInit(): void {
