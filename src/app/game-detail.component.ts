@@ -19,6 +19,7 @@ export class GameDetailComponent implements OnInit {
     game: Game;
     owner: User;
     loginInfo: LoginInfo;
+    alreadyPlaytesting: boolean = true;
 
     constructor(
         private dbService: DbService,
@@ -68,6 +69,16 @@ export class GameDetailComponent implements OnInit {
             .switchMap((params: ParamMap) => this.dbService.getGame(params.get('id')))
             .subscribe(g => g.subscribe(game => {
                 this.game = game;
+                this.dbService.getPlaytestByUserId(this.loginInfo.id).then(p => {
+                    p.subscribe((playtest) => {
+                        if (playtest && game.id === playtest.gameId) {
+                            this.alreadyPlaytesting = true;
+                        }
+                        else {
+                            this.alreadyPlaytesting = false;
+                        }
+                    });
+                });
             }));
     }
 }

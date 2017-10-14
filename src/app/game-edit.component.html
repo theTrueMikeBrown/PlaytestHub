@@ -5,28 +5,30 @@
     </a>
   </div>
 
+  <div *ngIf="message" [ngClass]="messageActive">{{message | async}}</div>
+
   <div class="left">
-    <div>Title: <input [(ngModel)]="game.name"></div>
-    <div>Min player count: <input type="number" [(ngModel)]="game.minPlayerCount"></div>
-    <div>Max player count: <input type="number" [(ngModel)]="game.maxPlayerCount"></div>
-    <div>Min time in minutes: <input type="number" [(ngModel)]="game.minTimeInMinutes"></div>
-    <div>Max time in minutes: <input type="number" [(ngModel)]="game.maxTimeInMinutes"></div>
+    <div>Title: <input [(ngModel)]="game.name" (ngModelChange)="onChange($event)"></div>
+    <div>Min player count: <input type="number" [(ngModel)]="game.minPlayerCount" (ngModelChange)="onChange($event)"></div>
+    <div>Max player count: <input type="number" [(ngModel)]="game.maxPlayerCount" (ngModelChange)="onChange($event)"></div>
+    <div>Min time in minutes: <input type="number" [(ngModel)]="game.minTimeInMinutes" (ngModelChange)="onChange($event)"></div>
+    <div>Max time in minutes: <input type="number" [(ngModel)]="game.maxTimeInMinutes" (ngModelChange)="onChange($event)"></div>
     <div>
       <h4>Description:</h4>
-      <textarea [(ngModel)]="game.description"></textarea>
+      <textarea [(ngModel)]="game.description" (ngModelChange)="onChange($event)"></textarea>
     </div>
     <div>
       <h4>Components:</h4>
-      <textarea [(ngModel)]="game.components"></textarea>
+      <textarea [(ngModel)]="game.components" (ngModelChange)="onChange($event)"></textarea>
     </div>
     <div>
       <h4>Files:</h4>
       <div class="detailBox">
-        <div>Rules file: <input type="url" [(ngModel)]="game.rulesUrl" /></div>
-        <div>PNP file: <input type="url" [(ngModel)]="game.pnpUrl" /></div>
+        <div>Rules file: <input type="url" [(ngModel)]="game.rulesUrl" (ngModelChange)="onChange($event)" /></div>
+        <div>PNP file: <input type="url" [(ngModel)]="game.pnpUrl" (ngModelChange)="onChange($event)" /></div>
       </div>
     </div>
-    <div>Active: <input type="checkbox" name="isActive" [(ngModel)]="game.active"></div>
+    <div>Active: <input type="checkbox" name="isActive" [(ngModel)]="game.active" (ngModelChange)="onChange($event)"></div>
     <div><h4>Priority: {{game.priority}}</h4></div>
   </div>
   <div class="lowerRightBottom">
