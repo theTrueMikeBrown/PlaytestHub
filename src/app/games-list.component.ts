@@ -22,6 +22,7 @@ export class GamesListComponent {
     games: Observable<Game[]>;
     message: Observable<string>;
     loginInfo: LoginInfo;
+    playtesting: boolean = false;
 
     constructor(
         private dbService: DbService,
@@ -38,6 +39,13 @@ export class GamesListComponent {
         this.dbService.getGames().then(g => {
             this.games = g;
         })
+        this.dbService.getPlaytestByUserId(this.loginInfo.id).then(p => {
+            p.subscribe(playtest => {
+                if (playtest) {
+                    this.playtesting = true;
+                }
+            });
+        });
     }
 
     gotoDetail(id: number): void {
@@ -45,8 +53,7 @@ export class GamesListComponent {
     }
 
     moderate(): void {
-
         let id: string = "VVmmaaus3xceRiWgLZbT";
-        this.router.navigate(['/reviewFeedback', id]);
+        this.router.navigate(['/feedback', id]);
     }
 }

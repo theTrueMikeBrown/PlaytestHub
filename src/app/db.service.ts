@@ -4,7 +4,7 @@ import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection 
 import "rxjs/add/operator/map";
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
-import { Http } from '@angular/http';
+import { Http, Response } from '@angular/http';
 
 import { Game } from './game';
 import { User } from './user';
@@ -54,10 +54,14 @@ export class DbService {
         return Promise.resolve(itemsList.valueChanges());
     }
 
-    addPlaytest(playtest: Playtest) {
+    addPlaytest(playtest: Playtest, successCallback?: (r: Response) => void) {
         this.http.post(this.addPlaytestUrl, playtest)
             .toPromise()
-            .then(response => response)
+            .then(response => {
+                if (successCallback) {
+                    successCallback(response);
+                }
+            })
             .catch((error) => {
                 debugger;
             });
@@ -70,25 +74,33 @@ export class DbService {
         return url;
     };
 
-    addGame(game: Game) {
+    addGame(game: Game, successCallback?: (r: Response) => void) {
         game.pnpUrl = this.appendHttp(game.pnpUrl);
         game.rulesUrl = this.appendHttp(game.rulesUrl);
 
         this.http.post(this.addGameUrl, game)
             .toPromise()
-            .then(response => response)
+            .then(response => {
+                if (successCallback) {
+                    successCallback(response);
+                }
+            })
             .catch((error) => {
                 debugger;
             });
     }
 
-    updateGame(game: Game) {
+    updateGame(game: Game, successCallback?: (r: Response) => void) {
         game.pnpUrl = this.appendHttp(game.pnpUrl);
         game.rulesUrl = this.appendHttp(game.rulesUrl);
 
         this.http.post(this.updateGameUrl, game)
             .toPromise()
-            .then(response => response)
+            .then(response => {
+                if (successCallback) {
+                    successCallback(response);
+                }
+            })
             .catch((error) => {
                 debugger;
             });
@@ -117,10 +129,14 @@ export class DbService {
         return Promise.resolve(subject);
     }
 
-    saveUser(loginInfo: LoginInfo) {
+    saveUser(loginInfo: LoginInfo, successCallback?: (r: Response) => void) {
         this.http.post(this.saveUserUrl, loginInfo)
             .toPromise()
-            .then(response => response)
+            .then(response => {
+                if (successCallback) {
+                    successCallback(response);
+                }
+            })
             .catch((error) => {
                 debugger;
             });
@@ -133,10 +149,14 @@ export class DbService {
         return Promise.resolve(itemsList.valueChanges());
     }
 
-    saveFeedback(feedback: Feedback) {
+    saveFeedback(feedback: Feedback, successCallback?: (r: Response) => void) {
         this.http.post(this.saveFeedbackUrl, feedback)
             .toPromise()
-            .then(response => response)
+            .then(response => {
+                if (successCallback) {
+                    successCallback(response);
+                }
+            })
             .catch((error) => {
                 debugger;
             });
@@ -181,10 +201,14 @@ export class DbService {
         ].filter(n => n);
     }
 
-    approveFeedback(feedback: Feedback, uid: string) {
+    approveFeedback(feedback: Feedback, uid: string, successCallback?: (r: Response) => void) {
         this.http.post(this.approveFeedbackUrl, { feedback: feedback, uid: uid })
             .toPromise()
-            .then(response => response)
+            .then(response => {
+                if (successCallback) {
+                    successCallback(response);
+                }
+            })
             .catch((error) => {
                 debugger;
             });

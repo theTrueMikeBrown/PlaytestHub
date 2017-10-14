@@ -13,21 +13,7 @@ import { Feedback } from './feedback';
     styleUrls: ['./leave-feedback.styles.css']
 })
 export class LeaveFeedbackComponent implements OnInit {
-    feedback: Feedback = {
-        feelings: ['', '', ''],
-        categorization: ['', '', ''],
-        general: ['', ''],
-        length: ['', '', ''],
-        art: ['', ''],
-        rules: ['', '', ''],
-        mechanics: ['', '', ''],
-        final: ['', '', '', ''],
-        userId: '',
-        gameId: '',
-        id: '',
-        approved: false,
-        submitted: false
-    };
+    feedback: Feedback;
     gameName: string = '';
     reviewing: boolean = false;
     editing: boolean = false;
@@ -87,20 +73,6 @@ export class LeaveFeedbackComponent implements OnInit {
             if (p.has('id')) {
                 this.dbService.getFeedback(p.get('id')).then(f => f.subscribe(feedback => {
                     this.feedback = feedback;
-                }));
-            }
-            else {
-                this.dbService.getUserBySecretId(loginInfo.uid).then(u => u.subscribe(user => {
-                    if (user) {
-                        this.feedback.userId = user.id;
-                        this.dbService.getPlaytestByUserId(user.id).then(p => p.subscribe(playtest => {
-                            if (playtest) {
-                                this.feedback.gameId = playtest.gameId;
-                                this.gameName = playtest.gameName;
-                                this.editing = true;
-                            }
-                        }));
-                    }
                 }));
             }
         });

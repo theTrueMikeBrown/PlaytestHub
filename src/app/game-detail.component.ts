@@ -1,12 +1,14 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router, NavigationExtras } from '@angular/router';
 import { LoginInfoService } from './loginInfo.service';
 import { Location } from '@angular/common';
 import 'rxjs/add/operator/switchMap';
 
 import { LoginInfo } from './loginInfo';
 import { Game } from './game';
+import { User } from './user';
 import { DbService } from './db.service';
+import { Feedback } from './feedback';
 
 @Component({
     selector: 'game-detail',
@@ -14,13 +16,14 @@ import { DbService } from './db.service';
     styleUrls: ['./game-detail.styles.css']
 })
 export class GameDetailComponent implements OnInit {
-    game: any;
-    owner: any;
+    game: Game;
+    owner: User;
     loginInfo: LoginInfo;
 
     constructor(
         private dbService: DbService,
         private route: ActivatedRoute,
+        private router: Router,
         private location: Location,
         private loginInfoService: LoginInfoService) {
     }
@@ -33,6 +36,17 @@ export class GameDetailComponent implements OnInit {
                 started: 0,
                 gameName: this.game.name,
                 dateString: null
+            }, () => {
+                this.dbService.saveFeedback({
+                    feelings: ['', '', ''], categorization: ['', '', ''], general: ['', ''], length: ['', '', ''],
+                    art: ['', ''], rules: ['', '', ''], mechanics: ['', '', ''], final: ['', '', '', ''],
+                    userId: this.loginInfo.id, gameId: this.game.id, id: '', approved: false, submitted: false
+                }, () => {
+                    let navigationExtras: NavigationExtras = {
+                        queryParams: { 'message': 'You are now playtesting ' + this.game.name + '.' },
+                    };
+                    this.router.navigate(['/games'], navigationExtras);
+                });
             });
     }
 
@@ -53,7 +67,7 @@ export class GameDetailComponent implements OnInit {
         this.route.paramMap
             .switchMap((params: ParamMap) => this.dbService.getGame(params.get('id')))
             .subscribe(g => g.subscribe(game => {
-                this.game = game;                
+                this.game = game;
             }));
     }
 }
