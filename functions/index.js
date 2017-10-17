@@ -178,10 +178,13 @@ exports.approveFeedback = functions.https.onRequest((req, res) => {
             .then((snap) => {
                 if (snap.size == 1) {
                     var mod = snap.docs[0].isModerator;
-                    if (mod) {
+                    var owner = snap.docs[0].id == feedback.gameId;//TODO: make this get the owner of the game
+                    if (mod) { //TODO: the owner can approve as well.
                         feedback.approved = true;
                         feedback.submitted = true;
                         doSave(feedback, res);
+
+                        //TODO: make the playtesting end, award points, make point loss permanent, etc.
                     }
                 }
             });

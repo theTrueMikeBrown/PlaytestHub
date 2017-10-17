@@ -179,12 +179,16 @@ export class DbService {
             });
     }
 
-    submitFeedback(feedback: Feedback): string[] {
+    submitFeedback(feedback: Feedback, successCallback?: (r: Response) => void): string[] {
         let errors: string[] = this.validate(feedback);
         if (errors.length === 0) {
             this.http.post(this.submitFeedbackUrl, feedback)
                 .toPromise()
-                .then(response => response)
+                .then(response => {
+                    if (successCallback) {
+                        successCallback(response);
+                    }
+                })
                 .catch((error) => {
                     debugger;
                 });
