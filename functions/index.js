@@ -93,7 +93,7 @@ exports.updateGame = functions.https.onRequest((req, res) => {
             name: game.name,
             minPlayerCount: game.minPlayerCount,
             maxPlayerCount: game.maxPlayerCount,
-            minTimeInMinutes: game.maxTimeInMinutes,
+            minTimeInMinutes: game.minTimeInMinutes,
             maxTimeInMinutes: game.maxTimeInMinutes,
             components: game.components,
             description: game.description,

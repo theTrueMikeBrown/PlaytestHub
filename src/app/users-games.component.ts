@@ -14,7 +14,7 @@ import { DbService } from './db.service';
 })
 export class UsersGamesComponent implements OnInit {
     games: Observable<Game[]>;
-    loginInfo: LoginInfo;
+    userName: string;
 
     constructor(private dbService: DbService,
         private router: Router,
@@ -23,14 +23,12 @@ export class UsersGamesComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.loginInfoService.getLoginInfo().then(loginInfo => {
-            this.loginInfo = loginInfo;
+        this.route.paramMap.subscribe((params: ParamMap) => {
+            let id: string = params.get('id');
+            this.dbService.getUser(id).then(u => u.subscribe(user => this.userName = user.displayName));
+            this.dbService.getGamesByUser(id).then(g => this.games = g);
         });
-
-        this.route.paramMap
-            .switchMap((params: ParamMap) => this.dbService.getGamesByUser(params.get('id')))
-            .subscribe(g => this.games = g);
-    }
+      }
 
     gotoDetail(id: number): void {
         this.router.navigate(['/detail', id]);

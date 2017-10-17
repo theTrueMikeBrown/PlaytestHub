@@ -4,7 +4,7 @@
       <span class="glyphicon glyphicon-home"></span>
     </a>
   </div>
-  <h4>{{loginInfo.displayName}}'s Games</h4>
+  <h4>{{userName}}'s Games</h4>
   <div *ngFor="let game of games | async"
        (click)="gotoDetail(game.id)" class="search-result">
     <game-stats [game]="game"></game-stats>
