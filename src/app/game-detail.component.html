@@ -15,6 +15,11 @@
           <span class="glyphicon glyphicon-ok"></span>
         </a>
       </li>
+      <li class="upperRight-buttons__item" *ngIf="alreadyPlaytesting">
+        <a routerLink="/feedback/{{game.id}}" class="upperRight-buttons__link" data-tooltip="Leave Feedback">
+          <span class="glyphicon glyphicon-pencil"></span>
+        </a>
+      </li>
       <li *ngIf="loginInfo.id === game.owner" class="upperRight-buttons__item">
         <a routerLink="/games/{{game.id}}/edit" class="upperRight-buttons__link" data-tooltip="Edit">
           <span class="glyphicon glyphicon-edit"></span>
