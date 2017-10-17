@@ -20,6 +20,7 @@ export class GameDetailComponent implements OnInit {
     owner: User;
     loginInfo: LoginInfo;
     alreadyPlaytesting: boolean = true;
+    feedbackId: string;
 
     constructor(
         private dbService: DbService,
@@ -74,6 +75,11 @@ export class GameDetailComponent implements OnInit {
                         p.subscribe((playtest) => {
                             if (playtest && game.id === playtest.gameId) {
                                 this.alreadyPlaytesting = true;
+                                this.dbService.getUserFeedbackForGame(this.loginInfo.id, game.id).then(f => {
+                                    f.subscribe(feedback => {
+                                        this.feedbackId = feedback.id;
+                                    });
+                                });
                             }
                             else {
                                 this.alreadyPlaytesting = false;

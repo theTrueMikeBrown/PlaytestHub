@@ -18,6 +18,7 @@ export class UsersProfileComponent implements OnInit {
     loginInfo: LoginInfo;
     profile: User;
     playtest: Playtest;
+    feedbackId: string;
     constructor(private router: Router,
         private route: ActivatedRoute,
         private dbService: DbService,
@@ -45,6 +46,11 @@ export class UsersProfileComponent implements OnInit {
                         p.subscribe(playtest => {
                             playtest.dateString = new Date(playtest.started).toDateString();
                             this.playtest = playtest;
+                            this.dbService.getUserFeedbackForGame(this.loginInfo.id, playtest.gameId).then(f => {
+                                f.subscribe(feedback => {
+                                    this.feedbackId = feedback.id;
+                                });
+                            });
                         });
                     });
                 return result;

@@ -17,6 +17,7 @@ export class LeaveFeedbackComponent implements OnInit {
     gameName: string = '';
     reviewing: boolean = false;
     editing: boolean = false;
+    loginInfo: LoginInfo;
 
     constructor(private router: Router,
         private route: ActivatedRoute,
@@ -59,6 +60,7 @@ export class LeaveFeedbackComponent implements OnInit {
         this.dbService.saveFeedback(this.feedback);
 
         //todo: make it send a message to the feedback leaver telling them why it was rejected (this.rejectReason).
+        //This will require adding in message sending and receiving.
 
         let navigationExtras: NavigationExtras = {
             queryParams: { 'message': 'Feedback Rejected!' },
@@ -67,12 +69,17 @@ export class LeaveFeedbackComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.route.paramMap.subscribe(p => {
-            if (p.has('id')) {
-                this.dbService.getFeedback(p.get('id')).then(f => f.subscribe(feedback => {
-                    this.feedback = feedback;
+        this.loginInfoService.getLoginInfo().then(loginInfo => {
+            this.loginInfo = loginInfo;
+            this.route.paramMap.subscribe(p => {
+                if (p.has('id')) {
+                    this.dbService.getFeedback(p.get('id')).then(f => f.subscribe(feedback => {
+                        this.feedback = feedback;
+                        this.reviewing = feedback.userId != this.loginInfo.id && feedback.submitted && this.loginInfo.isModerator;
+                        this.editing = feedback.userId == this.loginInfo.id;
                 }));
-            }
+                }
+            });
         });
     }
 }

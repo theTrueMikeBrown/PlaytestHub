@@ -18,7 +18,7 @@
       <a href="/detail/{{playtest.gameId}}">{{playtest.gameName}}</a>,
       <span> since {{playtest.dateString}}</span>
       <div class="indent" *ngIf="profile.id===loginInfo.id">
-        <a routerLink="/leaveFeedback">
+        <a routerLink="/feedback/{{feedbackId}}">
           <span class="glyphicon glyphicon glyphicon-pencil"></span>
           Leave Feedback
         </a>

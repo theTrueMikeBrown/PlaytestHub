@@ -35,6 +35,23 @@ export class DbService {
         return Promise.resolve(feedback.valueChanges());
     }
 
+    getUserFeedbackForGame(userId: string, gameId: string): Promise<Observable<Feedback>> {
+        let subject: Subject<Feedback> = new Subject;
+        let list = this.db
+            .collection<Feedback>("feedback", ref =>
+                ref.where('gameId', '==', gameId).where('userId', '==', userId))
+            .valueChanges()
+            .subscribe(list => {
+                if (list && list[0]) {
+                    subject.next(list[0]);
+                }
+                else {
+                    subject.next(null);
+                }
+            });
+        return Promise.resolve(subject);
+    }
+
     getGames(): Promise<Observable<Game[]>> {
         let itemsList = this.db.collection<Game>('games', ref =>
             ref.where('active', '==', true)

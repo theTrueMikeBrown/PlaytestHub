@@ -23,7 +23,7 @@ export class GamesListComponent {
     message: Observable<string>;
     loginInfo: LoginInfo;
     playtesting: boolean = false;
-    playtestingId: string;
+    feedbackId: string;
 
     constructor(
         private dbService: DbService,
@@ -45,7 +45,11 @@ export class GamesListComponent {
                 p.subscribe(playtest => {
                     if (playtest) {
                         this.playtesting = true;
-                        this.playtestingId = playtest.id;
+                        this.dbService.getUserFeedbackForGame(this.loginInfo.id, playtest.gameId).then(f => {
+                            f.subscribe(feedback => {
+                                this.feedbackId = feedback.id;
+                            });
+                        });
                     }
                 });
             });
