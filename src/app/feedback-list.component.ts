@@ -34,7 +34,9 @@ export class FeedbackListComponent {
         this.message = this.route
             .queryParamMap
             .map(params => params.get('message'))
-        this.loginInfo = this.loginInfoService.getLoginInfo();
+        this.loginInfoService.getLoginInfo().then(loginInfo => {
+            this.loginInfo = loginInfo;
+        });
         this.dbService.getGames().then(g => {
             this.games = g;
         })

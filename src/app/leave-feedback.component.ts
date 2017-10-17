@@ -67,8 +67,6 @@ export class LeaveFeedbackComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        let loginInfo: LoginInfo = this.loginInfoService.getLoginInfo();
-
         this.route.paramMap.subscribe(p => {
             if (p.has('id')) {
                 this.dbService.getFeedback(p.get('id')).then(f => f.subscribe(feedback => {

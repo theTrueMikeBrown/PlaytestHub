@@ -24,7 +24,9 @@ export class UsersProfileComponent implements OnInit {
         private loginInfoService: LoginInfoService) { }
 
     ngOnInit(): void {
-        this.loginInfo = this.loginInfoService.getLoginInfo();
+        this.loginInfoService.getLoginInfo().then(loginInfo => {
+            this.loginInfo = loginInfo;
+        });
 
         this.route.paramMap
             .switchMap((params: ParamMap) => {

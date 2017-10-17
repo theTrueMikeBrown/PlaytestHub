@@ -23,6 +23,7 @@ export class GamesListComponent {
     message: Observable<string>;
     loginInfo: LoginInfo;
     playtesting: boolean = false;
+    playtestingId: string;
 
     constructor(
         private dbService: DbService,
@@ -35,15 +36,18 @@ export class GamesListComponent {
         this.message = this.route
             .queryParamMap
             .map(params => params.get('message'))
-        this.loginInfo = this.loginInfoService.getLoginInfo();
-        this.dbService.getGames().then(g => {
-            this.games = g;
-        })
-        this.dbService.getPlaytestByUserId(this.loginInfo.id).then(p => {
-            p.subscribe(playtest => {
-                if (playtest) {
-                    this.playtesting = true;
-                }
+        this.loginInfoService.getLoginInfo().then(loginInfo => {
+            this.loginInfo = loginInfo;
+            this.dbService.getGames().then(g => {
+                this.games = g;
+            })
+            this.dbService.getPlaytestByUserId(this.loginInfo.id).then(p => {
+                p.subscribe(playtest => {
+                    if (playtest) {
+                        this.playtesting = true;
+                        this.playtestingId = playtest.id;
+                    }
+                });
             });
         });
     }

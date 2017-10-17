@@ -23,7 +23,9 @@ export class UsersGamesComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.loginInfo = this.loginInfoService.getLoginInfo();
+        this.loginInfoService.getLoginInfo().then(loginInfo => {
+            this.loginInfo = loginInfo;
+        });
 
         this.route.paramMap
             .switchMap((params: ParamMap) => this.dbService.getGamesByUser(params.get('id')))

@@ -1,4 +1,4 @@
-﻿import { Component, OnInit  } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
 import { LoginInfoService } from './loginInfo.service';
 
@@ -25,10 +25,11 @@ export class AddGameComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        let loginInfo = this.loginInfoService.getLoginInfo();
-        this.game.owner = loginInfo.id;
-        this.game.ownerName = loginInfo.displayName;
-        this.game.priority = 0;
-        this.game.active = true;
+        this.loginInfoService.getLoginInfo().then(loginInfo => {
+            this.game.owner = loginInfo.id;
+            this.game.ownerName = loginInfo.displayName;
+            this.game.priority = 0;
+            this.game.active = true;
+        });
     }
 }

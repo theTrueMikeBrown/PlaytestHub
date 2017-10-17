@@ -111,10 +111,10 @@ exports.updateGame = functions.https.onRequest((req, res) => {
                     var oldGame = snap.data();
 
                     cleanGame.priority = oldGame.priority;
-                    if (game.inactive && !oldGame.inactive) {
+                    if (!game.active && oldGame.active) {
                         cleanGame.priority -= bigNum;
                     }
-                    else if (!game.inactive && oldGame.inactive && oldGame.priority < -(bigNum / 2)) {
+                    else if (game.active && !oldGame.active && oldGame.priority < -(bigNum / 2)) {
                         cleanGame.priority += bigNum;
                     }
 

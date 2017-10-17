@@ -23,9 +23,10 @@ export class GameEditComponent implements OnInit {
         private dbService: DbService) { }
     
     saveGame(): void {
-        this.dbService.updateGame(this.game);
-        this.message.next("Saved!");
-        this.messageActive = "message";
+        this.dbService.updateGame(this.game, (response) => {
+            this.message.next("Saved!");
+            this.messageActive = "message";
+        });
     }
 
     onChange(): void {
