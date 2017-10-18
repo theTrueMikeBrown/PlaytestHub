@@ -1,4 +1,4 @@
-﻿<div id="list-component" *ngIf="loginInfo">
+﻿<div id="list-component" *ngIf="user">
   <div class="upperRight">
     <span class="action-button">
       <span class="glyphicon glyphicon-menu-hamburger"></span>
@@ -10,12 +10,12 @@
         </a>
       </li>
       <li class="upperRight-buttons__item">
-        <a routerLink="/user/{{loginInfo.id}}/games" class="upperRight-buttons__link" data-tooltip="View my games">
+        <a routerLink="/user/{{user.id}}/games" class="upperRight-buttons__link" data-tooltip="View my games">
           <span class="glyphicon glyphicon-th-large"></span>
         </a>
       </li>
       <li class="upperRight-buttons__item">
-        <a routerLink="/user/{{loginInfo.id}}/profile" class="upperRight-buttons__link" data-tooltip="View my profile">
+        <a routerLink="/user/{{user.id}}/profile" class="upperRight-buttons__link" data-tooltip="View my profile">
           <span class="glyphicon glyphicon-user"></span>
         </a>
       </li>
