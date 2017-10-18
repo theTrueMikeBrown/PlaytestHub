@@ -134,8 +134,9 @@ function doSave(feedback, res) {
             .then((snap) => {
                 const key = snap.id;
                 feedback.id = key;
-                admin.firestore().collection('feedback').doc(key).update(feedback);
-                res.status(200).send("success");
+                admin.firestore().collection('feedback').doc(key).update(feedback).then(r => {
+                    res.status(200).send("success");
+                });                
             });
     }
     else {
@@ -177,20 +178,21 @@ exports.approveFeedback = functions.https.onRequest((req, res) => {
             .get()
             .then((usnap) => {
                 if (usnap.size == 1) {
-                    var mod = usnap.docs[0].isModerator;
+                    var user = usnap.docs[0];
+                    var mod = user.isModerator;
                     admin.firestore()
                         .collection('games').doc(feedback.gameId).get()
                         .then((gsnap) => {
                             if (gsnap.exists) {
                                 var game = gsnap.data();
-                                var owner = usnap.docs[0].id == game.owner;
-                                
+                                var owner = user.id == game.owner;                                
                                 if (mod || owner) {
                                     feedback.approved = true;
                                     feedback.submitted = true;
                                     doSave(feedback, res);
 
                                     //TODO: make the playtesting end, award points, make point loss permanent, etc.
+                                    db.collection('playtests').doc(user.id).delete();
                                 }
                             }
                         });

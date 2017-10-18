@@ -4,9 +4,8 @@ import { LoginInfoService } from './loginInfo.service';
 import { Location } from '@angular/common';
 import 'rxjs/add/operator/switchMap';
 
-import { LoginInfo } from './loginInfo';
-import { Game } from './game';
 import { User } from './user';
+import { Game } from './game';
 import { DbService } from './db.service';
 import { Feedback } from './feedback';
 
@@ -18,7 +17,7 @@ import { Feedback } from './feedback';
 export class GameDetailComponent implements OnInit {
     game: Game;
     owner: User;
-    loginInfo: LoginInfo;
+    user: User;
     alreadyPlaytesting: boolean = true;
     feedbackId: string;
 
@@ -34,7 +33,7 @@ export class GameDetailComponent implements OnInit {
         this.dbService.addPlaytest(
             {
                 gameId: this.game.id,
-                id: this.loginInfo.id,
+                id: this.user.id,
                 started: 0,
                 gameName: this.game.name,
                 dateString: null
@@ -42,7 +41,7 @@ export class GameDetailComponent implements OnInit {
                 this.dbService.saveFeedback({
                     feelings: ['', '', ''], categorization: ['', '', ''], general: ['', ''], length: ['', '', ''],
                     art: ['', ''], rules: ['', '', ''], mechanics: ['', '', ''], final: ['', '', '', ''],
-                    userId: this.loginInfo.id, gameId: this.game.id, id: '', approved: false, submitted: false
+                    userId: this.user.id, gameId: this.game.id, id: '', approved: false, submitted: false
                 }, () => {
                     let navigationExtras: NavigationExtras = {
                         queryParams: { 'message': 'You are now playtesting ' + this.game.name + '.' },
@@ -65,17 +64,17 @@ export class GameDetailComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.loginInfoService.getLoginInfo().then(loginInfo => {
-            this.loginInfo = loginInfo;
+        this.loginInfoService.getLoginInfo().then(user => {
+            this.user = user;
             this.route.paramMap
                 .switchMap((params: ParamMap) => this.dbService.getGame(params.get('id')))
                 .subscribe(g => g.subscribe(game => {
                     this.game = game;
-                    this.dbService.getPlaytestByUserId(this.loginInfo.id).then(p => {
+                    this.dbService.getPlaytestByUserId(this.user.id).then(p => {
                         p.subscribe((playtest) => {
                             if (playtest && game.id === playtest.gameId) {
                                 this.alreadyPlaytesting = true;
-                                this.dbService.getUserFeedbackForGame(this.loginInfo.id, game.id).then(f => {
+                                this.dbService.getUserFeedbackForGame(this.user.id, game.id).then(f => {
                                     f.subscribe(feedback => {
                                         this.feedbackId = feedback.id;
                                     });

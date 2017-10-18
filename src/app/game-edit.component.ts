@@ -4,7 +4,7 @@ import { Subject } from 'rxjs/Subject';
 import { Router, NavigationExtras, ActivatedRoute, ParamMap } from '@angular/router';
 import { LoginInfoService } from './loginInfo.service';
 
-import { LoginInfo } from './loginInfo';
+import { User } from './user';
 import { DbService } from './db.service';
 import { Game } from './game';
 

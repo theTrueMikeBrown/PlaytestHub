@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { LoginInfoService } from './loginInfo.service';
 
 import { Game } from './game';
-import { LoginInfo } from './loginInfo';
+import { User } from './user';
 import { DbService } from './db.service';
 
 @Component({

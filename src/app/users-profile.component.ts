@@ -2,11 +2,10 @@
 import { Router, NavigationExtras, ActivatedRoute, ParamMap } from '@angular/router';
 import { LoginInfoService } from './loginInfo.service';
 
-import { LoginInfo } from './loginInfo';
+import { User } from './user';
 import { DbService } from './db.service';
 import { Observable } from 'rxjs/Observable';
 
-import { User } from './user';
 import { Playtest } from './playtest';
 
 @Component({
@@ -15,7 +14,7 @@ import { Playtest } from './playtest';
     styleUrls: ['./users-profile.styles.css']
 })
 export class UsersProfileComponent implements OnInit {
-    loginInfo: LoginInfo;
+    user: User;
     profile: User;
     playtest: Playtest;
     feedbackId: string;
@@ -25,8 +24,8 @@ export class UsersProfileComponent implements OnInit {
         private loginInfoService: LoginInfoService) { }
 
     ngOnInit(): void {
-        this.loginInfoService.getLoginInfo().then(loginInfo => {
-            this.loginInfo = loginInfo;
+        this.loginInfoService.getLoginInfo().then(user => {
+            this.user = user;
         });
 
         this.route.paramMap
@@ -46,7 +45,7 @@ export class UsersProfileComponent implements OnInit {
                         p.subscribe(playtest => {
                             playtest.dateString = new Date(playtest.started).toDateString();
                             this.playtest = playtest;
-                            this.dbService.getUserFeedbackForGame(this.loginInfo.id, playtest.gameId).then(f => {
+                            this.dbService.getUserFeedbackForGame(this.user.id, playtest.gameId).then(f => {
                                 f.subscribe(feedback => {
                                     this.feedbackId = feedback.id;
                                 });

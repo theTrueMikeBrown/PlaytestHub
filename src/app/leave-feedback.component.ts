@@ -2,7 +2,7 @@
 import { Router, NavigationExtras, ActivatedRoute, ParamMap } from '@angular/router';
 import { LoginInfoService } from './loginInfo.service';
 
-import { LoginInfo } from './loginInfo';
+import { User } from './user';
 import { DbService } from './db.service';
 import { Game } from './game';
 import { Feedback } from './feedback';
@@ -17,7 +17,7 @@ export class LeaveFeedbackComponent implements OnInit {
     gameName: string = '';
     reviewing: boolean = false;
     editing: boolean = false;
-    loginInfo: LoginInfo;
+    user: User;
 
     constructor(private router: Router,
         private route: ActivatedRoute,
@@ -69,14 +69,14 @@ export class LeaveFeedbackComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.loginInfoService.getLoginInfo().then(loginInfo => {
-            this.loginInfo = loginInfo;
+        this.loginInfoService.getLoginInfo().then(user => {
+            this.user = user;
             this.route.paramMap.subscribe(p => {
                 if (p.has('id')) {
                     this.dbService.getFeedback(p.get('id')).then(f => f.subscribe(feedback => {
                         this.feedback = feedback;
-                        this.reviewing = feedback.userId != this.loginInfo.id && feedback.submitted && this.loginInfo.isModerator;
-                        this.editing = feedback.userId == this.loginInfo.id;
+                        this.reviewing = feedback.userId != this.user.id && feedback.submitted && this.user.isModerator;
+                        this.editing = feedback.userId == this.user.id;
                 }));
                 }
             });

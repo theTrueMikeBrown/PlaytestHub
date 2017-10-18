@@ -5,4 +5,5 @@
     uid: string;
     id: string;
     isModerator: boolean;
+    points: number;
 }

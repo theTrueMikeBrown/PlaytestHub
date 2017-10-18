@@ -25,9 +25,9 @@ export class AddGameComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.loginInfoService.getLoginInfo().then(loginInfo => {
-            this.game.owner = loginInfo.id;
-            this.game.ownerName = loginInfo.displayName;
+        this.loginInfoService.getLoginInfo().then(user => {
+            this.game.owner = user.id;
+            this.game.ownerName = user.displayName;
             this.game.priority = 0;
             this.game.active = true;
         });

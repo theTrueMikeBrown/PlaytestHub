@@ -3,31 +3,32 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
-import { LoginInfo } from './loginInfo';
+import { User } from './user';
 import { DbService } from './db.service';
 
 @Injectable()
 export class LoginInfoService {
-    loginInfoObs: Subject<LoginInfo> = new Subject<LoginInfo>();
-    loginInfo: LoginInfo;
+    userObs: Subject<User> = new Subject<User>();
+    user: User;
 
     constructor(private db: AngularFirestore,
         private dbService: DbService) {}
 
-    getLoginInfo(): Promise<LoginInfo> {
-        if (this.loginInfo) {
-            return Promise.resolve(this.loginInfo);
+    getLoginInfo(): Promise<User> {
+        if (this.user) {
+            return Promise.resolve(this.user);
         }
-        return this.loginInfoObs.toPromise();
+        return this.userObs.toPromise();
     }
 
-    setLoginInfo(loginInfo: LoginInfo) {
-        var userPromise = this.dbService.getUserBySecretId(loginInfo.uid);
+    setLoginInfo(user: User) {
+        var userPromise = this.dbService.getUserBySecretId(user.uid);
         userPromise.then(u => {
             u.subscribe(user => {
                 if (user) {
-                    loginInfo.id = user.id;
-                    loginInfo.isModerator = user.isModerator;
+                    user.id = user.id;
+                    user.isModerator = user.isModerator;
+                    user.points = 0;
                 }
                 else {
                     var uuidv4 = (): string => {
@@ -37,12 +38,12 @@ export class LoginInfoService {
                         });
                     }
 
-                    loginInfo.id = uuidv4();
-                    this.dbService.saveUser(loginInfo);
+                    user.id = uuidv4();
+                    this.dbService.saveUser(user);
                 }
-                this.loginInfo = loginInfo;
-                this.loginInfoObs.next(loginInfo);
-                this.loginInfoObs.complete();
+                this.user = user;
+                this.userObs.next(user);
+                this.userObs.complete();
             });
         });
     }

@@ -10,7 +10,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import { LoginInfoService } from './loginInfo.service';
 import { DbService } from './db.service';
 import { Game } from './game';
-import { LoginInfo } from './loginInfo';
+import { User } from './user';
 
 @Component({
     selector: 'feedback-list',
@@ -21,7 +21,7 @@ import { LoginInfo } from './loginInfo';
 export class FeedbackListComponent {
     games: Observable<Game[]>;
     message: Observable<string>;
-    loginInfo: LoginInfo;
+    user: User;
 
     constructor(
         private dbService: DbService,
@@ -34,8 +34,8 @@ export class FeedbackListComponent {
         this.message = this.route
             .queryParamMap
             .map(params => params.get('message'))
-        this.loginInfoService.getLoginInfo().then(loginInfo => {
-            this.loginInfo = loginInfo;
+        this.loginInfoService.getLoginInfo().then(user => {
+            this.user = user;
         });
         this.dbService.getGames().then(g => {
             this.games = g;

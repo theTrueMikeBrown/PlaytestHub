@@ -9,7 +9,6 @@ import { Http, Response } from '@angular/http';
 import { Game } from './game';
 import { User } from './user';
 import { Playtest } from './playtest';
-import { LoginInfo } from './loginInfo';
 import { Feedback } from './feedback';
 
 @Injectable()
@@ -146,8 +145,8 @@ export class DbService {
         return Promise.resolve(subject);
     }
 
-    saveUser(loginInfo: LoginInfo, successCallback?: (r: Response) => void) {
-        this.http.post(this.saveUserUrl, loginInfo)
+    saveUser(user: User, successCallback?: (r: Response) => void) {
+        this.http.post(this.saveUserUrl, user)
             .toPromise()
             .then(response => {
                 if (successCallback) {

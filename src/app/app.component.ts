@@ -22,9 +22,10 @@ export class AppComponent implements OnInit {
                 displayName: data.displayName,
                 uid: data.uid,
                 email: data.email,
-                photoURL: data.photoURL,
+                photoUrl: data.photoURL,
                 id: null,
-                isModerator: false
+                isModerator: false,
+                points: 0,
             });
             this.loggedIn = true;
         }
