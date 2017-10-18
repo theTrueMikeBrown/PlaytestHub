@@ -175,17 +175,25 @@ exports.approveFeedback = functions.https.onRequest((req, res) => {
             .collection('users')
             .where("uid", "==", uid)
             .get()
-            .then((snap) => {
-                if (snap.size == 1) {
-                    var mod = snap.docs[0].isModerator;
-                    var owner = snap.docs[0].id == feedback.gameId;//TODO: make this get the owner of the game
-                    if (mod) { //TODO: the owner can approve as well.
-                        feedback.approved = true;
-                        feedback.submitted = true;
-                        doSave(feedback, res);
+            .then((usnap) => {
+                if (usnap.size == 1) {
+                    var mod = usnap.docs[0].isModerator;
+                    admin.firestore()
+                        .collection('games').doc(feedback.gameId).get()
+                        .then((gsnap) => {
+                            if (gsnap.exists) {
+                                var game = gsnap.data();
+                                var owner = usnap.docs[0].id == game.owner;
+                                
+                                if (mod || owner) {
+                                    feedback.approved = true;
+                                    feedback.submitted = true;
+                                    doSave(feedback, res);
 
-                        //TODO: make the playtesting end, award points, make point loss permanent, etc.
-                    }
+                                    //TODO: make the playtesting end, award points, make point loss permanent, etc.
+                                }
+                            }
+                        });
                 }
             });
     });
