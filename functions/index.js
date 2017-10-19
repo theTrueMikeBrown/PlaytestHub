@@ -8,6 +8,7 @@ exports.saveUser = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         var user = req.body;
         user.isModerator = false;
+        user.points = 0;
         admin.firestore()
             .collection('users')
             .doc(user.id)
@@ -136,7 +137,7 @@ function doSave(feedback, res) {
                 feedback.id = key;
                 admin.firestore().collection('feedback').doc(key).update(feedback).then(r => {
                     res.status(200).send("success");
-                });                
+                });
             });
     }
     else {
@@ -185,14 +186,20 @@ exports.approveFeedback = functions.https.onRequest((req, res) => {
                         .then((gsnap) => {
                             if (gsnap.exists) {
                                 var game = gsnap.data();
-                                var owner = user.id == game.owner;                                
-                                if (mod || owner) {
+                                var isGameOwner = user.id == game.owner;
+                                if (mod || isGameOwner) {
                                     feedback.approved = true;
                                     feedback.submitted = true;
                                     doSave(feedback, res);
-
-                                    //TODO: make the playtesting end, award points, make point loss permanent, etc.
                                     db.collection('playtests').doc(user.id).delete();
+                                    admin.firestore().collection('users').doc(playtest.id).get()
+                                        .then(lsnap => {
+                                            if (lsnap.exists) {
+                                                var leaver = lSnap.data();
+                                                db.collection('users').doc(playtest.id)
+                                                    .update({ points: leaver.points + 1 });
+                                            }
+                                        });
                                 }
                             }
                         });

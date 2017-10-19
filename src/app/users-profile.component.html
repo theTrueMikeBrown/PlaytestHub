@@ -13,6 +13,7 @@
     <div class="section">
       <a href="/user/{{profile.id}}/games">View {{profile.displayName}}'s games</a>
     </div>
+    <div>{{profile.displayName}}'s points: {{profile.points}}</div>
     <div *ngIf="playtest" class="section">
       <span>Playtesting:</span>
       <a href="/detail/{{playtest.gameId}}">{{playtest.gameName}}</a>,

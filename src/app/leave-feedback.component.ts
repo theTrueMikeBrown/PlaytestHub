@@ -44,10 +44,8 @@ export class LeaveFeedbackComponent implements OnInit {
 
     approveFeedback(): void {
         this.feedback.approved = true;
-        this.dbService.saveFeedback(this.feedback);
-
-        //TODO: make it give points to the leaver, and make the leaver's playtest disappear.
-
+        this.dbService.approveFeedback(this.feedback, this.user.uid);
+        
         let navigationExtras: NavigationExtras = {
             queryParams: { 'message': 'Feedback Approved!' },
         };
