@@ -122,7 +122,6 @@ export class DbService {
             });
     }
 
-
     getUser(key: string): Promise<Observable<User>> {
         let user: Observable<User> = this.db.doc<User>('users/' + key).valueChanges();
         return Promise.resolve(user);
@@ -170,19 +169,33 @@ export class DbService {
         this.db.collection<Feedback>('feedback', ref =>
             ref.where('submitted', '==', true)
                 .where('approved', '==', false)).valueChanges().subscribe(feedbacks => {
-                    this.db.collection<Game>('games', ref =>
-                        ref.where('owner', '==', userId)).valueChanges().subscribe(games => {
+                    this.db.doc<User>('users/' + userId).valueChanges().subscribe(user => {
+                        if (user.isModerator) {
                             let returnFeedbacks: Feedback[] = [];
                             for (let i: number = 0; i < feedbacks.length; i++) {
                                 (feedback => {
-                                    let game: Game = games.find(game => feedback.gameId === game.id);
-                                    if (game && game.owner == userId) {
+                                    if (feedback.userId != userId) {
                                         returnFeedbacks.push(feedback);
                                     }
                                 })(feedbacks[i]);
                             }
                             subject.next(returnFeedbacks);
-                        });
+                        } else {
+                            this.db.collection<Game>('games', ref =>
+                                ref.where('owner', '==', userId)).valueChanges().subscribe(games => {
+                                    let returnFeedbacks: Feedback[] = [];
+                                    for (let i: number = 0; i < feedbacks.length; i++) {
+                                        (feedback => {
+                                            let game: Game = games.find(game => feedback.gameId === game.id);
+                                            if (game && game.owner == userId && feedback.userId != userId) {
+                                                returnFeedbacks.push(feedback);
+                                            }
+                                        })(feedbacks[i]);
+                                    }
+                                    subject.next(returnFeedbacks);
+                                });
+                        }
+                    });
                 });
         return Promise.resolve(subject);
     }

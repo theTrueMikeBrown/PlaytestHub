@@ -25,6 +25,7 @@ export class GamesListComponent {
     playtesting: boolean = false;
     feedbackId: string;
     canModerate: boolean = false;
+    moderateId: string;
 
     constructor(
         private dbService: DbService,
@@ -39,7 +40,6 @@ export class GamesListComponent {
             .map(params => params.get('message'))
         this.loginInfoService.getLoginInfo().then(user => {
             this.user = user;
-            this.canModerate = user.isModerator;
             this.dbService.getGames().then(g => {
                 this.games = g;
             })
@@ -47,6 +47,7 @@ export class GamesListComponent {
                 f.subscribe(feedbacks => {
                     if (feedbacks.length > 0) {
                         this.canModerate = true;
+                        this.moderateId = feedbacks[0].id;
                     }
                 });
             });
@@ -70,7 +71,6 @@ export class GamesListComponent {
     }
 
     moderate(): void {
-        let id: string = "VVmmaaus3xceRiWgLZbT";
-        this.router.navigate(['/feedback', id]);
+        this.router.navigate(['/feedback', this.moderateId]);
     }
 }
