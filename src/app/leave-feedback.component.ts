@@ -17,6 +17,7 @@ export class LeaveFeedbackComponent implements OnInit {
     gameName: string = '';
     reviewing: boolean = false;
     editing: boolean = false;
+    pendingApproval: boolean = false;
     user: User;
 
     constructor(private router: Router,
@@ -33,7 +34,7 @@ export class LeaveFeedbackComponent implements OnInit {
         let errors: string[] = this.dbService.submitFeedback(this.feedback);
         if (errors.length === 0) {
             let navigationExtras: NavigationExtras = {
-                queryParams: { 'message': 'Game Submitted Successfully!' },
+                queryParams: { 'message': 'Feedback Submitted Successfully!' },
             };
             this.router.navigate(['/games'], navigationExtras);
         }
@@ -53,7 +54,7 @@ export class LeaveFeedbackComponent implements OnInit {
     }
 
     rejectFeedback(): void {
-        this.feedback.approved = true;
+        this.feedback.approved = false;
         this.feedback.submitted = false;
         this.dbService.saveFeedback(this.feedback);
 
@@ -73,9 +74,15 @@ export class LeaveFeedbackComponent implements OnInit {
                 if (p.has('id')) {
                     this.dbService.getFeedback(p.get('id')).then(f => f.subscribe(feedback => {
                         this.feedback = feedback;
-                        this.reviewing = feedback.userId != this.user.id && feedback.submitted && this.user.isModerator;
-                        this.editing = feedback.userId == this.user.id;
-                }));
+                        this.reviewing = feedback.userId != this.user.id && feedback.submitted && !feedback.approved && this.user.isModerator;
+                        this.editing = feedback.userId == this.user.id && !feedback.submitted && !feedback.approved;
+                        this.pendingApproval = feedback.submitted && !feedback.approved;
+                        this.dbService.getGame(feedback.gameId).then(g => {
+                            g.subscribe(game => {
+                                this.gameName = game.name;
+                            });
+                        });
+                    }));
                 }
             });
         });

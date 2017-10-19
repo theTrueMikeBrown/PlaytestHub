@@ -24,7 +24,7 @@
           <span class="glyphicon glyphicon-pencil"></span>
         </a>
       </li>
-      <li class="upperRight-buttons__item">
+      <li class="upperRight-buttons__item" *ngIf="canModerate">
         <a (click)="moderate()" class="upperRight-buttons__link" data-tooltip="Moderate Feedback">
           <span class="glyphicon glyphicon-thumbs-up"></span>
         </a>

@@ -161,8 +161,30 @@ export class DbService {
     getFeedbackReadyForApproval(): Promise<Observable<Feedback[]>> {
         let itemsList = this.db.collection<Feedback>('feedback', ref =>
             ref.where('submitted', '==', true)
-               .where('approved', '==', false));
+                .where('approved', '==', false));
         return Promise.resolve(itemsList.valueChanges());
+    }
+
+    getFeedbackReadyForApprovalByUser(userId: string): Promise<Observable<Feedback[]>> {
+        let subject: Subject<Feedback[]> = new Subject;
+        this.db.collection<Feedback>('feedback', ref =>
+            ref.where('submitted', '==', true)
+                .where('approved', '==', false)).valueChanges().subscribe(feedbacks => {
+                    this.db.collection<Game>('games', ref =>
+                        ref.where('owner', '==', userId)).valueChanges().subscribe(games => {
+                            let returnFeedbacks: Feedback[] = [];
+                            for (let i: number = 0; i < feedbacks.length; i++) {
+                                (feedback => {
+                                    let game: Game = games.find(game => feedback.gameId === game.id);
+                                    if (game && game.owner == userId) {
+                                        returnFeedbacks.push(feedback);
+                                    }
+                                })(feedbacks[i]);
+                            }
+                            subject.next(returnFeedbacks);
+                        });
+                });
+        return Promise.resolve(subject);
     }
 
     saveFeedback(feedback: Feedback, successCallback?: (r: Response) => void) {

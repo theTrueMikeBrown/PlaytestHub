@@ -171,18 +171,17 @@ exports.submitFeedback = functions.https.onRequest((req, res) => {
 
 exports.approveFeedback = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
+        var db = admin.firestore();
         const feedback = req.body.feedback;
         const uid = req.body.uid
-        admin.firestore()
-            .collection('users')
+        db.collection('users')
             .where("uid", "==", uid)
             .get()
             .then((usnap) => {
                 if (usnap.size == 1) {
                     var user = usnap.docs[0];
                     var mod = user.isModerator;
-                    admin.firestore()
-                        .collection('games').doc(feedback.gameId).get()
+                    db.collection('games').doc(feedback.gameId).get()
                         .then((gsnap) => {
                             if (gsnap.exists) {
                                 var game = gsnap.data();
@@ -191,12 +190,12 @@ exports.approveFeedback = functions.https.onRequest((req, res) => {
                                     feedback.approved = true;
                                     feedback.submitted = true;
                                     doSave(feedback, res);
-                                    db.collection('playtests').doc(user.id).delete();
-                                    admin.firestore().collection('users').doc(playtest.id).get()
+                                    db.collection('playtests').doc(feedback.userId).delete();
+                                    db.collection('users').doc(feedback.userId).get()
                                         .then(lsnap => {
                                             if (lsnap.exists) {
-                                                var leaver = lSnap.data();
-                                                db.collection('users').doc(playtest.id)
+                                                var leaver = lsnap.data();
+                                                db.collection('users').doc(feedback.userId)
                                                     .update({ points: leaver.points + 1 });
                                             }
                                         });

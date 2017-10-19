@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { Router, ActivatedRoute  } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
@@ -24,6 +24,7 @@ export class GamesListComponent {
     user: User;
     playtesting: boolean = false;
     feedbackId: string;
+    canModerate: boolean = false;
 
     constructor(
         private dbService: DbService,
@@ -38,9 +39,17 @@ export class GamesListComponent {
             .map(params => params.get('message'))
         this.loginInfoService.getLoginInfo().then(user => {
             this.user = user;
+            this.canModerate = user.isModerator;
             this.dbService.getGames().then(g => {
                 this.games = g;
             })
+            this.dbService.getFeedbackReadyForApprovalByUser(this.user.id).then(f => {
+                f.subscribe(feedbacks => {
+                    if (feedbacks.length > 0) {
+                        this.canModerate = true;
+                    }
+                });
+            });
             this.dbService.getPlaytestByUserId(this.user.id).then(p => {
                 p.subscribe(playtest => {
                     if (playtest) {
