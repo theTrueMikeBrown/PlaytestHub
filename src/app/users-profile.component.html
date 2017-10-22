@@ -11,9 +11,14 @@
       <div *ngIf="!profile.photoURL">No user image</div>
     </div>
     <div class="section">
+      <span class="glyphicon glyphicon-th-large"></span>
       <a href="/user/{{profile.id}}/games">View {{profile.displayName}}'s games</a>
     </div>
     <div>{{profile.displayName}}'s points: {{profile.points}}</div>
+    <div *ngIf="profile.id===user.id && profile.points > 0">
+      <span class="glyphicon glyphicon-star"></span>
+      <a routerLink="/applyPoints">Apply Points</a>
+    </div>
     <div *ngIf="playtest" class="section">
       <span>Playtesting:</span>
       <a href="/detail/{{playtest.gameId}}">{{playtest.gameName}}</a>,
