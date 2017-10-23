@@ -43,13 +43,15 @@ export class UsersProfileComponent implements OnInit {
                     .getPlaytestByUserId(id)
                     .then(p => {
                         p.subscribe(playtest => {
-                            playtest.dateString = new Date(playtest.started).toDateString();
-                            this.playtest = playtest;
-                            this.dbService.getUserFeedbackForGame(this.user.id, playtest.gameId).then(f => {
-                                f.subscribe(feedback => {
-                                    this.feedbackId = feedback.id;
+                            if (playtest) {
+                                playtest.dateString = new Date(playtest.started).toDateString();
+                                this.playtest = playtest;
+                                this.dbService.getUserFeedbackForGame(this.user.id, playtest.gameId).then(f => {
+                                    f.subscribe(feedback => {
+                                        this.feedbackId = feedback.id;
+                                    });
                                 });
-                            });
+                            }
                         });
                     });
                 return result;

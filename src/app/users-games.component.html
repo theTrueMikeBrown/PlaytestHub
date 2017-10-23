@@ -4,7 +4,26 @@
       <span class="glyphicon glyphicon-home"></span>
     </a>
   </div>
-  <h4>{{userName}}'s Games</h4>
+
+  <div class="upperRight">
+    <span class="action-button">
+      <span class="glyphicon glyphicon-menu-hamburger"></span>
+    </span>
+    <ul class="upperRight-buttons">
+      <li class="upperRight-buttons__item" *ngIf="user && profile && profile.id===user.id && profile.points > 0">
+        <a routerLink="/applyPoints" class="upperRight-buttons__link" data-tooltip="Apply points">
+          <span class="glyphicon glyphicon-star"></span>
+        </a>
+      </li>
+      <li class="upperRight-buttons__item" *ngIf="profile">
+        <a routerLink="/user/{{profile.id}}/profile" class="upperRight-buttons__link" data-tooltip="View user's profile">
+          <span class="glyphicon glyphicon-user"></span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <h3 *ngIf="profile">{{profile.displayName}}'s Games</h3>
   <div *ngFor="let game of games | async"
        (click)="gotoDetail(game.id)" class="search-result">
     <game-stats [game]="game"></game-stats>

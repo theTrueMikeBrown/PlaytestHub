@@ -1,0 +1,26 @@
+﻿<div id="points-component" *ngIf="user">
+  <div class="upperLeft">
+    <a class="action-button" routerLink="/games">
+      <span class="glyphicon glyphicon-home"></span>
+    </a>
+  </div>
+  <h3>Apply Points</h3>
+  <div class="section">
+    you have <span>{{user.points}}</span> points.
+  </div>
+  <div class="section">
+    <span>Game to apply points to:</span>
+    <select [(ngModel)]="selectedGame">
+      <option *ngFor="let game of games | async" value="{{game.id}}">{{game.name}}</option>
+    </select>
+  </div>
+  <div class="section">
+    <span>Number of points to apply:</span>
+    <input [(ngModel)]="points" min="1" max="{{user.points}}" type="number" />
+  </div>
+  <div class="lowerRightBottom">
+    <a class="action-button" (click)="applyPoints()">
+      <span class="glyphicon glyphicon-floppy-disk"></span>
+    </a>
+  </div>
+</div>

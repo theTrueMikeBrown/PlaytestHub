@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { Router, ActivatedRoute  } from '@angular/router';
+import { Router, NavigationExtras, ActivatedRoute, ParamMap } from '@angular/router';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
@@ -13,15 +13,16 @@ import { Game } from './game';
 import { User } from './user';
 
 @Component({
-    selector: 'feedback-list',
-    templateUrl: './feedback-list.component.html',
-    styleUrls: ['./feedback-list.styles.css'],
+    selector: 'apply-points',
+    templateUrl: './apply-points.component.html',
+    styleUrls: ['./apply-points.styles.css'],
     providers: [DbService]
 })
-export class FeedbackListComponent {
+export class ApplyPointsComponent {
     games: Observable<Game[]>;
-    message: Observable<string>;
     user: User;
+    selectedGame: string;
+    points: number = 1;
 
     constructor(
         private dbService: DbService,
@@ -31,18 +32,18 @@ export class FeedbackListComponent {
     }
 
     ngOnInit(): void {
-        this.message = this.route
-            .queryParamMap
-            .map(params => params.get('message'))
         this.loginInfoService.getLoginInfo().then(user => {
             this.user = user;
+            this.dbService.getGamesByUser(user.id).then(g => this.games = g);
+
+            this.route.paramMap.subscribe((params: ParamMap) => {
+                let id: string = params.get('id');
+                this.selectedGame = id;
+            });
         });
-        this.dbService.getGames().then(g => {
-            this.games = g;
-        })
     }
 
-    gotoDetail(id: number): void {
-        this.router.navigate(['/detail', id]);
+    applyPoints(): void {
+
     }
 }

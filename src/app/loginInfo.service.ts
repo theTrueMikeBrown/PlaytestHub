@@ -28,7 +28,7 @@ export class LoginInfoService {
                 if (user) {
                     user.id = user.id;
                     user.isModerator = user.isModerator;
-                    user.points = 0;
+                    user.points = user.points;
                 }
                 else {
                     var uuidv4 = (): string => {

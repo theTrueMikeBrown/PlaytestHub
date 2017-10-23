@@ -42,7 +42,7 @@
 
   <div *ngIf="message" class="message">{{message | async}}</div>
 
-  <h4>Games to playtest</h4>
+  <h3>Games to playtest</h3>
   <div *ngFor="let game of games | async"
        (click)="gotoDetail(game.id)" class="search-result">
     <game-stats [game]="game"></game-stats>

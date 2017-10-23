@@ -4,31 +4,35 @@
       <span class="glyphicon glyphicon-home"></span>
     </a>
   </div>
-  <h2>{{profile.displayName}}'s profile</h2>
+  <div class="upperRight">
+    <span class="action-button">
+      <span class="glyphicon glyphicon-menu-hamburger"></span>
+    </span>
+    <ul class="upperRight-buttons">
+      <li class="upperRight-buttons__item" *ngIf="user && profile && profile.id===user.id && profile.points > 0">
+        <a routerLink="/applyPoints" class="upperRight-buttons__link" data-tooltip="Apply points">
+          <span class="glyphicon glyphicon-star"></span>
+        </a>
+      </li>
+      <li class="upperRight-buttons__item">
+        <a routerLink="/user/{{profile.id}}/games" class="upperRight-buttons__link" data-tooltip="View user's games">
+          <span class="glyphicon glyphicon-th-large"></span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <h3>{{profile.displayName}}'s profile</h3>
   <div class="left">
     <div id="userImage">
       <img *ngIf="profile.photoURL" src="{{profile.photoURL}}" id="userImage" />
       <div *ngIf="!profile.photoURL">No user image</div>
     </div>
-    <div class="section">
-      <span class="glyphicon glyphicon-th-large"></span>
-      <a href="/user/{{profile.id}}/games">View {{profile.displayName}}'s games</a>
-    </div>
     <div>{{profile.displayName}}'s points: {{profile.points}}</div>
-    <div *ngIf="profile.id===user.id && profile.points > 0">
-      <span class="glyphicon glyphicon-star"></span>
-      <a routerLink="/applyPoints">Apply Points</a>
-    </div>
     <div *ngIf="playtest" class="section">
       <span>Playtesting:</span>
       <a href="/detail/{{playtest.gameId}}">{{playtest.gameName}}</a>,
       <span> since {{playtest.dateString}}</span>
-      <div class="indent" *ngIf="profile.id===user.id">
-        <a routerLink="/feedback/{{feedbackId}}">
-          <span class="glyphicon glyphicon glyphicon-pencil"></span>
-          Leave Feedback
-        </a>
-      </div>
     </div>
   </div>
 </div>

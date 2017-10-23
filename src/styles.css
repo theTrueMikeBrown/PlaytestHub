@@ -7,6 +7,11 @@
   margin-left: 1em;
 }
 
+.linky {
+  font-size: 1.5em;
+  margin: 1em;
+}
+
 .upperRight {
   position: absolute;
   width: 56px;
