@@ -20,6 +20,7 @@ export class GameDetailComponent implements OnInit {
     user: User;
     alreadyPlaytesting: boolean = true;
     feedbackId: string;
+    feedbackExists: boolean;
 
     constructor(
         private dbService: DbService,
@@ -85,6 +86,9 @@ export class GameDetailComponent implements OnInit {
                             }
                         });
                     });
+                    this.dbService.getFeedbackForGame(game.id).then(f => f.subscribe(feedbacks => {
+                        this.feedbackExists = feedbacks.length > 0;
+                    }));
                 }));
         });
     }

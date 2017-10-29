@@ -166,6 +166,15 @@ export class DbService {
         return Promise.resolve(itemsList.valueChanges());
     }
 
+    getFeedbackForGame(gameId: string): Promise<Observable<Feedback[]>> {
+        let itemsList = this.db.collection<Feedback>('feedback', ref =>
+            ref.where('gameId', '==', gameId)
+                .where('approved', '==', true)
+        //        .orderBy("approvalDate")
+        );
+        return Promise.resolve(itemsList.valueChanges());
+    }
+
     getFeedbackReadyForApprovalByUser(userId: string): Promise<Observable<Feedback[]>> {
         let subject: Subject<Feedback[]> = new Subject;
         this.db.collection<Feedback>('feedback', ref =>

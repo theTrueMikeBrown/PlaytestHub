@@ -30,14 +30,19 @@
           <span class="glyphicon glyphicon-star"></span>
         </a>
       </li>
-      <li *ngIf="user.id === game.owner && game.priority > -10" class="upperRight-buttons__item">
+      <li *ngIf="user.id === game.owner && active" class="upperRight-buttons__item">
         <a (click)="deleteGame()" class="upperRight-buttons__link" data-tooltip="Delete">
           <span class="glyphicon glyphicon-trash"></span>
         </a>
       </li>
-      <li *ngIf="user.id === game.owner && game.priority <= -10" class="upperRight-buttons__item">
+      <li *ngIf="user.id === game.owner && !game.active" class="upperRight-buttons__item">
         <a (click)="undeleteGame()" class="upperRight-buttons__link" data-tooltip="Undelete">
           <span class="glyphicon glyphicon-repeat"></span>
+        </a>
+      </li>
+      <li *ngIf="feedbackExists" class="upperRight-buttons__item">
+        <a routerLink="/feedbackList/{{game.id}}" class="upperRight-buttons__link" data-tooltip="View Feedback">
+          <span class="glyphicon glyphicon-eye-open"></span>
         </a>
       </li>
     </ul>

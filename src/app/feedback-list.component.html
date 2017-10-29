@@ -1,0 +1,26 @@
+﻿<div id="list-component">
+  <div class="upperLeft">
+    <a class="action-button" routerLink="/games">
+      <span class="glyphicon glyphicon-home"></span>
+    </a>
+  </div>
+
+  <div class="upperRight">
+    <span class="action-button">
+      <span class="glyphicon glyphicon-menu-hamburger"></span>
+    </span>
+    <ul class="upperRight-buttons">
+      <li class="upperRight-buttons__item" *ngIf="game">
+        <a routerLink="/detail/{{game.id}}" class="upperRight-buttons__link" data-tooltip="View game">
+          <span class="glyphicon glyphicon-pawn"></span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <h3 *ngIf="game">Feedback for {{game.name}}</h3>
+  <div *ngFor="let feedback of feedbacks | async"
+       (click)="gotoFeedback(feedback.id)" class="search-result">
+    <feedback-stats [feedback]="feedback"></feedback-stats>
+  </div>
+</div>

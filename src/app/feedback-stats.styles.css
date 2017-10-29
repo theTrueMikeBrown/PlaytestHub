@@ -1,0 +1,13 @@
+﻿.title {
+  font-weight: bold;
+}
+
+.info {
+  font-style: italic;
+}
+
+.stats {
+  border-bottom: 1pt solid #284;
+  margin: .5em;
+  cursor: pointer;
+}

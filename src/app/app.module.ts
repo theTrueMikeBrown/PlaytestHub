@@ -12,10 +12,12 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 
+import { FeedbackListComponent } from './feedback-list.component';
 import { GamesListComponent } from './games-list.component';
 import { LeaveFeedbackComponent } from './leave-feedback.component';
 import { ApplyPointsComponent } from './apply-points.component';
 import { GameStatsComponent } from './game-stats.component';
+import { FeedbackStatsComponent } from './feedback-stats.component';
 import { GameDetailComponent } from './game-detail.component';
 import { AddGameComponent } from './add-game.component';
 import { UsersGamesComponent } from './users-games.component';
@@ -37,7 +39,9 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
     declarations: [
         AppComponent,
         GamesListComponent,
+        FeedbackListComponent,
         GameStatsComponent,
+        FeedbackStatsComponent,
         GameDetailComponent,
         AddGameComponent,
         UsersGamesComponent,
@@ -89,6 +93,10 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
             {
                 path: 'feedback/:id',
                 component: LeaveFeedbackComponent
+            },
+            {
+                path: 'feedbackList/:id',
+                component: FeedbackListComponent
             },
             {
                 path: 'applyPoints/:id',
