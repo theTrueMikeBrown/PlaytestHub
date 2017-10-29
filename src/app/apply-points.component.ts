@@ -49,11 +49,11 @@ export class ApplyPointsComponent {
 
     applyPoints(): void {
         this.dbService.applyPoints(this.selectedGame, this.points, this.user.uid, (r) => {
-            this.message.next(r.text());
-            this.messageActive = "message";
-            this.loginInfoService.getLoginInfo().then(user => {
-                this.user = user;
-            });
+
+            let navigationExtras: NavigationExtras = {
+                queryParams: { 'message': r.text() },
+            };
+            this.router.navigate(['/games'], navigationExtras);
         });
     }
 
