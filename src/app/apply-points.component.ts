@@ -25,6 +25,7 @@ export class ApplyPointsComponent {
     points: number = 1;
     message: Subject<string>;
     messageActive: string;
+    selectedGameObj: Game;
 
     constructor(
         private dbService: DbService,
@@ -37,6 +38,7 @@ export class ApplyPointsComponent {
         this.route.paramMap.subscribe((params: ParamMap) => {
             let id: string = params.get('id');
             this.selectedGame = id;
+            this.gameSelected(id);
         });
         this.loginInfoService.getLoginInfo().then(user => {
             this.user = user;
@@ -58,5 +60,9 @@ export class ApplyPointsComponent {
     onChange(): void {
         this.message.next("");
         this.messageActive = "";
+    }
+
+    gameSelected(id): void {
+        this.dbService.getGame(id).then(g => g.subscribe(game => this.selectedGameObj = game));
     }
 }

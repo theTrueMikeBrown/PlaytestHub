@@ -11,13 +11,13 @@
   </div>
   <div class="section">
     <span>Game to apply points to:</span>
-    <select [(ngModel)]="selectedGame">
+    <select [(ngModel)]="selectedGame" (change)="gameSelected($event.target.value)">
       <option *ngFor="let game of games | async" value="{{game.id}}">{{game.name}}</option>
     </select>
   </div>
-  <div class="section">
+  <div class="section" *ngIf="selectedGameObj">
     <span>Number of points to apply:</span>
-    <input [(ngModel)]="points" min="1" max="{{user.points}}" type="number" />
+    <input [(ngModel)]="points" min="{{-selectedGameObj.priority}}" max="{{user.points}}" type="number" />
   </div>
   <div class="lowerRightBottom">
     <a class="action-button" (click)="applyPoints()">
