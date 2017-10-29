@@ -18,8 +18,10 @@ export class DbService {
     readonly addPlaytestUrl = "https://us-central1-playtesthub.cloudfunctions.net/addPlaytest";
     readonly saveUserUrl = "https://us-central1-playtesthub.cloudfunctions.net/saveUser";
     readonly saveFeedbackUrl = "https://us-central1-playtesthub.cloudfunctions.net/saveFeedback";
+    readonly rejectFeedbackUrl = "https://us-central1-playtesthub.cloudfunctions.net/rejectFeedback";
     readonly submitFeedbackUrl = "https://us-central1-playtesthub.cloudfunctions.net/submitFeedback";
     readonly approveFeedbackUrl = "https://us-central1-playtesthub.cloudfunctions.net/approveFeedback";
+    readonly applyPointUrl = "https://us-central1-playtesthub.cloudfunctions.net/applyPoints";
 
     constructor(private db: AngularFirestore,
         private http: Http) { }
@@ -213,6 +215,19 @@ export class DbService {
             });
     }
 
+    rejectFeedback(feedback: Feedback, uid: string, successCallback?: (r: Response) => void) {
+        this.http.post(this.rejectFeedbackUrl, { feedback: feedback, uid: uid })
+            .toPromise()
+            .then(response => {
+                if (successCallback) {
+                    successCallback(response);
+                }
+            })
+            .catch((error) => {
+                debugger;
+            });
+    }
+
     submitFeedback(feedback: Feedback, successCallback?: (r: Response) => void): string[] {
         let errors: string[] = this.validate(feedback);
         if (errors.length === 0) {
@@ -267,5 +282,18 @@ export class DbService {
             .catch((error) => {
                 debugger;
             });
+    }
+
+    applyPoints(gameId: string, points: number, uid: string, successCallback?: (r: Response) => void) {
+        this.http.post(this.applyPointUrl, { gameId: gameId, points: points, uid: uid })
+            .toPromise()
+            .then(response => {
+                if (successCallback) {
+                    successCallback(response);
+                }
+            })
+            .catch((error) => {
+                debugger;
+            });;
     }
 }

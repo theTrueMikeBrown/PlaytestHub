@@ -23,6 +23,8 @@ export class ApplyPointsComponent {
     user: User;
     selectedGame: string;
     points: number = 1;
+    message: Subject<string>;
+    messageActive: string;
 
     constructor(
         private dbService: DbService,
@@ -32,18 +34,29 @@ export class ApplyPointsComponent {
     }
 
     ngOnInit(): void {
+        this.route.paramMap.subscribe((params: ParamMap) => {
+            let id: string = params.get('id');
+            this.selectedGame = id;
+        });
         this.loginInfoService.getLoginInfo().then(user => {
             this.user = user;
             this.dbService.getGamesByUser(user.id).then(g => this.games = g);
+        });
+        this.message = new Subject<string>();
+    }
 
-            this.route.paramMap.subscribe((params: ParamMap) => {
-                let id: string = params.get('id');
-                this.selectedGame = id;
+    applyPoints(): void {
+        this.dbService.applyPoints(this.selectedGame, this.points, this.user.uid, (r) => {
+            this.message.next(r.text());
+            this.messageActive = "message";
+            this.loginInfoService.getLoginInfo().then(user => {
+                this.user = user;
             });
         });
     }
 
-    applyPoints(): void {
-
+    onChange(): void {
+        this.message.next("");
+        this.messageActive = "";
     }
 }

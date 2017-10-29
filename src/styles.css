@@ -67,6 +67,16 @@
   text-align: center;
 }
 
+  .action-button.inactive {
+    background-color: #b6b6b6;
+    color: #131313;
+  }
+
+  .action-button:hover.inactive {
+    background-color: #b6b6b6;
+    color: #131313;
+  }
+
 .upperRight:hover .upperRight-buttons {
   opacity: 1;
   visibility: visible;

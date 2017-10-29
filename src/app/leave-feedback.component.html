@@ -95,8 +95,8 @@
     </div>
   </div>
 
-  <div *ngIf="reviewing">
-    <div>
+  <div *ngIf="reviewing || owner">
+    <div *ngIf="reviewing">
       <h3>Reason for rejecting feedback (leave blank if approving):</h3>
       <textarea [(ngModel)]="rejectReason"></textarea>
     </div>
@@ -106,10 +106,15 @@
         <span class="glyphicon glyphicon-ok"></span>
       </a>
     </div>
-    <div class="lowerRightBottom">
+    <div class="lowerRightBottom" *ngIf="reviewing">
       <a class="action-button" (click)="rejectFeedback()">
         <span class="glyphicon glyphicon-remove"></span>
       </a>
+    </div>
+    <div class="lowerRightBottom" *ngIf="!reviewing">
+      <span class="action-button inactive">
+        <span class="glyphicon glyphicon-remove"></span>
+      </span>
     </div>
   </div>
 </div>

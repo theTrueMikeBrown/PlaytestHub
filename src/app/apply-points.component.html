@@ -5,6 +5,7 @@
     </a>
   </div>
   <h3>Apply Points</h3>
+  <div *ngIf="message" [ngClass]="messageActive">{{message | async}}</div>
   <div class="section">
     you have <span>{{user.points}}</span> points.
   </div>

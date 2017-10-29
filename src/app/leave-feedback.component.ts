@@ -17,6 +17,7 @@ export class LeaveFeedbackComponent implements OnInit {
     gameName: string = '';
     reviewing: boolean = false;
     editing: boolean = false;
+    owner: boolean = false;
     pendingApproval: boolean = false;
     user: User;
 
@@ -54,9 +55,7 @@ export class LeaveFeedbackComponent implements OnInit {
     }
 
     rejectFeedback(): void {
-        this.feedback.approved = false;
-        this.feedback.submitted = false;
-        this.dbService.saveFeedback(this.feedback);
+        this.dbService.rejectFeedback(this.feedback, this.user.uid);
 
         //todo: make it send a message to the feedback leaver telling them why it was rejected (this.rejectReason).
         //This will require adding in message sending and receiving.
@@ -80,6 +79,7 @@ export class LeaveFeedbackComponent implements OnInit {
                         this.dbService.getGame(feedback.gameId).then(g => {
                             g.subscribe(game => {
                                 this.gameName = game.name;
+                                this.owner = game.owner == this.user.id;
                             });
                         });
                     }));

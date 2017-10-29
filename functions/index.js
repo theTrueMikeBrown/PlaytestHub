@@ -160,6 +160,30 @@ exports.saveFeedback = functions.https.onRequest((req, res) => {
     });
 });
 
+exports.rejectFeedback = functions.https.onRequest((req, res) => {
+    cors(req, res, () => {
+        var db = admin.firestore();
+        const feedback = req.body.feedback;
+        const uid = req.body.uid
+        db.collection('users')
+            .where("uid", "==", uid)
+            .get()
+            .then((usnap) => {
+                if (usnap.size == 1) {
+                    var user = usnap.docs[0].data();
+                    var mod = user.isModerator;
+                    if (mod) {
+                        feedback.approved = false;
+                        feedback.submitted = false;
+                        doSave(feedback, res);
+                        return;
+                    }
+                    res.status(401).send("unauthorized.");
+                }
+            });
+    });
+});
+
 exports.submitFeedback = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         const feedback = req.body;
@@ -179,7 +203,7 @@ exports.approveFeedback = functions.https.onRequest((req, res) => {
             .get()
             .then((usnap) => {
                 if (usnap.size == 1) {
-                    var user = usnap.docs[0];
+                    var user = usnap.docs[0].data();
                     var mod = user.isModerator;
                     db.collection('games').doc(feedback.gameId).get()
                         .then((gsnap) => {
@@ -205,4 +229,51 @@ exports.approveFeedback = functions.https.onRequest((req, res) => {
                 }
             });
     });
-}); 
+});
+
+exports.applyPoints = functions.https.onRequest((req, res) => {
+    cors(req, res, () => {
+        const gameId = req.body.gameId;
+        const points = req.body.points;
+        const uid = req.body.uid;
+        //console.log("request = " + JSON.stringify(Object.getOwnPropertyNames(req)));
+
+        var db = admin.firestore();
+        db.collection('games').doc(gameId).get()
+            .then((snap) => {
+                if (snap.exists) {
+                    var game = snap.data();
+
+                    db.collection('users')
+                        .where("uid", "==", uid).get()
+                        .then((usnap) => {
+                            if (usnap.size == 1) {
+                                var user = usnap.docs[0].data();
+                                var pointsApplied = 0;
+
+                                if (points > 0 && user.points > 0) {
+                                    //user cannot apply points that would make them negative
+                                    pointsApplied = Math.min(points, user.points);
+                                }
+                                else if (points < 0 && game.priority > 0) {
+                                    //game cannot apply points that would make it negative
+                                    pointsApplied = Math.max(points, -game.priority);
+                                }
+                                game.priority += pointsApplied;
+                                user.points -= pointsApplied;
+
+                                db.collection('users').doc(user.id).update(user).then((u) => db.collection('games').doc(gameId)
+                                    .update(game)
+                                    .then((f) => res.status(200).send(pointsApplied === points ? "Points applied successfully." : "" + pointsApplied + " points applied.")));
+                            }
+                            else {
+                                res.status(404).send("user not found.");
+                            }
+                        });
+                }
+                else {
+                    res.status(404).send("game not found.");
+                }
+            });
+    });
+});
