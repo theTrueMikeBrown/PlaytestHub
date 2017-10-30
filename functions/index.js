@@ -277,3 +277,36 @@ exports.applyPoints = functions.https.onRequest((req, res) => {
             });
     });
 });
+
+exports.sendMessage = functions.https.onRequest((req, res) => {
+    cors(req, res, () => {
+        var message = req.body;
+        message.isRead = false;
+        admin.firestore()
+            .collection('messages')
+            .add(message)
+            .then((snap) => {
+                const key = snap.id;
+                message.id = key;
+                admin.firestore().collection('messages').doc(key).set(message);
+                res.status(200).send("success");
+            });
+    });
+});
+
+exports.markMessageRead = functions.https.onRequest((req, res) => {
+    cors(req, res, () => {
+        var id = req.body.id;
+        var isRead = req.body.isRead;
+        admin.firestore()
+            .collection('messages')
+            .doc(id)
+            .update({ isRead: isRead })
+            .then(() => {
+                res.status(200).send("success");
+            })
+            .catch((error) => {
+                res.status(500).send("error: " + error);
+            });
+    });
+});

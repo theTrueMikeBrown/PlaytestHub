@@ -8,6 +8,7 @@ import { Http, Response } from '@angular/http';
 
 import { Game } from './game';
 import { User } from './user';
+import { Message } from './message';
 import { Playtest } from './playtest';
 import { Feedback } from './feedback';
 
@@ -22,6 +23,8 @@ export class DbService {
     readonly submitFeedbackUrl = "https://us-central1-playtesthub.cloudfunctions.net/submitFeedback";
     readonly approveFeedbackUrl = "https://us-central1-playtesthub.cloudfunctions.net/approveFeedback";
     readonly applyPointUrl = "https://us-central1-playtesthub.cloudfunctions.net/applyPoints";
+    readonly sendMessageUrl = "https://us-central1-playtesthub.cloudfunctions.net/sendMessage";
+    readonly markMessageReadUrl = "https://us-central1-playtesthub.cloudfunctions.net/markMessageRead";
 
     constructor(private db: AngularFirestore,
         private http: Http) { }
@@ -304,5 +307,60 @@ export class DbService {
             .catch((error) => {
                 debugger;
             });;
+    }
+
+    getMessages(uid: string): Promise<Observable<Message[]>> {
+        let subject: Subject<Message[]> = new Subject;
+
+        let list = this.db
+            .collection<User>("users", ref =>
+                ref.where('uid', '==', uid))
+            .valueChanges()
+            .subscribe(list => {
+                if (list && list[0]) {
+                    var id = list[0].id;
+
+                    let itemsList = this.db.collection<Message>('messages', ref =>
+                        ref.where('recipient', '==', id));
+                    itemsList.valueChanges().subscribe(m => subject.next(m));
+                }
+                else {
+                    subject.next(null);
+                }
+            });
+
+        return Promise.resolve(subject);
+    }
+
+    getSentMessages(uid: string): Promise<Observable<Message[]>> {
+        let itemsList = this.db.collection<Message>('messages', ref =>
+            ref.where('sender', '==', uid));
+        return Promise.resolve(itemsList.valueChanges());
+    }
+
+    sendMessage(message: Message, successCallback?: (r: Response) => void) {
+        this.http.post(this.sendMessageUrl, message)
+            .toPromise()
+            .then(response => {
+                if (successCallback) {
+                    successCallback(response);
+                }
+            })
+            .catch((error) => {
+                debugger;
+            });
+    }
+
+    markMessageRead(id: string, isRead: boolean, successCallback?: (r: Response) => void) {
+        this.http.post(this.markMessageReadUrl, { id: id, isRead: isRead })
+            .toPromise()
+            .then(response => {
+                if (successCallback) {
+                    successCallback(response);
+                }
+            })
+            .catch((error) => {
+                debugger;
+            });
     }
 }
