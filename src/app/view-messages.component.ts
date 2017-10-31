@@ -15,6 +15,7 @@ import { DbService } from './db.service';
 export class ViewMessagesComponent implements OnInit {
     messages: Observable<Message[]>;
     message: Message;
+    senderName: string;
     user: User;
 
     constructor(private dbService: DbService,
@@ -30,7 +31,12 @@ export class ViewMessagesComponent implements OnInit {
         });
     }
 
-    openMessage(id: string): void {
-        this.messages.subscribe((ms) => this.message = ms.find((m) => m.id == id));
+    openMessage(message: Message): void {
+        this.message = message;
+        this.senderName = "PlaytestHub";
+        this.dbService.getUser(this.message.sender).then(u => u.subscribe(user => {
+            this.senderName = user.displayName;
+        }));
+
     }
 }

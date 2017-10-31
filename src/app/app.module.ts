@@ -17,6 +17,7 @@ import { GamesListComponent } from './games-list.component';
 import { LeaveFeedbackComponent } from './leave-feedback.component';
 import { ApplyPointsComponent } from './apply-points.component';
 import { GameStatsComponent } from './game-stats.component';
+import { MessageStatsComponent } from './message-stats.component';
 import { FeedbackStatsComponent } from './feedback-stats.component';
 import { GameDetailComponent } from './game-detail.component';
 import { AddGameComponent } from './add-game.component';
@@ -42,6 +43,7 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
         GamesListComponent,
         FeedbackListComponent,
         GameStatsComponent,
+        MessageStatsComponent,
         FeedbackStatsComponent,
         GameDetailComponent,
         AddGameComponent,

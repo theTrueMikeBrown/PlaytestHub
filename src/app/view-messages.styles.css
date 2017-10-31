@@ -2,3 +2,17 @@
   text-align: left;
   margin: 1em;
 }
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: #ACB;
+}
+
+.messageBox {
+  border: 1px black solid;
+  background-color: #EEFFF8;
+  padding: 1em;
+}
+
+.messageDiv {
+  margin-bottom: 1em;
+}

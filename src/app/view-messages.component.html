@@ -18,9 +18,34 @@
     </ul>
   </div>
 
-  <h3 *ngIf="message">{{message.subject}}</h3>
-  <div *ngFor="let m of messages | async"
-       (click)="openMessage(m.id)" class="search-result">
-    <span>{{m.subject}}</span>
+  <div *ngIf="message" class="messageDiv">
+    <h3>Subject: {{message.subject}}</h3>
+    <h5>From: {{senderName}}</h5>
+    <h5>Date: {{message.sentDate}}</h5>
+    <div class="messageBox">{{message.text}}</div>
   </div>
+
+  <!--id: string;
+    subject: string;
+    text: string;
+    sender: string;
+    recipient: string;
+    isRead: boolean;
+    sentDate: Date;-->
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Sender</th>
+        <th>Subject</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let m of messages | async"
+          (click)="openMessage(m)" class="search-result"
+          message-stats [message]="m"></tr>
+    </tbody>
+  </table>
 </div>
