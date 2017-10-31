@@ -5,4 +5,5 @@
     sender: string;
     recipient: string;
     isRead: boolean;
+    sentDate: Date;
 }

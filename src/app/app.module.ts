@@ -21,6 +21,7 @@ import { FeedbackStatsComponent } from './feedback-stats.component';
 import { GameDetailComponent } from './game-detail.component';
 import { AddGameComponent } from './add-game.component';
 import { UsersGamesComponent } from './users-games.component';
+import { ViewMessagesComponent } from './view-messages.component';
 import { UsersProfileComponent } from './users-profile.component';
 import { GameEditComponent } from './game-edit.component';
 import { DbService } from './db.service';
@@ -48,7 +49,8 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
         UsersProfileComponent,
         GameEditComponent,
         LeaveFeedbackComponent,
-        ApplyPointsComponent
+        ApplyPointsComponent,
+        ViewMessagesComponent
     ],
     imports: [
         BrowserModule,
@@ -105,6 +107,10 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
             {
                 path: 'applyPoints',
                 component: ApplyPointsComponent
+            },
+            {
+                path: 'messages',
+                component: ViewMessagesComponent
             },
         ])
     ],

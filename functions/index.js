@@ -1,4 +1,5 @@
-﻿const functions = require('firebase-functions');
+﻿var FieldValue = require("firebase-admin").FieldValue;
+const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const cors = require('cors')({ origin: true });
 
@@ -282,6 +283,7 @@ exports.sendMessage = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         var message = req.body;
         message.isRead = false;
+        message.sentDate = FieldValue.serverTimestamp();
         admin.firestore()
             .collection('messages')
             .add(message)

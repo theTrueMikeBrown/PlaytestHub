@@ -321,8 +321,10 @@ export class DbService {
                     var id = list[0].id;
 
                     let itemsList = this.db.collection<Message>('messages', ref =>
-                        ref.where('recipient', '==', id));
-                    itemsList.valueChanges().subscribe(m => subject.next(m));
+                        ref.where('recipient', '==', id).orderBy('sentDate'));
+                    itemsList.valueChanges().subscribe(m => {
+                        subject.next(m);
+                    });
                 }
                 else {
                     subject.next(null);
