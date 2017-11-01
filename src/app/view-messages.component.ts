@@ -34,9 +34,11 @@ export class ViewMessagesComponent implements OnInit {
     openMessage(message: Message): void {
         this.message = message;
         this.senderName = "PlaytestHub";
-        this.dbService.getUser(this.message.sender).then(u => u.subscribe(user => {
-            this.senderName = user.displayName;
-        }));
-
+        if (this.message.sender) {
+            this.dbService.getUser(this.message.sender).then(u => u.subscribe(user => {
+                this.senderName = user.displayName;
+            }));
+        }
+        this.dbService.markMessageRead(this.message.id, true);
     }
 }

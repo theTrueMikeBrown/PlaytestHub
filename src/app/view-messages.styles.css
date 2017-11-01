@@ -1,6 +1,10 @@
 ﻿#list-component {
   text-align: left;
-  margin: 1em;
+}
+
+.table-striped > tbody > tr.selected,
+.table-striped > tbody > tr:nth-of-type(odd).selected {
+  background-color: #8BF;
 }
 
 .table-striped > tbody > tr:nth-of-type(odd) {
@@ -14,5 +18,19 @@
 }
 
 .messageDiv {
-  margin-bottom: 1em;
+  margin: 1em;
 }
+
+tbody:empty {
+  position: relative;
+}
+
+  tbody:empty:before {
+    color: #808080;
+    content: "No messages.";
+    display: block;
+    margin-top: 5em;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+  }

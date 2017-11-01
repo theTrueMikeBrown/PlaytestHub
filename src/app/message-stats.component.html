@@ -1,4 +1,3 @@
-﻿<td class="glyphicon glyphicon-zoom-in" style="border-top: none;"></td>
-<td>{{senderName}}</td>
-<td>{{message.subject}}</td>
+﻿<td>{{(senderName.length > 18)? (senderName | slice:0:18)+'...' : (senderName)}}</td>
+<td [ngStyle]="{'font-weight': message.isRead?'normal':'bold'}">{{(message.subject.length > 18)? (message.subject | slice:0:18)+'...' : (message.subject)}}</td>
 <td>{{message.sentDate | date:'shortDate' }}</td>
