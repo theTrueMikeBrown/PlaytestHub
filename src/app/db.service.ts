@@ -25,6 +25,7 @@ export class DbService {
     readonly applyPointUrl = "https://us-central1-playtesthub.cloudfunctions.net/applyPoints";
     readonly sendMessageUrl = "https://us-central1-playtesthub.cloudfunctions.net/sendMessage";
     readonly markMessageReadUrl = "https://us-central1-playtesthub.cloudfunctions.net/markMessageRead";
+    readonly deleteMessageUrl = "https://us-central1-playtesthub.cloudfunctions.net/deleteMessage";
 
     constructor(private db: AngularFirestore,
         private http: Http) { }
@@ -371,6 +372,19 @@ export class DbService {
 
     markMessageRead(id: string, isRead: boolean, successCallback?: (r: Response) => void) {
         this.http.post(this.markMessageReadUrl, { id: id, isRead: isRead })
+            .toPromise()
+            .then(response => {
+                if (successCallback) {
+                    successCallback(response);
+                }
+            })
+            .catch((error) => {
+                debugger;
+            });
+    }
+
+    deleteMessage(id: string, successCallback?: (r: Response) => void) {
+        this.http.post(this.deleteMessageUrl, { id: id })
             .toPromise()
             .then(response => {
                 if (successCallback) {

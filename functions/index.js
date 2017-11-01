@@ -312,3 +312,20 @@ exports.markMessageRead = functions.https.onRequest((req, res) => {
             });
     });
 });
+
+exports.deleteMessage = functions.https.onRequest((req, res) => {
+    cors(req, res, () => {
+        var id = req.body.id;
+        var isRead = req.body.isRead;
+        admin.firestore()
+            .collection('messages')
+            .doc(id)
+            .delete()
+            .then(() => {
+                res.status(200).send("success");
+            })
+            .catch((error) => {
+                res.status(500).send("error: " + error);
+            });
+    });
+});

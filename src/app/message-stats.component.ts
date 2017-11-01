@@ -18,7 +18,9 @@ export class MessageStatsComponent implements OnInit {
         this.senderName = "PlaytestHub";
         if (this.message.sender) {
             this.dbService.getUser(this.message.sender).then(u => u.subscribe(user => {
-                this.senderName = user.displayName;
+                if (user) {
+                    this.senderName = user.displayName;
+                }
             }));
         }
     }

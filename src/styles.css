@@ -52,6 +52,12 @@
   color: #142;
 }
 
+.action-button.inner-upper-right {
+  position: absolute;
+  right: 21px;
+  top: 100px;
+}
+
 .action-button {
   position: absolute;
   top: 0;
