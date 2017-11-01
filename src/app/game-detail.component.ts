@@ -6,6 +6,7 @@ import 'rxjs/add/operator/switchMap';
 
 import { User } from './user';
 import { Game } from './game';
+import { Playtest } from './playtest';
 import { DbService } from './db.service';
 import { Feedback } from './feedback';
 
@@ -31,24 +32,19 @@ export class GameDetailComponent implements OnInit {
     }
 
     playTestGame(): void {
+        let playtest: Playtest = {
+            gameId: this.game.id,
+            id: this.user.id,
+            started: 0,
+            gameName: this.game.name,
+            dateString: null
+        };
         this.dbService.addPlaytest(
-            {
-                gameId: this.game.id,
-                id: this.user.id,
-                started: 0,
-                gameName: this.game.name,
-                dateString: null
-            }, () => {
-                this.dbService.saveFeedback({
-                    feelings: ['', '', ''], categorization: ['', '', ''], general: ['', ''], length: ['', '', ''],
-                    art: ['', ''], rules: ['', '', ''], mechanics: ['', '', ''], final: ['', '', '', ''],
-                    userId: this.user.id, gameId: this.game.id, id: '', approved: false, submitted: false
-                }, () => {
-                    let navigationExtras: NavigationExtras = {
-                        queryParams: { 'message': 'You are now playtesting ' + this.game.name + '.' },
-                    };
-                    this.router.navigate(['/games'], navigationExtras);
-                });
+            playtest, this.user, this.game, () => {
+                let navigationExtras: NavigationExtras = {
+                    queryParams: { 'message': 'You are now playtesting ' + this.game.name + '.' },
+                };
+                this.router.navigate(['/games'], navigationExtras);
             });
     }
 
@@ -77,7 +73,9 @@ export class GameDetailComponent implements OnInit {
                                 this.alreadyPlaytesting = true;
                                 this.dbService.getUserFeedbackForGame(this.user.id, game.id).then(f => {
                                     f.subscribe(feedback => {
-                                        this.feedbackId = feedback.id;
+                                        if (feedback) {
+                                            this.feedbackId = feedback.id;
+                                        }
                                     });
                                 });
                             }

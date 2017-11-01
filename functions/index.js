@@ -283,7 +283,7 @@ exports.sendMessage = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         var message = req.body;
         message.isRead = false;
-        message.sentDate = FieldValue.serverTimestamp();
+        message.sentDate = new Date();
         admin.firestore()
             .collection('messages')
             .add(message)

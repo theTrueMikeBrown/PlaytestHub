@@ -75,13 +75,29 @@ export class DbService {
         return Promise.resolve(itemsList.valueChanges());
     }
 
-    addPlaytest(playtest: Playtest, successCallback?: (r: Response) => void) {
+    addPlaytest(playtest: Playtest, user: User, game: Game, successCallback?: (r: Response) => void) {
         this.http.post(this.addPlaytestUrl, playtest)
             .toPromise()
             .then(response => {
-                if (successCallback) {
-                    successCallback(response);
-                }
+                this.saveFeedback({
+                    feelings: ['', '', ''], categorization: ['', '', ''], general: ['', ''], length: ['', '', ''],
+                    art: ['', ''], rules: ['', '', ''], mechanics: ['', '', ''], final: ['', '', '', ''],
+                    userId: user.id, gameId: game.id, id: '', approved: false, submitted: false
+                }, () => {
+                    if (successCallback) {
+                        successCallback(response);
+                    }
+                    let message: Message = {
+                        id: '',
+                        subject: "Congrats!",
+                        text: user.displayName + " just signed up to playtest " + game.name + "!\r\n\r\n-PlaytestHub",
+                        sender: user.uid,
+                        recipient: game.owner,
+                        isRead: false,
+                        sentDate: new Date(),
+                    };
+                    this.sendMessage(message)
+                });
             })
             .catch((error) => {
                 debugger;
@@ -173,7 +189,7 @@ export class DbService {
         let itemsList = this.db.collection<Feedback>('feedback', ref =>
             ref.where('gameId', '==', gameId)
                 .where('approved', '==', true)
-        //        .orderBy("approvalDate")
+            //        .orderBy("approvalDate")
         );
         return Promise.resolve(itemsList.valueChanges());
     }
@@ -321,7 +337,7 @@ export class DbService {
                     var id = list[0].id;
 
                     let itemsList = this.db.collection<Message>('messages', ref =>
-                        ref.where('recipient', '==', id).orderBy('sentDate'));
+                        ref.where('recipient', '==', id).orderBy('sentDate', "desc"));
                     itemsList.valueChanges().subscribe(m => {
                         subject.next(m);
                     });
