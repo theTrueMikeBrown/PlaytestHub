@@ -21,14 +21,14 @@ export class LoginInfoService {
         return this.userObs.toPromise();
     }
 
-    setLoginInfo(user: User) {
-        var userPromise = this.dbService.getUserBySecretId(user.uid);
+    setLoginInfo(loginUser: User) {
+        var userPromise = this.dbService.getUserBySecretId(loginUser.uid);
         userPromise.then(u => {
             u.subscribe(user => {
                 if (user) {
-                    user.id = user.id;
-                    user.isModerator = user.isModerator;
-                    user.points = user.points;
+                    loginUser.id = user.id;
+                    loginUser.isModerator = user.isModerator;
+                    loginUser.points = user.points;
                 }
                 else {
                     var uuidv4 = (): string => {
@@ -38,11 +38,11 @@ export class LoginInfoService {
                         });
                     }
 
-                    user.id = uuidv4();
-                    this.dbService.saveUser(user);
+                    loginUser.id = uuidv4();
+                    this.dbService.saveUser(loginUser);
                 }
-                this.user = user;
-                this.userObs.next(user);
+                this.user = loginUser;
+                this.userObs.next(loginUser);
                 this.userObs.complete();
             });
         });
