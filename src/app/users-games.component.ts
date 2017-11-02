@@ -5,7 +5,7 @@ import { LoginInfoService } from './loginInfo.service';
 
 import { Game } from './game';
 import { User } from './user';
-import { DbService } from './db.service';
+import { BusinessService } from './business.service';
 
 @Component({
     selector: 'users-games',
@@ -17,7 +17,7 @@ export class UsersGamesComponent implements OnInit {
     profile: User;
     user: User;
 
-    constructor(private dbService: DbService,
+    constructor(private business: BusinessService,
         private router: Router,
         private route: ActivatedRoute,
         private loginInfoService: LoginInfoService) {
@@ -30,8 +30,8 @@ export class UsersGamesComponent implements OnInit {
 
         this.route.paramMap.subscribe((params: ParamMap) => {
             let id: string = params.get('id');
-            this.dbService.getUser(id).then(u => u.subscribe(user => this.profile = user));
-            this.dbService.getGamesByUser(id).then(g => this.games = g);
+            this.business.getUser(id).then(u => u.subscribe(user => this.profile = user));
+            this.business.getGamesByUser(id).then(g => this.games = g);
         });
       }
 

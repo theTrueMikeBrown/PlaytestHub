@@ -5,7 +5,7 @@ import { Router, NavigationExtras, ActivatedRoute, ParamMap } from '@angular/rou
 import { LoginInfoService } from './loginInfo.service';
 
 import { User } from './user';
-import { DbService } from './db.service';
+import { BusinessService } from './business.service';
 import { Game } from './game';
 
 @Component({
@@ -20,10 +20,10 @@ export class GameEditComponent implements OnInit {
 
     constructor(private router: Router,
         private route: ActivatedRoute,
-        private dbService: DbService) { }
+        private business: BusinessService) { }
     
     saveGame(): void {
-        this.dbService.updateGame(this.game, (response) => {
+        this.business.updateGame(this.game, (response) => {
             this.message.next("Saved!");
             this.messageActive = "message";
         });
@@ -36,7 +36,7 @@ export class GameEditComponent implements OnInit {
 
     ngOnInit(): void {
         this.route.paramMap
-            .switchMap((params: ParamMap) => this.dbService.getGame(params.get('id')))
+            .switchMap((params: ParamMap) => this.business.getGame(params.get('id')))
             .subscribe(g => g.subscribe(game => {
                 this.game = game;
             }));

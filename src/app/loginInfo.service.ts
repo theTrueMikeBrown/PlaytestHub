@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
 import { User } from './user';
-import { DbService } from './db.service';
+import { BusinessService } from './business.service';
 
 @Injectable()
 export class LoginInfoService {
@@ -12,7 +12,7 @@ export class LoginInfoService {
     user: User;
 
     constructor(private db: AngularFirestore,
-        private dbService: DbService) {}
+        private business: BusinessService) {}
 
     getLoginInfo(): Promise<User> {
         if (this.user) {
@@ -22,7 +22,7 @@ export class LoginInfoService {
     }
 
     setLoginInfo(loginUser: User) {
-        var userPromise = this.dbService.getUserBySecretId(loginUser.uid);
+        var userPromise = this.business.getUserBySecretId(loginUser.uid);
         userPromise.then(u => {
             u.subscribe(user => {
                 if (user) {
@@ -39,7 +39,7 @@ export class LoginInfoService {
                     }
 
                     loginUser.id = uuidv4();
-                    this.dbService.saveUser(loginUser);
+                    this.business.saveUser(loginUser);
                 }
                 this.user = loginUser;
                 this.userObs.next(loginUser);

@@ -1,6 +1,6 @@
 ﻿import { Component, Input, OnInit } from '@angular/core';
 import { Message } from './message';
-import { DbService } from './db.service';
+import { BusinessService } from './business.service';
 import { User } from './user';
 
 @Component({
@@ -12,12 +12,12 @@ export class MessageStatsComponent implements OnInit {
     @Input() message: Message;
     senderName: string;
 
-    constructor(private dbService: DbService) { }
+    constructor(private business: BusinessService) { }
 
     ngOnInit(): void {
         this.senderName = "PlaytestHub";
         if (this.message.sender) {
-            this.dbService.getUser(this.message.sender).then(u => u.subscribe(user => {
+            this.business.getUser(this.message.sender).then(u => u.subscribe(user => {
                 if (user) {
                     this.senderName = user.displayName;
                 }

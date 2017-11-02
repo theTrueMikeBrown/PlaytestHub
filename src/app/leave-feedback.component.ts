@@ -3,7 +3,7 @@ import { Router, NavigationExtras, ActivatedRoute, ParamMap } from '@angular/rou
 import { LoginInfoService } from './loginInfo.service';
 
 import { User } from './user';
-import { DbService } from './db.service';
+import { BusinessService } from './business.service';
 import { Game } from './game';
 import { Feedback } from './feedback';
 
@@ -24,16 +24,16 @@ export class LeaveFeedbackComponent implements OnInit {
 
     constructor(private router: Router,
         private route: ActivatedRoute,
-        private dbService: DbService,
+        private business: BusinessService,
         private loginInfoService: LoginInfoService) {
     }
 
     saveFeedback(): void {
-        this.dbService.saveFeedback(this.feedback);
+        this.business.saveFeedback(this.feedback);
     }
 
     submitFeedback(): void {
-        let errors: string[] = this.dbService.submitFeedback(this.feedback);
+        let errors: string[] = this.business.submitFeedback(this.feedback);
         if (errors.length === 0) {
             let navigationExtras: NavigationExtras = {
                 queryParams: { 'message': 'Feedback Submitted Successfully!' },
@@ -47,7 +47,7 @@ export class LeaveFeedbackComponent implements OnInit {
 
     approveFeedback(): void {
         this.feedback.approved = true;
-        this.dbService.approveFeedback(this.feedback, this.user.uid);
+        this.business.approveFeedback(this.feedback, this.user.uid);
         
         let navigationExtras: NavigationExtras = {
             queryParams: { 'message': 'Feedback Approved!' },
@@ -56,7 +56,7 @@ export class LeaveFeedbackComponent implements OnInit {
     }
 
     rejectFeedback(): void {
-        this.dbService.rejectFeedback(this.feedback, this.rejectReason, this.user.uid);
+        this.business.rejectFeedback(this.feedback, this.rejectReason, this.user.uid);
 
         let navigationExtras: NavigationExtras = {
             queryParams: { 'message': 'Feedback Rejected!' },
@@ -69,12 +69,12 @@ export class LeaveFeedbackComponent implements OnInit {
             this.user = user;
             this.route.paramMap.subscribe(p => {
                 if (p.has('id')) {
-                    this.dbService.getFeedback(p.get('id')).then(f => f.subscribe(feedback => {
+                    this.business.getFeedback(p.get('id')).then(f => f.subscribe(feedback => {
                         this.feedback = feedback;
                         this.reviewing = feedback.userId != this.user.id && feedback.submitted && !feedback.approved && this.user.isModerator;
                         this.editing = feedback.userId == this.user.id && !feedback.submitted && !feedback.approved;
                         this.pendingApproval = feedback.submitted && !feedback.approved;
-                        this.dbService.getGame(feedback.gameId).then(g => {
+                        this.business.getGame(feedback.gameId).then(g => {
                             g.subscribe(game => {
                                 this.gameName = game.name;
                                 this.owner = game.owner == this.user.id;

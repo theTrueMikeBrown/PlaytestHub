@@ -3,7 +3,7 @@ import { Router, NavigationExtras, ActivatedRoute, ParamMap } from '@angular/rou
 import { LoginInfoService } from './loginInfo.service';
 
 import { User } from './user';
-import { DbService } from './db.service';
+import { BusinessService } from './business.service';
 import { Observable } from 'rxjs/Observable';
 
 import { Playtest } from './playtest';
@@ -20,7 +20,7 @@ export class UsersProfileComponent implements OnInit {
     feedbackId: string;
     constructor(private router: Router,
         private route: ActivatedRoute,
-        private dbService: DbService,
+        private business: BusinessService,
         private loginInfoService: LoginInfoService) { }
 
     ngOnInit(): void {
@@ -31,7 +31,7 @@ export class UsersProfileComponent implements OnInit {
         this.route.paramMap
             .switchMap((params: ParamMap) => {
                 let id: string = params.get('id');
-                this.dbService
+                this.business
                     .getUser(id)
                     .then(p => {
                         p.subscribe(profile => {
@@ -39,14 +39,14 @@ export class UsersProfileComponent implements OnInit {
                         });
                     });
 
-                let result = this.dbService
+                let result = this.business
                     .getPlaytestByUserId(id)
                     .then(p => {
                         p.subscribe(playtest => {
                             if (playtest) {
                                 playtest.dateString = new Date(playtest.started).toDateString();
                                 this.playtest = playtest;
-                                this.dbService.getUserFeedbackForGame(this.user.id, playtest.gameId).then(f => {
+                                this.business.getUserFeedbackForGame(this.user.id, playtest.gameId).then(f => {
                                     f.subscribe(feedback => {
                                         this.feedbackId = feedback.id;
                                     });

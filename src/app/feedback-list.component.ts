@@ -6,7 +6,7 @@ import { LoginInfoService } from './loginInfo.service';
 import { Feedback } from './feedback';
 import { Game } from './game';
 import { User } from './user';
-import { DbService } from './db.service';
+import { BusinessService } from './business.service';
 
 @Component({
     selector: 'feedback-list',
@@ -18,7 +18,7 @@ export class FeedbackListComponent implements OnInit {
     game: Game;
     user: User;
 
-    constructor(private dbService: DbService,
+    constructor(private business: BusinessService,
         private router: Router,
         private route: ActivatedRoute,
         private loginInfoService: LoginInfoService) {
@@ -31,8 +31,8 @@ export class FeedbackListComponent implements OnInit {
 
         this.route.paramMap.subscribe((params: ParamMap) => {
             let id: string = params.get('id');
-            this.dbService.getFeedbackForGame(id).then(feedbacks => this.feedbacks = feedbacks);
-            this.dbService.getGame(id).then(g => g.subscribe(game => this.game = game));
+            this.business.getFeedbackForGame(id).then(feedbacks => this.feedbacks = feedbacks);
+            this.business.getGame(id).then(g => g.subscribe(game => this.game = game));
         });
       }
 

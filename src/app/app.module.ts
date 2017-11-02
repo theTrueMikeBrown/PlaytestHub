@@ -25,6 +25,7 @@ import { UsersGamesComponent } from './users-games.component';
 import { ViewMessagesComponent } from './view-messages.component';
 import { UsersProfileComponent } from './users-profile.component';
 import { GameEditComponent } from './game-edit.component';
+import { BusinessService } from './business.service';
 import { DbService } from './db.service';
 import { LoginInfoService } from './loginInfo.service';
 
@@ -116,7 +117,7 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
             },
         ])
     ],
-    providers: [DbService, LoginInfoService],
+    providers: [DbService, LoginInfoService, BusinessService],
     bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -7,7 +7,7 @@ import 'rxjs/add/operator/switchMap';
 import { User } from './user';
 import { Game } from './game';
 import { Playtest } from './playtest';
-import { DbService } from './db.service';
+import { BusinessService } from './business.service';
 import { Feedback } from './feedback';
 
 @Component({
@@ -25,7 +25,7 @@ export class GameDetailComponent implements OnInit {
     feedbackExists: boolean;
 
     constructor(
-        private dbService: DbService,
+        private business: BusinessService,
         private route: ActivatedRoute,
         private router: Router,
         private location: Location,
@@ -40,7 +40,7 @@ export class GameDetailComponent implements OnInit {
             gameName: this.game.name,
             dateString: null
         };
-        this.dbService.addPlaytest(
+        this.business.addPlaytest(
             playtest, this.user, this.game, () => {
                 let navigationExtras: NavigationExtras = {
                     queryParams: { 'message': 'You are now playtesting ' + this.game.name + '.' },
@@ -52,27 +52,27 @@ export class GameDetailComponent implements OnInit {
     deleteGame(): void {
         this.game.active = false;
         this.game.id = this.game.id;
-        this.dbService.updateGame(this.game);
+        this.business.updateGame(this.game);
     }
 
     undeleteGame(): void {
         this.game.active = true;
         this.game.id = this.game.id;
-        this.dbService.updateGame(this.game);
+        this.business.updateGame(this.game);
     }
 
     ngOnInit(): void {
         this.loginInfoService.getLoginInfo().then(user => {
             this.user = user;
             this.route.paramMap
-                .switchMap((params: ParamMap) => this.dbService.getGame(params.get('id')))
+                .switchMap((params: ParamMap) => this.business.getGame(params.get('id')))
                 .subscribe(g => g.subscribe(game => {
                     this.game = game;
-                    this.dbService.getPlaytestByUserId(this.user.id).then(p => {
+                    this.business.getPlaytestByUserId(this.user.id).then(p => {
                         p.subscribe((playtest) => {
                             if (playtest && game.id === playtest.gameId) {
                                 this.alreadyPlaytesting = true;
-                                this.dbService.getUserFeedbackForGame(this.user.id, game.id).then(f => {
+                                this.business.getUserFeedbackForGame(this.user.id, game.id).then(f => {
                                     f.subscribe(feedback => {
                                         if (feedback && !feedback.submitted) {
                                             this.feedbackId = feedback.id;
@@ -86,7 +86,7 @@ export class GameDetailComponent implements OnInit {
                             }
                             else {
                                 this.alreadyPlaytesting = false;
-                                this.dbService.getUserFeedbackForGame(this.user.id, game.id).then(f => {
+                                this.business.getUserFeedbackForGame(this.user.id, game.id).then(f => {
                                     f.subscribe(feedback => {
                                         if (feedback) {
                                             this.alreadyPlaytested = true;
@@ -96,7 +96,7 @@ export class GameDetailComponent implements OnInit {
                             }
                         });
                     });
-                    this.dbService.getFeedbackForGame(game.id).then(f => f.subscribe(feedbacks => {
+                    this.business.getFeedbackForGame(game.id).then(f => f.subscribe(feedbacks => {
                         this.feedbackExists = feedbacks.length > 0;
                     }));
                 }));

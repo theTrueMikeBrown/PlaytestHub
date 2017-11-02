@@ -8,15 +8,14 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 
 import { LoginInfoService } from './loginInfo.service';
-import { DbService } from './db.service';
+import { BusinessService } from './business.service';
 import { Game } from './game';
 import { User } from './user';
 
 @Component({
     selector: 'apply-points',
     templateUrl: './apply-points.component.html',
-    styleUrls: ['./apply-points.styles.css'],
-    providers: [DbService]
+    styleUrls: ['./apply-points.styles.css']
 })
 export class ApplyPointsComponent {
     games: Observable<Game[]>;
@@ -28,7 +27,7 @@ export class ApplyPointsComponent {
     selectedGameObj: Game;
 
     constructor(
-        private dbService: DbService,
+        private business: BusinessService,
         private router: Router,
         private route: ActivatedRoute,
         private loginInfoService: LoginInfoService) {
@@ -42,13 +41,13 @@ export class ApplyPointsComponent {
         });
         this.loginInfoService.getLoginInfo().then(user => {
             this.user = user;
-            this.dbService.getGamesByUser(user.id).then(g => this.games = g);
+            this.business.getGamesByUser(user.id).then(g => this.games = g);
         });
         this.message = new Subject<string>();
     }
 
     applyPoints(): void {
-        this.dbService.applyPoints(this.selectedGame, this.points, this.user.uid, (r) => {
+        this.business.applyPoints(this.selectedGame, this.points, this.user.uid, (r) => {
 
             let navigationExtras: NavigationExtras = {
                 queryParams: { 'message': r.text() },
@@ -63,6 +62,6 @@ export class ApplyPointsComponent {
     }
 
     gameSelected(id): void {
-        this.dbService.getGame(id).then(g => g.subscribe(game => this.selectedGameObj = game));
+        this.business.getGame(id).then(g => g.subscribe(game => this.selectedGameObj = game));
     }
 }

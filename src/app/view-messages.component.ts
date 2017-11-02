@@ -5,7 +5,7 @@ import { LoginInfoService } from './loginInfo.service';
 
 import { Message } from './message';
 import { User } from './user';
-import { DbService } from './db.service';
+import { BusinessService } from './business.service';
 
 @Component({
     selector: 'view-messages',
@@ -18,7 +18,7 @@ export class ViewMessagesComponent implements OnInit {
     senderName: string;
     user: User;
 
-    constructor(private dbService: DbService,
+    constructor(private business: BusinessService,
         private router: Router,
         private route: ActivatedRoute,
         private loginInfoService: LoginInfoService) {
@@ -27,7 +27,7 @@ export class ViewMessagesComponent implements OnInit {
     ngOnInit(): void {
         this.loginInfoService.getLoginInfo().then(user => {
             this.user = user;
-            this.dbService.getMessages(user.uid).then(messages => this.messages = messages);
+            this.business.getMessages(user.uid).then(messages => this.messages = messages);
         });
     }
 
@@ -35,18 +35,18 @@ export class ViewMessagesComponent implements OnInit {
         this.message = message;
         this.senderName = "PlaytestHub";
         if (this.message.sender) {
-            this.dbService.getUser(this.message.sender).then(u => u.subscribe(user => {
+            this.business.getUser(this.message.sender).then(u => u.subscribe(user => {
                 if (user) {
                     this.senderName = user.displayName;
                 }
             }));
         }
-        this.dbService.markMessageRead(this.message.id, true);
+        this.business.markMessageRead(this.message.id, true);
     }
 
     delete(): void {
         let id = this.message.id;
         this.message = null;
-        this.dbService.deleteMessage(id, (r) => { });
+        this.business.deleteMessage(id, (r) => { });
     }
 }
