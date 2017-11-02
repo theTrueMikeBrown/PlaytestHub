@@ -1,6 +1,6 @@
 ﻿<div class="addGame" *ngIf="game">
   <div class="upperLeft">
-    <a class="action-button" routerLink="/games">
+    <a class="action-button" routerLink="/games" data-tooltip="Discard Game">
       <span class="glyphicon glyphicon-trash"></span>
     </a>
   </div>
@@ -30,7 +30,7 @@
     <div><h4>Priority: {{game.priority}}</h4></div>
   </div>
   <div class="lowerRightBottom">
-    <a class="action-button" (click)="addGame()">
+    <a class="action-button" (click)="addGame()" data-tooltip="Save Game">
       <span class="glyphicon glyphicon-floppy-disk"></span>
     </a>
   </div>

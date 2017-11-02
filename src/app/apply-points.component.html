@@ -1,6 +1,6 @@
 ﻿<div id="points-component" *ngIf="user">
   <div class="upperLeft">
-    <a class="action-button" routerLink="/games">
+    <a class="action-button" routerLink="/games" data-tooltip="Home">
       <span class="glyphicon glyphicon-home"></span>
     </a>
   </div>
@@ -24,7 +24,7 @@
     <input [(ngModel)]="points" min="{{-selectedGameObj.priority}}" max="{{user.points}}" type="number" />
   </div>
   <div class="lowerRightBottom">
-    <a class="action-button" (click)="applyPoints()">
+    <a class="action-button" (click)="applyPoints()" data-tooltip="Save Changes">
       <span class="glyphicon glyphicon-floppy-disk"></span>
     </a>
   </div>
