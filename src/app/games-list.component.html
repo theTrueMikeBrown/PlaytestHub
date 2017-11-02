@@ -1,4 +1,10 @@
 ﻿<div id="list-component" *ngIf="user">
+  <div class="upperLeft" *ngIf="unreadMessages">
+    <a routerLink="/messages" class="action-button leftHover" data-tooltip="View my messages">
+      <span class="glyphicon glyphicon-envelope"></span>
+    </a>
+  </div>
+
   <div class="upperRight">
     <span class="action-button">
       <span class="glyphicon glyphicon-menu-hamburger"></span>

@@ -26,6 +26,7 @@ export class GamesListComponent {
     feedbackId: string;
     canModerate: boolean = false;
     moderateId: string;
+    unreadMessages: boolean;
 
     constructor(
         private dbService: DbService,
@@ -65,6 +66,11 @@ export class GamesListComponent {
                     }
                 });
             });
+            this.dbService.getMessages(this.user.uid).then(m => m.subscribe(messages => {
+                if (messages && messages.length > 0 && messages.find(message => !message.isRead)) {
+                    this.unreadMessages = true;
+                }
+            }));
         });
     }
 
