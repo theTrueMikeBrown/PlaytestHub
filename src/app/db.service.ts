@@ -92,12 +92,12 @@ export class DbService {
                         id: '',
                         subject: "Congrats!",
                         text: user.displayName + " just signed up to playtest " + game.name + "!\r\n\r\n-PlaytestHub",
-                        sender: user.uid,
+                        sender: '',
                         recipient: game.owner,
                         isRead: false,
                         sentDate: new Date(),
                     };
-                    this.sendMessage(message)
+                    this.sendMessage(message);
                 });
             })
             .catch((error) => {
@@ -122,6 +122,16 @@ export class DbService {
                 if (successCallback) {
                     successCallback(response);
                 }
+                let message: Message = {
+                    id: '',
+                    subject: "Hey!",
+                    text: "You just added a new game to PlaytestHub!\r\n\r\nIn order for it to get to the top of the list and be playtested, you should sign up to playtest other player's games. Select a game <a href=\"/games\">here</a>, and then click \"Playtest\" in the menu. Play the game then click Leave Feedback in the menu. Once your feedback is accepted you can get a point with which to make your game appear higher in the list of games to playtest.\r\n\r\n-PlaytestHub",
+                    sender: '',
+                    recipient: game.owner,
+                    isRead: false,
+                    sentDate: new Date(),
+                };
+                this.sendMessage(message);
             })
             .catch((error) => {
                 debugger;
@@ -244,13 +254,25 @@ export class DbService {
             });
     }
 
-    rejectFeedback(feedback: Feedback, uid: string, successCallback?: (r: Response) => void) {
+    rejectFeedback(feedback: Feedback, reason: string, uid: string, successCallback?: (r: Response) => void) {
         this.http.post(this.rejectFeedbackUrl, { feedback: feedback, uid: uid })
             .toPromise()
             .then(response => {
                 if (successCallback) {
                     successCallback(response);
                 }
+                this.getGame(feedback.gameId).then(g => g.subscribe(game => {
+                    let message: Message = {
+                        id: '',
+                        subject: "Oh Noes!",
+                        text: "Your feedback for " + game.name + " was rejected!\r\n\r\nThe reason that the moderator gave was:\r\n\r\n" + reason + "\r\n\r\nDon't get discouraged! You can fix your feedback <a href=\"/feedback/" + feedback.id + "\">here</a> and resubmit it.\r\n\r\n-PlaytestHub",
+                        sender: '',
+                        recipient: feedback.userId,
+                        isRead: false,
+                        sentDate: new Date(),
+                    };
+                    this.sendMessage(message);
+                }));
             })
             .catch((error) => {
                 debugger;
@@ -266,6 +288,18 @@ export class DbService {
                     if (successCallback) {
                         successCallback(response);
                     }
+                    this.getGame(feedback.gameId).then(g => g.subscribe(game => {
+                        let message: Message = {
+                            id: '',
+                            subject: "Woot!",
+                            text: "Someone left feedback on " + game.name + "!\r\n\r\nClick <a href=\"/feedback/" + feedback.id + "\">here</a> to view it.\r\n\r\n-PlaytestHub",
+                            sender: '',
+                            recipient: game.owner,
+                            isRead: false,
+                            sentDate: new Date(),
+                        };
+                        this.sendMessage(message);
+                    }));
                 })
                 .catch((error) => {
                     debugger;
@@ -307,6 +341,29 @@ export class DbService {
                 if (successCallback) {
                     successCallback(response);
                 }
+                this.getGame(feedback.gameId).then(g => g.subscribe(game => {
+                    let message: Message = {
+                        id: '',
+                        subject: "Yes!",
+                        text: "Your feedbaack for " + game.name + " was approved, and you have earned a point!\r\n\r\nClick <a href=\"/applyPoints\">here</a> to increase your game's priority in the list.\r\n\r\n-PlaytestHub",
+                        sender: '',
+                        recipient: feedback.userId,
+                        isRead: false,
+                        sentDate: new Date(),
+                    };
+                    this.sendMessage(message)
+
+                    let message2: Message = {
+                        id: '',
+                        subject: "Sweet!",
+                        text: "Feedback for " + game.name + " was approved.\r\n\r\nClick <a href=\"/feedbackList/" + feedback.id + "\">here</a> to view it.\r\n\r\n-PlaytestHub",
+                        sender: '',
+                        recipient: game.owner,
+                        isRead: false,
+                        sentDate: new Date(),
+                    };
+                    this.sendMessage(message2)
+                }));
             })
             .catch((error) => {
                 debugger;

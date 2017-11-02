@@ -20,6 +20,7 @@ export class LeaveFeedbackComponent implements OnInit {
     owner: boolean = false;
     pendingApproval: boolean = false;
     user: User;
+    rejectReason: string;
 
     constructor(private router: Router,
         private route: ActivatedRoute,
@@ -55,10 +56,7 @@ export class LeaveFeedbackComponent implements OnInit {
     }
 
     rejectFeedback(): void {
-        this.dbService.rejectFeedback(this.feedback, this.user.uid);
-
-        //todo: make it send a message to the feedback leaver telling them why it was rejected (this.rejectReason).
-        //This will require adding in message sending and receiving.
+        this.dbService.rejectFeedback(this.feedback, this.rejectReason, this.user.uid);
 
         let navigationExtras: NavigationExtras = {
             queryParams: { 'message': 'Feedback Rejected!' },
