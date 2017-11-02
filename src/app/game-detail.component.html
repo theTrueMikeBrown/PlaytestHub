@@ -45,6 +45,11 @@
           <span class="glyphicon glyphicon-eye-open"></span>
         </a>
       </li>
+      <li class="upperRight-buttons__item">
+        <a routerLink="/user/{{game.owner}}/profile" class="upperRight-buttons__link" data-tooltip="View owner's profile">
+          <span class="glyphicon glyphicon-user"></span>
+        </a>
+      </li>
     </ul>
   </div>
 
@@ -55,7 +60,7 @@
   <h4>
     by:
     <span class="glyphicon glyphicon-user"></span>
-    <a href="/user/{{game.owner}}/profile">{{game.ownerName}}</a>
+    <a routerLink="/user/{{game.owner}}/profile">{{game.ownerName}}</a>
   </h4>
   <div class="left">
     <div>
