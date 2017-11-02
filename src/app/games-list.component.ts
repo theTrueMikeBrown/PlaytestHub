@@ -55,10 +55,10 @@ export class GamesListComponent {
             this.dbService.getPlaytestByUserId(this.user.id).then(p => {
                 p.subscribe(playtest => {
                     if (playtest) {
-                        this.playtesting = true;
                         this.dbService.getUserFeedbackForGame(this.user.id, playtest.gameId).then(f => {
                             f.subscribe(feedback => {
-                                if (feedback) {
+                                if (feedback && !feedback.submitted) {
+                                    this.playtesting = true;
                                     this.feedbackId = feedback.id;
                                 }
                             });

@@ -10,7 +10,7 @@
       <span class="glyphicon glyphicon-menu-hamburger"></span>
     </span>
     <ul class="upperRight-buttons">
-      <li *ngIf="user && user.id !== game.owner && game.priority >= 0 && !alreadyPlaytesting" class="upperRight-buttons__item">
+      <li *ngIf="user && user.id !== game.owner && game.priority >= 0 && !alreadyPlaytesting && !alreadyPlaytested" class="upperRight-buttons__item">
         <a (click)="playTestGame()" class="upperRight-buttons__link" data-tooltip="Playtest">
           <span class="glyphicon glyphicon-ok"></span>
         </a>

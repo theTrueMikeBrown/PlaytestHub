@@ -19,7 +19,8 @@ export class GameDetailComponent implements OnInit {
     game: Game;
     owner: User;
     user: User;
-    alreadyPlaytesting: boolean = true;
+    alreadyPlaytesting: boolean = false;
+    alreadyPlaytested: boolean = false;
     feedbackId: string;
     feedbackExists: boolean;
 
@@ -73,14 +74,25 @@ export class GameDetailComponent implements OnInit {
                                 this.alreadyPlaytesting = true;
                                 this.dbService.getUserFeedbackForGame(this.user.id, game.id).then(f => {
                                     f.subscribe(feedback => {
-                                        if (feedback) {
+                                        if (feedback && !feedback.submitted) {
                                             this.feedbackId = feedback.id;
+                                        }
+                                        else {
+                                            this.alreadyPlaytesting = false;
+                                            this.alreadyPlaytested = true;
                                         }
                                     });
                                 });
                             }
                             else {
                                 this.alreadyPlaytesting = false;
+                                this.dbService.getUserFeedbackForGame(this.user.id, game.id).then(f => {
+                                    f.subscribe(feedback => {
+                                        if (feedback) {
+                                            this.alreadyPlaytested = true;
+                                        }
+                                    });
+                                });
                             }
                         });
                     });
