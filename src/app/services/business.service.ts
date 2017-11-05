@@ -114,6 +114,17 @@ export class BusinessService {
 
     saveUser(user: User, successCallback?: (r: Response) => void) {
         this.db.saveUser(user, successCallback);
+
+        let message: Message = {
+            id: '',
+            subject: "Welcome to PlaytestHub!",
+            text: "Thanks for trying out PlaytestHub!\r\n\r\nIn order to get your games playtested you will need to do 2 things: Add them to the database, and get them to the top of the list so that other users will select them to playtest.\r\n\r\nTo get your games to the top of the list, you need to apply points to them. The easiest way to do this is to earn points by playtesting other user's games.\r\n\r\nIf you have any questions, praise, or feedback, contact theTrueMikeBrown at BGG\r\n\r\n-PlaytestHub",
+            sender: '',
+            recipient: user.id,
+            isRead: false,
+            sentDate: new Date(),
+        };
+        this.sendMessage(message);
     }
 
     getFeedbackReadyForApproval(): Promise<Observable<Feedback[]>> {

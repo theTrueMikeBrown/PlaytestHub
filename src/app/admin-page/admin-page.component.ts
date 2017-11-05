@@ -22,7 +22,6 @@ export class AdminPageComponent implements OnInit {
         this.loginInfoService.getLoginInfo().then(user => {
             this.user = user;
             if (!this.user.isAdmin) {
-                debugger;
                 let navigationExtras: NavigationExtras = {
                     queryParams: { 'message': 'You are not an admin.' },
                 };

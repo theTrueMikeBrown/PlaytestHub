@@ -92,9 +92,7 @@ export class DbService {
                     successCallback(response);
                 }
             })
-            .catch((error) => {
-                debugger;
-            });
+            .catch((error) => { debugger; });
     }
 
     addGame(game: Game, successCallback?: (r: Response) => void) {

@@ -10,9 +10,10 @@ import { BusinessService } from '../services/business.service';
 export class LoginInfoService {
     userObs: Subject<User> = new Subject<User>();
     user: User;
+    saving: boolean = false;
 
     constructor(private db: AngularFirestore,
-        private business: BusinessService) {}
+        private business: BusinessService) { }
 
     getLoginInfo(): Promise<User> {
         if (this.user) {
@@ -20,6 +21,7 @@ export class LoginInfoService {
         }
         return this.userObs.toPromise();
     }
+
 
     setLoginInfo(loginUser: User) {
         var userPromise = this.business.getUserBySecretId(loginUser.uid);
@@ -31,16 +33,17 @@ export class LoginInfoService {
                     loginUser.isAdmin = user.isAdmin;
                     loginUser.points = user.points;
                 }
-                else {
+                else if (!this.saving) {
+                    this.saving = true;
                     var uuidv4 = (): string => {
-                        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
                             var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
                             return v.toString(16);
                         });
                     }
 
                     loginUser.id = uuidv4();
-                    this.business.saveUser(loginUser);
+                    this.business.saveUser(loginUser, (r) => this.saving = false);
                 }
                 this.user = loginUser;
                 this.userObs.next(loginUser);
