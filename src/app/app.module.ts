@@ -118,6 +118,10 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
                 path: 'messages',
                 component: ViewMessagesComponent
             },
+            {
+                path: 'headCheese',
+                component: AdminPageComponent
+            }
         ])
     ],
     providers: [DbService, LoginInfoService, BusinessService],

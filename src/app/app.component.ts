@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
                 photoUrl: data.photoURL,
                 id: null,
                 isModerator: false,
+                isAdmin: false,
                 points: 0,
             });
             this.loggedIn = true;

@@ -26,9 +26,17 @@ export class DbService {
     readonly sendMessageUrl = "https://us-central1-playtesthub.cloudfunctions.net/sendMessage";
     readonly markMessageReadUrl = "https://us-central1-playtesthub.cloudfunctions.net/markMessageRead";
     readonly deleteMessageUrl = "https://us-central1-playtesthub.cloudfunctions.net/deleteMessage";
+    readonly dailyCleanupUrl = "https://us-central1-playtesthub.cloudfunctions.net/dailyCleanup";
 
     constructor(private db: AngularFirestore,
         private http: Http) { }
+
+    dailyCleanup() {
+        this.http.post(this.dailyCleanupUrl, {})
+            .toPromise()
+            .then(response => { })
+            .catch((error) => { debugger; });
+    }
 
     getGame(id: string): Promise<Observable<Game>> {
         let game = this.db.doc<Game>('games/' + id);

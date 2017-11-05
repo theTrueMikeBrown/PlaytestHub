@@ -16,6 +16,10 @@ export class BusinessService {
 
     constructor(private db: DbService) { }
 
+    dailyCleanup() {
+        this.db.dailyCleanup();
+    }
+
     getGame(id: string): Promise<Observable<Game>> {
         return this.db.getGame(id);
     }

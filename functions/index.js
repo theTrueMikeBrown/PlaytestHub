@@ -5,12 +5,88 @@ const cors = require('cors')({ origin: true });
 
 admin.initializeApp(functions.config().firebase);
 
+function sendCleanupMessage(id) {
+    var message = {
+        id: '',
+        subject: "Hmm...",
+        text: "Your playtest has been active for an entire week. We have removed it so that the game is not unfairly punished by someone not playtesting it for too long. If you actually desire to playtest it, you can sign up again.\r\n\r\n-PlaytestHub",
+        sender: '',
+        recipient: id,
+        isRead: false,
+        sentDate: new Date(),
+    };
+    message.isRead = false;
+    message.sentDate = new Date();
+    admin.firestore()
+        .collection('messages')
+        .add(message)
+        .then((snap) => {
+            const key = snap.id;
+            message.id = key;
+            admin.firestore().collection('messages').doc(key).set(message);
+        });
+}
+function doSave(feedback, res) {
+    if (!feedback.id) {
+        admin.firestore()
+            .collection('feedback')
+            .add(feedback)
+            .then((snap) => {
+                const key = snap.id;
+                feedback.id = key;
+                admin.firestore().collection('feedback').doc(key).update(feedback).then(r => {
+                    res.status(200).send("success");
+                });
+            });
+    }
+    else {
+        admin.firestore()
+            .collection('feedback')
+            .doc(feedback.id)
+            .set(feedback)
+            .then((snap) => {
+                res.status(200).send("success");
+            });
+    }
+}
+
 exports.dailyCleanup = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         console.log("Running Cleanup...");
-        //TODO: do cleanup
-        console.log("Cleanup is complete.");
-        res.status(200).send("success");
+
+        var db = admin.firestore();
+        db.collection('history').doc('0').get().then((doc) => {
+                var history = doc.data();
+                var now = new Date();
+                var anHourAgo = now.getTime() - (60 * 60 * 1000);
+                
+                if (history.lastDailyCleanup.getTime() < anHourAgo) {
+                    var aWeekAgo = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000));
+                    db.collection('playtests')
+                        .where("started", "<", aWeekAgo).get()
+                        .then((s) => {
+                            for (var i = 0; i < s.size; i++) {
+                                var playTest = s.docs[i].data();
+                                db.collection('games').doc(playTest.gameId).get()
+                                    .then((oldSnap) => {
+                                        var oldObj = oldSnap.data();
+                                        db.collection('games').doc(playTest.gameId).update({ priority: oldObj.priority + 1 });
+
+                                        sendCleanupMessage(playTest.id);
+                                    });
+                                db.collection('playtests').doc(playTest.id).delete();
+                            }
+                        });
+
+                    admin.firestore()
+                        .collection('history').doc('0').set({ lastDailyCleanup: now });
+                    console.log("Cleanup is complete.");
+                }
+                else {
+                    console.log("Skipping cleanup.");
+                }
+                res.status(200).send("success");
+            });
     });
 });
 
@@ -18,6 +94,7 @@ exports.saveUser = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         var user = req.body;
         user.isModerator = false;
+        user.isAdmin = false;
         user.points = 0;
         admin.firestore()
             .collection('users')
@@ -80,7 +157,7 @@ exports.addPlaytest = functions.https.onRequest((req, res) => {
                             }
 
                             //record the playtest, and reduce the score.
-                            var date = new Date().valueOf();
+                            var date = new Date();
                             db.collection('games').doc(gameId).update({ priority: obj.priority - 1 });
 
                             var pt = { gameId: gameId, id: id, started: date, gameName: req.body.gameName };
@@ -117,18 +194,10 @@ exports.updateGame = functions.https.onRequest((req, res) => {
         admin.firestore()
             .collection('games').doc(game.id).get()
             .then((snap) => {
-                var bigNum = 1000;
                 if (snap.exists) {
                     var oldGame = snap.data();
 
                     cleanGame.priority = oldGame.priority;
-                    if (!game.active && oldGame.active) {
-                        cleanGame.priority -= bigNum;
-                    }
-                    else if (game.active && !oldGame.active && oldGame.priority < -(bigNum / 2)) {
-                        cleanGame.priority += bigNum;
-                    }
-
                     admin.firestore().collection('games').doc(game.id)
                         .update(cleanGame)
                         .then((f) => res.status(200).send("success"));
@@ -136,30 +205,6 @@ exports.updateGame = functions.https.onRequest((req, res) => {
             });
     });
 });
-
-function doSave(feedback, res) {
-    if (!feedback.id) {
-        admin.firestore()
-            .collection('feedback')
-            .add(feedback)
-            .then((snap) => {
-                const key = snap.id;
-                feedback.id = key;
-                admin.firestore().collection('feedback').doc(key).update(feedback).then(r => {
-                    res.status(200).send("success");
-                });
-            });
-    }
-    else {
-        admin.firestore()
-            .collection('feedback')
-            .doc(feedback.id)
-            .set(feedback)
-            .then((snap) => {
-                res.status(200).send("success");
-            });
-    }
-}
 
 exports.saveFeedback = functions.https.onRequest((req, res) => {
     cors(req, res, () => {

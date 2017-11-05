@@ -28,6 +28,7 @@ export class LoginInfoService {
                 if (user) {
                     loginUser.id = user.id;
                     loginUser.isModerator = user.isModerator;
+                    loginUser.isAdmin = user.isAdmin;
                     loginUser.points = user.points;
                 }
                 else {

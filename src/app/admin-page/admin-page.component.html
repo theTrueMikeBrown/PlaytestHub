@@ -1,3 +1,7 @@
-<p>
-  admin-page works!
-</p>
+﻿<div *ngIf="user && user.isAdmin">
+  <button (click)="runDailyCleanup()">Run daily cleanup</button>
+</div>
+
+<div *ngIf="!user || !user.isAdmin">
+  Error.
+</div>

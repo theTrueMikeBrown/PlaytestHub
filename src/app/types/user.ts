@@ -6,4 +6,5 @@
     id: string;
     isModerator: boolean;
     points: number;
+    isAdmin: boolean;
 }
