@@ -6,12 +6,14 @@ const cors = require('cors')({ origin: true });
 admin.initializeApp(functions.config().firebase);
 
 exports.dailyCleanup = functions.https.onRequest((req, res) => {
-    console.log("Running Cleanup...");
-    //TODO: do cleanup
-    console.log("Cleanup is complete.");
-    res.status(200).send("success");
+    cors(req, res, () => {
+        console.log("Running Cleanup...");
+        //TODO: do cleanup
+        console.log("Cleanup is complete.");
+        res.status(200).send("success");
+    });
 });
-  
+
 exports.saveUser = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         var user = req.body;

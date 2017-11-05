@@ -28,6 +28,7 @@ import { GameEditComponent } from './game-edit.component';
 import { BusinessService } from './business.service';
 import { DbService } from './db.service';
 import { LoginInfoService } from './loginInfo.service';
+import { AdminPageComponent } from './admin-page/admin-page.component';
 
 const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
     providers: [
@@ -53,7 +54,8 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
         GameEditComponent,
         LeaveFeedbackComponent,
         ApplyPointsComponent,
-        ViewMessagesComponent
+        ViewMessagesComponent,
+        AdminPageComponent
     ],
     imports: [
         BrowserModule,
