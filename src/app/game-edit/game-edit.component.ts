@@ -2,11 +2,12 @@
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Router, NavigationExtras, ActivatedRoute, ParamMap } from '@angular/router';
-import { LoginInfoService } from './loginInfo.service';
 
-import { User } from './user';
-import { BusinessService } from './business.service';
-import { Game } from './game';
+import { LoginInfoService } from '../services/loginInfo.service';
+import { BusinessService } from '../services/business.service';
+
+import { User } from '../types/user';
+import { Game } from '../types/game';
 
 @Component({
     selector: 'game-edit',

@@ -1,14 +1,15 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router, NavigationExtras } from '@angular/router';
-import { LoginInfoService } from './loginInfo.service';
 import { Location } from '@angular/common';
 import 'rxjs/add/operator/switchMap';
 
-import { User } from './user';
-import { Game } from './game';
-import { Playtest } from './playtest';
-import { BusinessService } from './business.service';
-import { Feedback } from './feedback';
+import { LoginInfoService } from '../services/loginInfo.service';
+import { BusinessService } from '../services/business.service';
+
+import { User } from '../types/user';
+import { Game } from '../types/game';
+import { Playtest } from '../types/playtest';
+import { Feedback } from '../types/feedback';
 
 @Component({
     selector: 'game-detail',

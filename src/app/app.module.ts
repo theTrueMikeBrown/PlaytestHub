@@ -12,23 +12,24 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 
-import { FeedbackListComponent } from './feedback-list.component';
-import { GamesListComponent } from './games-list.component';
-import { LeaveFeedbackComponent } from './leave-feedback.component';
-import { ApplyPointsComponent } from './apply-points.component';
-import { GameStatsComponent } from './game-stats.component';
-import { MessageStatsComponent } from './message-stats.component';
-import { FeedbackStatsComponent } from './feedback-stats.component';
-import { GameDetailComponent } from './game-detail.component';
-import { AddGameComponent } from './add-game.component';
-import { UsersGamesComponent } from './users-games.component';
-import { ViewMessagesComponent } from './view-messages.component';
-import { UsersProfileComponent } from './users-profile.component';
-import { GameEditComponent } from './game-edit.component';
-import { BusinessService } from './business.service';
-import { DbService } from './db.service';
-import { LoginInfoService } from './loginInfo.service';
+import { FeedbackListComponent } from './feedback-list/feedback-list.component';
+import { GamesListComponent } from './games-list/games-list.component';
+import { LeaveFeedbackComponent } from './leave-feedback/leave-feedback.component';
+import { ApplyPointsComponent } from './apply-points/apply-points.component';
+import { GameStatsComponent } from './game-stats/game-stats.component';
+import { MessageStatsComponent } from './message-stats/message-stats.component';
+import { FeedbackStatsComponent } from './feedback-stats/feedback-stats.component';
+import { GameDetailComponent } from './game-detail/game-detail.component';
+import { AddGameComponent } from './add-game/add-game.component';
+import { UsersGamesComponent } from './users-games/users-games.component';
+import { ViewMessagesComponent } from './view-messages/view-messages.component';
+import { UsersProfileComponent } from './users-profile/users-profile.component';
+import { GameEditComponent } from './game-edit/game-edit.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
+
+import { BusinessService } from './services/business.service';
+import { DbService } from './services/db.service';
+import { LoginInfoService } from './services/loginInfo.service';
 
 const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
     providers: [

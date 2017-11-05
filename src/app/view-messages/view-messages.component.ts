@@ -1,11 +1,12 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras, ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { LoginInfoService } from './loginInfo.service';
 
-import { Message } from './message';
-import { User } from './user';
-import { BusinessService } from './business.service';
+import { LoginInfoService } from '../services/loginInfo.service';
+import { BusinessService } from '../services/business.service';
+
+import { Message } from '../types/message';
+import { User } from '../types/user';
 
 @Component({
     selector: 'view-messages',

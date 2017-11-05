@@ -1,5 +1,6 @@
 ﻿import { Component, Input } from '@angular/core';
-import { Game } from './game';
+
+import { Game } from '../types/game';
 
 @Component({
     selector: 'game-stats',

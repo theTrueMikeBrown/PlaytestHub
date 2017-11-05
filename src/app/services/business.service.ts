@@ -4,11 +4,11 @@ import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { Response } from '@angular/http';
 
-import { Game } from './game';
-import { User } from './user';
-import { Message } from './message';
-import { Playtest } from './playtest';
-import { Feedback } from './feedback';
+import { Game } from '../types/game';
+import { User } from '../types/user';
+import { Message } from '../types/message';
+import { Playtest } from '../types/playtest';
+import { Feedback } from '../types/feedback';
 import { DbService } from './db.service';
 
 @Injectable()

@@ -3,8 +3,8 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
-import { User } from './user';
-import { BusinessService } from './business.service';
+import { User } from '../types/user';
+import { BusinessService } from '../services/business.service';
 
 @Injectable()
 export class LoginInfoService {

@@ -1,9 +1,9 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
-import { LoginInfoService } from './loginInfo.service';
 
-import { Game } from './game';
-import { BusinessService } from './business.service';
+import { LoginInfoService } from '../services/loginInfo.service';
+import { BusinessService } from '../services/business.service';
+import { Game } from '../types/game';
 
 @Component({
     selector: 'add-game',

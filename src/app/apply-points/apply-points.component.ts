@@ -7,10 +7,11 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 
-import { LoginInfoService } from './loginInfo.service';
-import { BusinessService } from './business.service';
-import { Game } from './game';
-import { User } from './user';
+import { LoginInfoService } from '../services/loginInfo.service';
+import { BusinessService } from '../services/business.service';
+
+import { Game } from '../types/game';
+import { User } from '../types/user';
 
 @Component({
     selector: 'apply-points',

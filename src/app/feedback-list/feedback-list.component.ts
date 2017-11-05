@@ -1,12 +1,13 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras, ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { LoginInfoService } from './loginInfo.service';
 
-import { Feedback } from './feedback';
-import { Game } from './game';
-import { User } from './user';
-import { BusinessService } from './business.service';
+import { LoginInfoService } from '../services/loginInfo.service';
+import { BusinessService } from '../services/business.service';
+
+import { Feedback } from '../types/feedback';
+import { Game } from '../types/game';
+import { User } from '../types/user';
 
 @Component({
     selector: 'feedback-list',

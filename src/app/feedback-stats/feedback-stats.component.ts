@@ -1,7 +1,9 @@
 ﻿import { Component, Input, OnInit } from '@angular/core';
-import { Feedback } from './feedback';
-import { BusinessService } from './business.service';
-import { User } from './user';
+
+import { BusinessService } from '../services/business.service';
+
+import { Feedback } from '../types/feedback';
+import { User } from '../types/user';
 
 @Component({
     selector: 'feedback-stats',

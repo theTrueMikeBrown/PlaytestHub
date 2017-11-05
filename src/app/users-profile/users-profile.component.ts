@@ -1,12 +1,12 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras, ActivatedRoute, ParamMap } from '@angular/router';
-import { LoginInfoService } from './loginInfo.service';
 
-import { User } from './user';
-import { BusinessService } from './business.service';
+import { LoginInfoService } from '../services/loginInfo.service';
+import { BusinessService } from '../services/business.service';
+
+import { User } from '../types/user';
 import { Observable } from 'rxjs/Observable';
-
-import { Playtest } from './playtest';
+import { Playtest } from '../types/playtest';
 
 @Component({
     selector: 'users-profile',

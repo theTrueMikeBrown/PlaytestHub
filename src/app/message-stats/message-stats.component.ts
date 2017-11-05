@@ -1,7 +1,9 @@
 ﻿import { Component, Input, OnInit } from '@angular/core';
-import { Message } from './message';
-import { BusinessService } from './business.service';
-import { User } from './user';
+
+import { BusinessService } from '../services/business.service';
+
+import { Message } from '../types/message';
+import { User } from '../types/user';
 
 @Component({
     selector: '[message-stats]',

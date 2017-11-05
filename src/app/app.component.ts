@@ -2,8 +2,8 @@
 import { AngularFireAuth } from 'angularfire2/auth';
 import { FirebaseUISignInSuccess } from 'firebaseui-angular';
 import { User } from 'firebase';
-import { Game } from './game';
-import { LoginInfoService } from './loginInfo.service';
+
+import { LoginInfoService } from './services/loginInfo.service';
 
 @Component({
     selector: 'app-root',
