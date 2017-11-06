@@ -50,6 +50,7 @@ function doSave(feedback, res) {
     }
 }
 
+//https://cron-job.org/en/members/jobs/details/?jobid=825596
 exports.dailyCleanup = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         console.log("Running Cleanup...");
@@ -75,6 +76,18 @@ exports.dailyCleanup = functions.https.onRequest((req, res) => {
                                         sendCleanupMessage(playTest.id);
                                     });
                                 db.collection('playtests').doc(playTest.id).delete();
+
+                                db.collection('feedback')
+                                    .where("userId", "==", playTest.id)
+                                    .where("gameId", "==", playTest.gameId)
+                                    .get()
+                                    .then((snap) => {
+                                        for (var i = 0; i < snap.size; i++) {
+                                            var feedback = snap.docs[i].data();
+                                            db.collection('feedback').doc(feedback.id).delete();
+                                        }
+                                    });
+
                             }
                         });
 
@@ -147,6 +160,17 @@ exports.addPlaytest = functions.https.onRequest((req, res) => {
                                         .then((oldSnap) => {
                                             var oldObj = oldSnap.data();
                                             db.collection('games').doc(playTest.gameId).update({ priority: oldObj.priority + 1 });
+                                        });
+                                    //Delete old feedback
+                                    db.collection('feedback')
+                                        .where("userId", "==", playTest.id)
+                                        .where("gameId", "==", playTest.gameId)
+                                        .get()
+                                        .then((snap) => {
+                                            for (var i = 0; i < snap.size; i++) {
+                                                var feedback = snap.docs[i].data();
+                                                db.collection('feedback').doc(feedback.id).delete();
+                                            }
                                         });
                                 }
                                 else {

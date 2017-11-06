@@ -71,16 +71,18 @@ export class LeaveFeedbackComponent implements OnInit {
             this.route.paramMap.subscribe(p => {
                 if (p.has('id')) {
                     this.business.getFeedback(p.get('id')).then(f => f.subscribe(feedback => {
-                        this.feedback = feedback;
-                        this.reviewing = feedback.userId != this.user.id && feedback.submitted && !feedback.approved && this.user.isModerator;
-                        this.editing = feedback.userId == this.user.id && !feedback.submitted && !feedback.approved;
-                        this.pendingApproval = feedback.submitted && !feedback.approved;
-                        this.business.getGame(feedback.gameId).then(g => {
-                            g.subscribe(game => {
-                                this.gameName = game.name;
-                                this.owner = game.owner == this.user.id;
+                        if (feedback) {
+                            this.feedback = feedback;
+                            this.reviewing = feedback.userId != this.user.id && feedback.submitted && !feedback.approved && this.user.isModerator;
+                            this.editing = feedback.userId == this.user.id && !feedback.submitted && !feedback.approved;
+                            this.pendingApproval = feedback.submitted && !feedback.approved;
+                            this.business.getGame(feedback.gameId).then(g => {
+                                g.subscribe(game => {
+                                    this.gameName = game.name;
+                                    this.owner = game.owner == this.user.id;
+                                });
                             });
-                        });
+                        }
                     }));
                 }
             });

@@ -48,7 +48,9 @@ export class UsersProfileComponent implements OnInit {
                                 this.playtest = playtest;
                                 this.business.getUserFeedbackForGame(this.user.id, playtest.gameId).then(f => {
                                     f.subscribe(feedback => {
-                                        this.feedbackId = feedback.id;
+                                        if (feedback) {
+                                            this.feedbackId = feedback.id;
+                                        }
                                     });
                                 });
                             }
