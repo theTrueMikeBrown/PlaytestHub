@@ -7,4 +7,5 @@
     isModerator: boolean;
     points: number;
     isAdmin: boolean;
+    joinDate: Date;
 }

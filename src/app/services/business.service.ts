@@ -50,7 +50,7 @@ export class BusinessService {
                 this.saveFeedback({
                     feelings: ['', '', ''], categorization: ['', '', ''], general: ['', ''], length: ['', '', ''],
                     art: ['', ''], rules: ['', '', ''], mechanics: ['', '', ''], final: ['', '', '', ''],
-                    userId: user.id, gameId: game.id, id: '', approved: false, submitted: false
+                    userId: user.id, gameId: game.id, id: '', approved: false, submitted: false, submitDate: null
                 }, () => {
                     if (successCallback) {
                         successCallback(response);
@@ -77,6 +77,7 @@ export class BusinessService {
     };
 
     addGame(game: Game, successCallback?: (r: Response) => void) {
+        game.createDate = new Date();
         game.pnpUrl = this.appendHttp(game.pnpUrl);
         game.rulesUrl = this.appendHttp(game.rulesUrl);
 
@@ -166,6 +167,7 @@ export class BusinessService {
     submitFeedback(feedback: Feedback, successCallback?: (r: Response) => void): string[] {
         let errors: string[] = this.validate(feedback);
         if (errors.length === 0) {
+            feedback.submitDate = new Date();
             this.db.submitFeedback(feedback, (response => {
                 if (successCallback) {
                     successCallback(response);

@@ -32,7 +32,7 @@
     <div *ngIf="playtest" class="section">
       <span>Playtesting:</span>
       <a href="/detail/{{playtest.gameId}}">{{playtest.gameName}}</a>,
-      <span> since {{playtest.dateString}}</span>
+      <span> since {{playtest.started | date:'shortDate'}}</span>
     </div>
   </div>
 </div>

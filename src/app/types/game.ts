@@ -13,4 +13,5 @@
     pnpUrl: string;
     priority: number;
     active: boolean;
+    createDate: Date;
 }

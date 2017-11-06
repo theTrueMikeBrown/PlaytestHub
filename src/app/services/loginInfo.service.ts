@@ -43,6 +43,7 @@ export class LoginInfoService {
                     }
 
                     loginUser.id = uuidv4();
+                    loginUser.joinDate = new Date();
                     this.business.saveUser(loginUser, (r) => this.saving = false);
                 }
                 this.user = loginUser;

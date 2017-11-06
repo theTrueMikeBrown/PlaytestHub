@@ -12,4 +12,5 @@
     id: string;
     approved: boolean;
     submitted: boolean;
+    submitDate: Date;
 }

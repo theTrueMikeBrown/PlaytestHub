@@ -44,7 +44,6 @@ export class UsersProfileComponent implements OnInit {
                     .then(p => {
                         p.subscribe(playtest => {
                             if (playtest) {
-                                playtest.dateString = new Date(playtest.started).toDateString();
                                 this.playtest = playtest;
                                 this.business.getUserFeedbackForGame(this.user.id, playtest.gameId).then(f => {
                                     f.subscribe(feedback => {

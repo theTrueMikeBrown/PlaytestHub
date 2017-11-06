@@ -37,9 +37,8 @@ export class GameDetailComponent implements OnInit {
         let playtest: Playtest = {
             gameId: this.game.id,
             id: this.user.id,
-            started: 0,
             gameName: this.game.name,
-            dateString: null
+            startedDate: new Date()
         };
         this.business.addPlaytest(
             playtest, this.user, this.game, () => {
