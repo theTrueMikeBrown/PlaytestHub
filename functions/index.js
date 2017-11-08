@@ -57,63 +57,64 @@ exports.dailyCleanup = functions.https.onRequest((req, res) => {
 
         var db = admin.firestore();
         db.collection('history').doc('0').get().then((doc) => {
-                var history = doc.data();
-                var now = new Date();
-                var anHourAgo = now.getTime() - (60 * 60 * 1000);
-                
-                if (history.lastDailyCleanup.getTime() < anHourAgo) {
-                    var aWeekAgo = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000));
-                    db.collection('playtests')
-                        .where("started", "<", aWeekAgo).get()
-                        .then((s) => {
-                            for (var i = 0; i < s.size; i++) {
-                                var playTest = s.docs[i].data();
-                                db.collection('games').doc(playTest.gameId).get()
-                                    .then((oldSnap) => {
-                                        var oldObj = oldSnap.data();
-                                        db.collection('games').doc(playTest.gameId).update({ priority: oldObj.priority + 1 });
+            var history = doc.data();
+            var now = new Date();
+            var anHourAgo = now.getTime() - (60 * 60 * 1000);
 
-                                        sendCleanupMessage(playTest.id);
-                                    });
-                                db.collection('playtests').doc(playTest.id).delete();
+            if (history.lastDailyCleanup.getTime() < anHourAgo) {
+                var aWeekAgo = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000));
+                db.collection('playtests')
+                    .where("started", "<", aWeekAgo).get()
+                    .then((s) => {
+                        for (var i = 0; i < s.size; i++) {
+                            var playTest = s.docs[i].data();
+                            db.collection('games').doc(playTest.gameId).get()
+                                .then((oldSnap) => {
+                                    var oldObj = oldSnap.data();
+                                    db.collection('games').doc(playTest.gameId).update({ priority: oldObj.priority + 1 });
 
-                                db.collection('feedback')
-                                    .where("userId", "==", playTest.id)
-                                    .where("gameId", "==", playTest.gameId)
-                                    .get()
-                                    .then((snap) => {
-                                        for (var i = 0; i < snap.size; i++) {
-                                            var feedback = snap.docs[i].data();
-                                            db.collection('feedback').doc(feedback.id).delete();
-                                        }
-                                    });
+                                    sendCleanupMessage(playTest.id);
+                                });
+                            db.collection('playtests').doc(playTest.id).delete();
 
-                            }
-                        });
+                            db.collection('feedback')
+                                .where("userId", "==", playTest.id)
+                                .where("gameId", "==", playTest.gameId)
+                                .get()
+                                .then((snap) => {
+                                    for (var i = 0; i < snap.size; i++) {
+                                        var feedback = snap.docs[i].data();
+                                        db.collection('feedback').doc(feedback.id).delete();
+                                    }
+                                });
 
-                    admin.firestore()
-                        .collection('history').doc('0').set({ lastDailyCleanup: now });
-                    console.log("Cleanup is complete.");
-                }
-                else {
-                    console.log("Skipping cleanup.");
-                }
-                res.status(200).send("success");
-            });
+                        }
+                    });
+
+                admin.firestore()
+                    .collection('history').doc('0').set({ lastDailyCleanup: now });
+                console.log("Cleanup is complete.");
+            }
+            else {
+                console.log("Skipping cleanup.");
+            }
+            res.status(200).send("success");
+        });
     });
 });
 
 exports.updateUser = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         var user = req.body;
+        var val = {};
+        if (user.displayName) { val.displayName = user.displayName; }
+        if (user.photoURL) { val.photoURL = user.photoURL; }
+        if (user.personalInfo) { val.personalInfo = user.personalInfo; }
+
         admin.firestore()
             .collection('users')
             .doc(user.id)
-            .update({
-                displayName: user.displayName,
-                photoURL: user.photoURL,
-                personalInfo: user.personalInfo
-            })
+            .update(val)
             .then((snap) => {
                 res.status(200).send("success");
             });
