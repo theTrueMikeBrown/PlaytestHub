@@ -103,6 +103,23 @@ exports.dailyCleanup = functions.https.onRequest((req, res) => {
     });
 });
 
+exports.updateUser = functions.https.onRequest((req, res) => {
+    cors(req, res, () => {
+        var user = req.body;
+        admin.firestore()
+            .collection('users')
+            .doc(user.id)
+            .update({
+                displayName: user.displayName,
+                photoURL: user.photoURL,
+                personalInfo: user.personalInfo
+            })
+            .then((snap) => {
+                res.status(200).send("success");
+            });
+    });
+});
+
 exports.saveUser = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         var user = req.body;

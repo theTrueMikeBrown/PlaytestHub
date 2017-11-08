@@ -30,10 +30,10 @@
     </div>
     <div>Active: <input type="checkbox" name="isActive" [(ngModel)]="game.active" (ngModelChange)="onChange($event)"></div>
     <div><h4>Priority: {{game.priority}}</h4></div>
-  </div>
-  <div class="lowerRightBottom">
-    <a class="action-button" (click)="saveGame()" data-tooltip="Save Game">
-      <span class="glyphicon glyphicon-floppy-disk"></span>
-    </a>
+    <div class="lowerRightBottom">
+      <a class="action-button" (click)="saveGame()" data-tooltip="Save Game">
+        <span class="glyphicon glyphicon-floppy-disk"></span>
+      </a>
+    </div>
   </div>
 </div>

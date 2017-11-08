@@ -1,0 +1,14 @@
+﻿#userImage {
+  height: 10em;
+  width: 10em;
+  margin: 0 auto;
+}
+
+  #userImage img {
+    height: 100%;
+    width: auto;
+  }
+
+  #userImage div {
+    padding-top: 4em;
+  }

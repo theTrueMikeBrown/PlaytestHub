@@ -8,4 +8,5 @@
     points: number;
     isAdmin: boolean;
     joinDate: Date;
+    personalInfo: string;
 }

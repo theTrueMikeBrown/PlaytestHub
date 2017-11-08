@@ -27,7 +27,8 @@ export class AppComponent implements OnInit {
                 isModerator: false,
                 isAdmin: false,
                 points: 0,
-                joinDate: null
+                joinDate: null,
+                personalInfo: ""
             });
             this.loggedIn = true;
         }

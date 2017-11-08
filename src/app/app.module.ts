@@ -26,6 +26,7 @@ import { ViewMessagesComponent } from './view-messages/view-messages.component';
 import { UsersProfileComponent } from './users-profile/users-profile.component';
 import { GameEditComponent } from './game-edit/game-edit.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
+import { EditUserComponent } from './edit-user/edit-user.component';
 
 import { BusinessService } from './services/business.service';
 import { DbService } from './services/db.service';
@@ -56,7 +57,8 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
         LeaveFeedbackComponent,
         ApplyPointsComponent,
         ViewMessagesComponent,
-        AdminPageComponent
+        AdminPageComponent,
+        EditUserComponent
     ],
     imports: [
         BrowserModule,
@@ -121,6 +123,10 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
             {
                 path: 'headCheese',
                 component: AdminPageComponent
+            },
+            {
+                path: 'editUser',
+                component: EditUserComponent
             }
         ])
     ],

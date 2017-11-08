@@ -7,6 +7,10 @@
   margin-left: 1em;
 }
 
+.line-breaker {
+  white-space: pre-line;
+}
+
 .linky {
   font-size: 1.5em;
   margin: 1em;

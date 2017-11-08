@@ -128,6 +128,10 @@ export class BusinessService {
         this.sendMessage(message);
     }
 
+    updateUser(user: User, successCallback?: (r: Response) => void) {
+        this.db.updateUser(user, successCallback);
+    }
+
     getFeedbackReadyForApproval(): Promise<Observable<Feedback[]>> {
         return this.db.getFeedbackReadyForApproval();
     }

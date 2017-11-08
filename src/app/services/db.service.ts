@@ -18,6 +18,7 @@ export class DbService {
     readonly updateGameUrl = "https://us-central1-playtesthub.cloudfunctions.net/updateGame";
     readonly addPlaytestUrl = "https://us-central1-playtesthub.cloudfunctions.net/addPlaytest";
     readonly saveUserUrl = "https://us-central1-playtesthub.cloudfunctions.net/saveUser";
+    readonly updateUserUrl = "https://us-central1-playtesthub.cloudfunctions.net/updateUser";
     readonly saveFeedbackUrl = "https://us-central1-playtesthub.cloudfunctions.net/saveFeedback";
     readonly rejectFeedbackUrl = "https://us-central1-playtesthub.cloudfunctions.net/rejectFeedback";
     readonly submitFeedbackUrl = "https://us-central1-playtesthub.cloudfunctions.net/submitFeedback";
@@ -157,17 +158,31 @@ export class DbService {
             });
     }
 
+    updateUser(user: User, successCallback?: (r: Response) => void) {
+        this.http.post(this.updateUserUrl, user)
+            .toPromise()
+            .then(response => {
+                if (successCallback) {
+                    successCallback(response);
+                }
+            })
+            .catch((error) => {
+                debugger;
+            });
+    }
+
     getFeedbackReadyForApproval(): Promise<Observable<Feedback[]>> {
         let itemsList = this.db.collection<Feedback>('feedback', ref =>
             ref.where('submitted', '==', true)
-                .where('approved', '==', false));
+                .where('approved', '==', false)
+                .orderBy('submitDate', 'asc'));
         return Promise.resolve(itemsList.valueChanges());
     }
 
     getFeedbackForGame(gameId: string): Promise<Observable<Feedback[]>> {
         let itemsList = this.db.collection<Feedback>('feedback', ref =>
             ref.where('gameId', '==', gameId)
-                .where('approved', '==', true)
+                .where('approved', '==', true).orderBy('submitDate', 'desc')
             //        .orderBy("approvalDate")
         );
         return Promise.resolve(itemsList.valueChanges());

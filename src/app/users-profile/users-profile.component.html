@@ -1,9 +1,9 @@
-﻿<div *ngIf="profile">
-  <div class="upperLeft">
-    <a class="action-button" routerLink="/games" data-tooltip="Home">
-      <span class="glyphicon glyphicon-home"></span>
-    </a>
-  </div>
+﻿<div class="upperLeft">
+  <a class="action-button" routerLink="/games" data-tooltip="Home">
+    <span class="glyphicon glyphicon-home"></span>
+  </a>
+</div>
+<div *ngIf="profile">
   <div class="upperRight">
     <span class="action-button">
       <span class="glyphicon glyphicon-menu-hamburger"></span>
@@ -12,6 +12,11 @@
       <li class="upperRight-buttons__item" *ngIf="user && profile && profile.id===user.id && profile.points > 0">
         <a routerLink="/applyPoints" class="upperRight-buttons__link" data-tooltip="Add or remove points">
           <span class="glyphicon glyphicon-star"></span>
+        </a>
+      </li>
+      <li class="upperRight-buttons__item" *ngIf="user && profile && profile.id===user.id">
+        <a routerLink="/editUser" class="upperRight-buttons__link" data-tooltip="Edit profile">
+          <span class="glyphicon glyphicon-edit"></span>
         </a>
       </li>
       <li class="upperRight-buttons__item">
@@ -28,6 +33,8 @@
       <img *ngIf="profile.photoURL" src="{{profile.photoURL}}" id="userImage" />
       <div *ngIf="!profile.photoURL">No user image</div>
     </div>
+    <h4>About {{profile.displayName}}</h4>
+    <div class="line-breaker">{{profile.personalInfo}}</div>
     <div>{{profile.displayName}}'s points: {{profile.points}}</div>
     <div *ngIf="playtest" class="section">
       <span>Playtesting:</span>
