@@ -7,6 +7,14 @@
   margin-left: 1em;
 }
 
+.internallyPadded * {
+  margin: .5em;
+}
+
+.noPadding {
+  margin: 0;
+}
+
 .line-breaker {
   white-space: pre-line;
 }

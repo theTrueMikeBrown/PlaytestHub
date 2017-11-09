@@ -5,6 +5,7 @@ import { LoginInfoService } from '../services/loginInfo.service';
 import { BusinessService } from '../services/business.service';
 
 import { User } from '../types/user';
+import { Message } from '../types/message';
 
 @Component({
     selector: 'app-admin-page',
@@ -13,6 +14,9 @@ import { User } from '../types/user';
 })
 export class AdminPageComponent implements OnInit {
     user: User;
+    messageRecipient: string;
+    messageSubject: string;
+    messageText: string;
 
     constructor(private router: Router,
         private business: BusinessService,
@@ -32,5 +36,22 @@ export class AdminPageComponent implements OnInit {
 
     runDailyCleanup() {
         this.business.dailyCleanup();
+    }
+
+    sendMessage() {
+        let message: Message = {
+            id: "",
+            isRead: false,
+            recipient: this.messageRecipient,
+            sender: this.user.id,
+            sentDate: new Date(),
+            subject: this.messageSubject,
+            text: this.messageText
+        };
+        this.business.sendMessage(message, (r) => {
+            this.messageRecipient = "";
+            this.messageSubject = "";
+            this.messageText = "";
+        });
     }
 }

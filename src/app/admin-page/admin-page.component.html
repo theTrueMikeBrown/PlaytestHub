@@ -1,5 +1,24 @@
-﻿<div *ngIf="user && user.isAdmin">
-  <button (click)="runDailyCleanup()">Run daily cleanup</button>
+﻿<div *ngIf="user && user.isAdmin" class="left indent internallyPadded">
+  <fieldset>
+    <legend>Send message to user</legend>
+    <div class="form-group">
+      <label for="messageRecipient">To:</label>
+      <input type="text" class="form-control" id="messageRecipient" [(ngModel)]="messageRecipient" />
+    </div>
+    <div class="form-group">
+      <label for="messageSubject">Subject:</label>
+      <input type="text" class="form-control" id="messageSubject" [(ngModel)]="messageSubject" />
+    </div>
+    <div class="form-group">
+      <textarea class="form-control" id="messageText" [(ngModel)]="messageText"></textarea>
+      <button class="btn btn-primary" (click)="sendMessage()">send</button>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Tasks</legend>
+    <button class="btn btn-secondary" (click)="runDailyCleanup()">Run daily cleanup</button>
+  </fieldset>
 </div>
 
 <div *ngIf="!user || !user.isAdmin">
