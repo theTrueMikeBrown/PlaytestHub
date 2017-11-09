@@ -25,7 +25,7 @@
 
     <h3>General</h3>
     <ul>
-      <li>How many players did you play with?<br /><input [readonly]="!editing" [(ngModel)]="feedback.general[0]" type="number" /></li>
+      <li>How many players did you play with?<br /><input [readonly]="!editing" [(ngModel)]="feedback.general[0]" type="number" min="0" /></li>
       <li>How much would this game cost in a store, and would you buy it?<br /><textarea [readonly]="!editing" [(ngModel)]="feedback.general[1]"></textarea></li>
     </ul>
 

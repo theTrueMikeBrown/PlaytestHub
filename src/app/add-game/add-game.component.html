@@ -7,10 +7,10 @@
 
   <div class="left">
     <div>Title: <input [(ngModel)]="game.name"></div>
-    <div>Min player count: <input type="number" [(ngModel)]="game.minPlayerCount"></div>
-    <div>Max player count: <input type="number" [(ngModel)]="game.maxPlayerCount"></div>
-    <div>Min time in minutes: <input type="number" [(ngModel)]="game.minTimeInMinutes"></div>
-    <div>Max time in minutes: <input type="number" [(ngModel)]="game.maxTimeInMinutes"></div>
+    <div>Min player count: <input type="number" [(ngModel)]="game.minPlayerCount" min="0"></div>
+    <div>Max player count: <input type="number" [(ngModel)]="game.maxPlayerCount" min="0"></div>
+    <div>Min time in minutes: <input type="number" [(ngModel)]="game.minTimeInMinutes" min="0"></div>
+    <div>Max time in minutes: <input type="number" [(ngModel)]="game.maxTimeInMinutes" min="0"></div>
     <div>
       <h4>Description:</h4>
       <textarea [(ngModel)]="game.description"></textarea>
