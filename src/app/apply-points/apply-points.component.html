@@ -11,7 +11,7 @@
     <div class="form-group"><label>you have <span>{{user.points}}</span> points.</label></div>
     <div class="form-group">
       <label for="gameSelect">Game to add or remove points to or from:</label>
-      <select id="gameSelect" class="form-select" [(ngModel)]="selectedGame" (change)="gameSelected($event.target.value)">
+      <select id="gameSelect" class="form-control form-select" [(ngModel)]="selectedGame" (change)="gameSelected($event.target.value)">
         <option *ngFor="let game of games | async" value="{{game.id}}">{{game.name}}</option>
       </select>
     </div>

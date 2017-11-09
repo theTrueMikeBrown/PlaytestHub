@@ -27,7 +27,7 @@
           <div><label for="gamePnpUrl">PNP File:</label><input class="form-control" id="gamePnpUrl" (ngModelChange)="onChange($event)" [(ngModel)]="game.pnpUrl"></div>
         </div>
       </div>
-      <div class="form-group"><label for="gameActive"><input class="form-check" id="gameActive" type="checkbox" name="isActive" (ngModelChange)="onChange($event)" [(ngModel)]="game.active" /> The game is Active</label></div>
+      <div class="form-group"><label for="gameActive"><input class="form-check" id="gameActive" type="checkbox" name="isActive" (ngModelChange)="onChange($event)" [(ngModel)]="game.active" /> Is Active</label></div>
       <div class="form-group"><label for="gamePRiority">Priority</label><input class="form-control" disabled [ngModel]="game.priority" /></div>
     </fieldset>
     <div class="lowerRightBottom">
