@@ -47,25 +47,24 @@ export class BusinessService {
     addPlaytest(playtest: Playtest, user: User, game: Game, successCallback?: (r: Response) => void) {
         this.db.addPlaytest(playtest,
             response => {
+                if (successCallback) {
+                    successCallback(response);
+                }
                 this.saveFeedback({
                     feelings: ['', '', ''], categorization: ['', '', ''], general: ['', ''], length: ['', '', ''],
                     art: ['', ''], rules: ['', '', ''], mechanics: ['', '', ''], final: ['', '', '', ''],
                     userId: user.id, gameId: game.id, id: '', approved: false, submitted: false, submitDate: null
-                }, () => {
-                    if (successCallback) {
-                        successCallback(response);
-                    }
-                    let message: Message = {
-                        id: '',
-                        subject: "Congrats!",
-                        text: user.displayName + " just signed up to playtest " + game.name + "!\r\n\r\n-PlaytestHub",
-                        sender: '',
-                        recipient: game.owner,
-                        isRead: false,
-                        sentDate: new Date(),
-                    };
-                    this.sendMessage(message);
                 });
+                let message: Message = {
+                    id: '',
+                    subject: "Congrats!",
+                    text: user.displayName + " just signed up to playtest " + game.name + "!\r\n\r\n-PlaytestHub",
+                    sender: '',
+                    recipient: game.owner,
+                    isRead: false,
+                    sentDate: new Date(),
+                };
+                this.sendMessage(message);
             });
     }
 
