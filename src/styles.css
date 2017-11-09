@@ -52,6 +52,39 @@
   bottom: 0;
 }
 
+  .lowerLeftHugger div {
+  }
+
+  .lowerLeftHugger:hover {
+    animation: llhr 1s;
+    animation-fill-mode: forwards;
+  }
+
+  .lowerLeftHugger:not(:hover) {
+    animation: llh 1s;
+    animation-fill-mode: forwards;
+  }
+
+@keyframes llh {
+  from {
+    bottom: 0em;
+  }
+
+  to {
+    bottom: -2em;
+  }
+}
+
+@keyframes llhr {
+  from {
+    bottom: -2em;
+  }
+
+  to {
+    bottom: 0em;
+  }
+}
+
 .upperLeft {
   position: absolute;
   width: 56px;

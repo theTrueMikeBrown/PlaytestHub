@@ -6,19 +6,19 @@
 <div *ngIf="message" [ngClass]="messageActive">{{message | async}}</div>
 
 <div *ngIf="profile">
-  <div class="left">
-    <div>Display Name: <input type="text" [(ngModel)]="profile.displayName" (ngModelChange)="onChange($event)" /></div>
-    <div>Photo URL: <input type="text" [(ngModel)]="profile.photoURL" (ngModelChange)="onChange($event)" /></div>
-    <div>Personal Info:<br /> <textarea [(ngModel)]="profile.personalInfo" (ngModelChange)="onChange($event)"></textarea></div>
+  <fieldset class="left">
+    <legend>User Info</legend>
+    <div class="form-group"><label for="displayName">Display Name:</label><input id="displayName" class="form-control" type="text" [(ngModel)]="profile.displayName" (ngModelChange)="onChange($event)" /></div>
+    <div class="form-group"><label for="photoUrl">Photo URL:</label><input id="photoUrl" [disabled]="!profile.isModerator" class="form-control" type="text" [(ngModel)]="profile.photoURL" (ngModelChange)="onChange($event)" /></div>
+    <div class="form-group"><label for="personalInfo">Personal Info:</label><textarea id="personalInfo" class="form-control" [(ngModel)]="profile.personalInfo" (ngModelChange)="onChange($event)" rows="5"></textarea></div>
+
     <div class="lowerRightBottom">
       <a class="action-button" (click)="saveUser()" data-tooltip="Save Changes">
         <span class="glyphicon glyphicon-floppy-disk"></span>
       </a>
     </div>
-  </div>
+  </fieldset>
 
-  <br />
-  <br />
   <hr />
   <h3>{{profile.displayName}}'s profile</h3>
   <div class="left">

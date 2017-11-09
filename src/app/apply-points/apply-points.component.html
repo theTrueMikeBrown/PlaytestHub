@@ -4,25 +4,24 @@
       <span class="glyphicon glyphicon-home"></span>
     </a>
   </div>
-  <h3>Add or Remove Points</h3>
   <div *ngIf="message" [ngClass]="messageActive">{{message | async}}</div>
-  <div class="section">
-    you have <span>{{user.points}}</span> points.
-  </div>
-  <div class="section">
-    <span>Game to add or remove points to or from:</span>
-    <select [(ngModel)]="selectedGame" (change)="gameSelected($event.target.value)">
-      <option *ngFor="let game of games | async" value="{{game.id}}">{{game.name}}</option>
-    </select>
-  </div>
-  <div class="section" *ngIf="selectedGameObj">
-    the game has <span>{{selectedGameObj.priority}}</span> points.
-  </div>
 
-  <div class="section" *ngIf="selectedGameObj">
-    <span>Number of points to add or remove:</span>
-    <input [(ngModel)]="points" min="{{-selectedGameObj.priority}}" max="{{user.points}}" type="number" />
-  </div>
+  <fieldset>
+    <legend>Add or Remove Points</legend>
+    <div class="form-group"><label>you have <span>{{user.points}}</span> points.</label></div>
+    <div class="form-group">
+      <label for="gameSelect">Game to add or remove points to or from:</label>
+      <select id="gameSelect" class="form-select" [(ngModel)]="selectedGame" (change)="gameSelected($event.target.value)">
+        <option *ngFor="let game of games | async" value="{{game.id}}">{{game.name}}</option>
+      </select>
+    </div>
+    <div class="form-group" *ngIf="selectedGameObj"><label>The game has <span>{{selectedGameObj.priority}}</span> points.</label></div>
+
+    <div class="form-group" *ngIf="selectedGameObj">
+      <label for="points">Number of points to add or remove:</label>
+      <input id="points" class="form-control" [(ngModel)]="points" min="{{-selectedGameObj.priority}}" max="{{user.points}}" type="number" />
+    </div>
+  </fieldset>
   <div class="lowerRightBottom">
     <a class="action-button" (click)="applyPoints()" data-tooltip="Save Changes">
       <span class="glyphicon glyphicon-floppy-disk"></span>

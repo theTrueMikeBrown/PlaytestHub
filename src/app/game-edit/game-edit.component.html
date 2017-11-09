@@ -8,28 +8,28 @@
   <div *ngIf="message" [ngClass]="messageActive">{{message | async}}</div>
 
   <div class="left">
-    <div>Title: <input [(ngModel)]="game.name" (ngModelChange)="onChange($event)"></div>
-    <div>Min player count: <input type="number" [(ngModel)]="game.minPlayerCount" (ngModelChange)="onChange($event)" min="0"></div>
-    <div>Max player count: <input type="number" [(ngModel)]="game.maxPlayerCount" (ngModelChange)="onChange($event)" min="0"></div>
-    <div>Min time in minutes: <input type="number" [(ngModel)]="game.minTimeInMinutes" (ngModelChange)="onChange($event)" min="0"></div>
-    <div>Max time in minutes: <input type="number" [(ngModel)]="game.maxTimeInMinutes" (ngModelChange)="onChange($event)" min="0"></div>
-    <div>
-      <h4>Description:</h4>
-      <textarea [(ngModel)]="game.description" (ngModelChange)="onChange($event)"></textarea>
-    </div>
-    <div>
-      <h4>Components:</h4>
-      <textarea [(ngModel)]="game.components" (ngModelChange)="onChange($event)"></textarea>
-    </div>
-    <div>
-      <h4>Files:</h4>
-      <div class="detailBox">
-        <div>Rules file: <input type="url" [(ngModel)]="game.rulesUrl" (ngModelChange)="onChange($event)" /></div>
-        <div>PNP file: <input type="url" [(ngModel)]="game.pnpUrl" (ngModelChange)="onChange($event)" /></div>
+    <fieldset>
+      <legend>Add Game</legend>
+      <div class="form-group">
+        <label for="gameName">Title:</label>
+        <input class="form-control" id="gameName" (ngModelChange)="onChange($event)" [(ngModel)]="game.name">
       </div>
-    </div>
-    <div>Active: <input type="checkbox" name="isActive" [(ngModel)]="game.active" (ngModelChange)="onChange($event)"></div>
-    <div><h4>Priority: {{game.priority}}</h4></div>
+      <div class="form-group"><label for="gameMinPlayerCount">Min player count:</label><input type="number" class="form-control" id="gameMinPlayerCount" (ngModelChange)="onChange($event)" [(ngModel)]="game.minPlayerCount" min="0"></div>
+      <div class="form-group"><label for="gameMaxPlayerCount">Max player count:</label><input type="number" class="form-control" id="gameMaxPlayerCount" (ngModelChange)="onChange($event)" [(ngModel)]="game.maxPlayerCount" min="0"></div>
+      <div class="form-group"><label for="gameMinTimeInMinutes">Min time in minutes:</label><input type="number" class="form-control" id="gameMinTimeInMinutes" (ngModelChange)="onChange($event)" [(ngModel)]="game.minTimeInMinutes" min="0"></div>
+      <div class="form-group"><label for="gameMaxTimeInMinutes">Max time in minutes:</label><input type="number" class="form-control" id="gameMaxTimeInMinutes" (ngModelChange)="onChange($event)" [(ngModel)]="game.maxTimeInMinutes" min="0"></div>
+      <div class="form-group"><label for="gameDescription">Description:</label><textarea class="form-control" id="gameDescription" (ngModelChange)="onChange($event)" [(ngModel)]="game.description"></textarea></div>
+      <div class="form-group"><label for="gameComponents">Components:</label><textarea class="form-control" id="gameComponents" (ngModelChange)="onChange($event)" [(ngModel)]="game.components"></textarea></div>
+      <div class="form-group">
+        <h4>Files:</h4>
+        <div class="detailBox">
+          <div><label for="gameRulesUrl">Rules file:</label><input class="form-control" id="gameRulesUrl" (ngModelChange)="onChange($event)" [(ngModel)]="game.rulesUrl"></div>
+          <div><label for="gamePnpUrl">PNP File:</label><input class="form-control" id="gamePnpUrl" (ngModelChange)="onChange($event)" [(ngModel)]="game.pnpUrl"></div>
+        </div>
+      </div>
+      <div class="form-group"><label for="gameActive"><input class="form-check" id="gameActive" type="checkbox" name="isActive" (ngModelChange)="onChange($event)" [(ngModel)]="game.active" /> The game is Active</label></div>
+      <div class="form-group"><label for="gamePRiority">Priority</label><input class="form-control" disabled [ngModel]="game.priority" /></div>
+    </fieldset>
     <div class="lowerRightBottom">
       <a class="action-button" (click)="saveGame()" data-tooltip="Save Game">
         <span class="glyphicon glyphicon-floppy-disk"></span>
