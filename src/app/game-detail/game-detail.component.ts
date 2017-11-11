@@ -24,7 +24,10 @@ export class GameDetailComponent implements OnInit {
     alreadyPlaytested: boolean = false;
     feedbackId: string;
     feedbackExists: boolean;
-
+    playtesting: boolean = false;
+    deleting: boolean = false;
+    undeleting: boolean = false;
+    
     constructor(
         private business: BusinessService,
         private route: ActivatedRoute,
@@ -34,6 +37,7 @@ export class GameDetailComponent implements OnInit {
     }
 
     playTestGame(): void {
+        this.playtesting = true;
         let playtest: Playtest = {
             gameId: this.game.id,
             id: this.user.id,
@@ -42,6 +46,7 @@ export class GameDetailComponent implements OnInit {
         };
         this.business.addPlaytest(
             playtest, this.user, this.game, () => {
+                this.playtesting = false;
                 let navigationExtras: NavigationExtras = {
                     queryParams: { 'message': 'You are now playtesting ' + this.game.name + '.' },
                 };
@@ -50,15 +55,19 @@ export class GameDetailComponent implements OnInit {
     }
 
     deleteGame(): void {
-        this.game.active = false;
-        this.game.id = this.game.id;
-        this.business.updateGame(this.game);
+        this.deleting = true;
+        this.business.updateGame(this.game, (r) => {
+            this.game.active = false;
+            this.deleting = false;
+        });
     }
 
     undeleteGame(): void {
-        this.game.active = true;
-        this.game.id = this.game.id;
-        this.business.updateGame(this.game);
+        this.undeleting = true;
+        this.business.updateGame(this.game, (r) => {
+            this.undeleting = false;
+            this.game.active = true;
+        });
     }
 
     ngOnInit(): void {

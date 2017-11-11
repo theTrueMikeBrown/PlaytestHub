@@ -73,12 +73,12 @@
   <div *ngIf="editing">
     <div class="lowerRightBottom">
       <a class="action-button" (click)="saveFeedback()" data-tooltip="Save Feedback">
-        <span class="glyphicon glyphicon-floppy-disk"></span>
+        <span [class.fa-spin]="this.saving" class="glyphicon glyphicon-floppy-disk"></span>
       </a>
     </div>
     <div class="lowerRightBottom">
       <a class="action-button" (click)="submitFeedback()" data-tooltip="Submit Feedback">
-        <span class="glyphicon glyphicon-send"></span>
+        <span [class.fa-spin]="this.submitting" class="glyphicon glyphicon-send"></span>
       </a>
     </div>
   </div>
@@ -91,12 +91,12 @@
 
     <div class="lowerRightBottom">
       <a class="action-button" (click)="approveFeedback()" data-tooltip="Approve Feedback">
-        <span class="glyphicon glyphicon-ok"></span>
+        <span [class.fa-spin]="this.approving" class="glyphicon glyphicon-ok"></span>
       </a>
     </div>
     <div class="lowerRightBottom" *ngIf="reviewing">
       <a class="action-button" (click)="rejectFeedback()" data-tooltip="Reject Feedback">
-        <span class="glyphicon glyphicon-remove"></span>
+        <span [class.fa-spin]="this.rejecting" class="glyphicon glyphicon-remove"></span>
       </a>
     </div>
     <div class="lowerRightBottom" *ngIf="!reviewing">

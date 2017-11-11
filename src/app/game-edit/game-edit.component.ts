@@ -18,13 +18,16 @@ export class GameEditComponent implements OnInit {
     game: Game;
     message: Subject<string>;
     messageActive: string;
+    saving: boolean = false;
 
     constructor(private router: Router,
         private route: ActivatedRoute,
         private business: BusinessService) { }
     
     saveGame(): void {
+        this.saving = true;
         this.business.updateGame(this.game, (response) => {
+            this.saving = false;
             this.message.next("Saved!");
             this.messageActive = "message";
         });

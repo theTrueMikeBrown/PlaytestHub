@@ -218,20 +218,19 @@ exports.addPlaytest = functions.https.onRequest((req, res) => {
 exports.updateGame = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         const game = req.body;
-        var cleanGame = {
-            id: game.id,
-            name: game.name,
-            minPlayerCount: game.minPlayerCount,
-            maxPlayerCount: game.maxPlayerCount,
-            minTimeInMinutes: game.minTimeInMinutes,
-            maxTimeInMinutes: game.maxTimeInMinutes,
-            components: game.components,
-            description: game.description,
-            rulesUrl: game.rulesUrl,
-            pnpUrl: game.pnpUrl,
-            priority: 0,
-            active: game.active
-        };
+        var cleanGame = {};
+        if (game.id) { cleanGame.id = game.id; }
+        if (game.name) { cleanGame.name = game.name; }
+        if (game.minPlayerCount) { cleanGame.minPlayerCount = game.minPlayerCount; }
+        if (game.maxPlayerCount) { cleanGame.maxPlayerCount = game.maxPlayerCount; }
+        if (game.minTimeInMinutes) { cleanGame.minTimeInMinutes = game.minTimeInMinutes; }
+        if (game.maxTimeInMinutes) { cleanGame.maxTimeInMinutes = game.maxTimeInMinutes; }
+        if (game.components) { cleanGame.components = game.components; }
+        if (game.description) { cleanGame.description = game.description; }
+        if (game.rulesUrl) { cleanGame.rulesUrl = game.rulesUrl; }
+        if (game.pnpUrl) { cleanGame.pnpUrl = game.pnpUrl; }
+        cleanGame.priority = 0;
+        cleanGame.active = !!game.active;
 
         admin.firestore()
             .collection('games').doc(game.id).get()

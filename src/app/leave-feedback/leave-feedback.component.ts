@@ -22,6 +22,10 @@ export class LeaveFeedbackComponent implements OnInit {
     pendingApproval: boolean = false;
     user: User;
     rejectReason: string;
+    saving: boolean = false;
+    approving: boolean = false;
+    submitting: boolean = false;
+    rejecting: boolean = false;
 
     constructor(private router: Router,
         private route: ActivatedRoute,
@@ -30,39 +34,49 @@ export class LeaveFeedbackComponent implements OnInit {
     }
 
     saveFeedback(): void {
-        this.business.saveFeedback(this.feedback);
+        this.saving = true;
+        this.business.saveFeedback(this.feedback, (r) => {
+            this.saving = false;
+        });
     }
 
     submitFeedback(): void {
-        let errors: string[] = this.business.submitFeedback(this.feedback);
-        if (errors.length === 0) {
+        this.submitting = true;
+        let errors: string[] = this.business.submitFeedback(this.feedback, (r) => {
+            this.submitting = false;
             let navigationExtras: NavigationExtras = {
                 queryParams: { 'message': 'Feedback Submitted Successfully!' },
             };
             this.router.navigate(['/games'], navigationExtras);
-        }
-        else {
+        });
+        if (errors.length !== 0) {
+            this.submitting = false;
             alert("Errors: " + errors.join(", "));
         }
     }
 
     approveFeedback(): void {
+        this.approving = true;
         this.feedback.approved = true;
-        this.business.approveFeedback(this.feedback, this.user.uid);
-        
-        let navigationExtras: NavigationExtras = {
-            queryParams: { 'message': 'Feedback Approved!' },
-        };
-        this.router.navigate(['/games'], navigationExtras);
+        this.business.approveFeedback(this.feedback, this.user.uid, (r) => {
+            this.approving = false;
+            let navigationExtras: NavigationExtras = {
+                queryParams: { 'message': 'Feedback Approved!' },
+            };
+            this.router.navigate(['/games'], navigationExtras);
+        });
     }
 
     rejectFeedback(): void {
-        this.business.rejectFeedback(this.feedback, this.rejectReason, this.user.uid);
+        this.rejecting = true;
+        this.business.rejectFeedback(this.feedback, this.rejectReason, this.user.uid, (r) => {
+            this.rejecting = false;
 
-        let navigationExtras: NavigationExtras = {
-            queryParams: { 'message': 'Feedback Rejected!' },
-        };
-        this.router.navigate(['/games'], navigationExtras);
+            let navigationExtras: NavigationExtras = {
+                queryParams: { 'message': 'Feedback Rejected!' },
+            };
+            this.router.navigate(['/games'], navigationExtras);
+        });
     }
 
     ngOnInit(): void {

@@ -18,6 +18,7 @@ export class ViewMessagesComponent implements OnInit {
     message: Message;
     senderName: string;
     user: User;
+    deleting: boolean = false;
 
     constructor(private business: BusinessService,
         private router: Router,
@@ -46,8 +47,11 @@ export class ViewMessagesComponent implements OnInit {
     }
 
     delete(): void {
+        this.deleting = true;
         let id = this.message.id;
-        this.message = null;
-        this.business.deleteMessage(id, (r) => { });
+        this.business.deleteMessage(id, (r) => {
+            this.message = null;
+            this.deleting = false;
+        });
     }
 }

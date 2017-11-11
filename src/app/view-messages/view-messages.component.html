@@ -7,7 +7,7 @@
 
   <div *ngIf="message" class="messageDiv">
     <a (click)="delete()" class="action-button inner-upper-right" data-tooltip="Delete selected message">
-      <span class="glyphicon glyphicon-trash"></span>
+      <span [class.fa-spin]="this.deleting" class="glyphicon glyphicon-trash"></span>
     </a>
     <h3>Subject: {{message.subject}}</h3>
     <h5>

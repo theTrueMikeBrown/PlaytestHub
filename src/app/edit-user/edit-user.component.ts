@@ -15,6 +15,7 @@ export class EditUserComponent implements OnInit {
     profile: User;
     message: Subject<string>;
     messageActive: string;
+    saving: boolean = false;
 
     constructor(
         private loginInfoService: LoginInfoService,
@@ -36,7 +37,9 @@ export class EditUserComponent implements OnInit {
     }
 
     saveUser(): void {
+        this.saving = true;
         this.business.updateUser(this.profile, (response) => {
+            this.saving = false;
             this.message.next("Saved!");
             this.messageActive = "message";
         });

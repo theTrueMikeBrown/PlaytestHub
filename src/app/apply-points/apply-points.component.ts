@@ -26,6 +26,7 @@ export class ApplyPointsComponent {
     message: Subject<string>;
     messageActive: string;
     selectedGameObj: Game;
+    saving: boolean = false;
 
     constructor(
         private business: BusinessService,
@@ -48,7 +49,9 @@ export class ApplyPointsComponent {
     }
 
     applyPoints(): void {
+        this.saving = true;
         this.business.applyPoints(this.selectedGame, this.points, this.user.uid, (r) => {
+            this.saving = false;
 
             let navigationExtras: NavigationExtras = {
                 queryParams: { 'message': r.text() },

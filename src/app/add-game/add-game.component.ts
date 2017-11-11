@@ -12,16 +12,20 @@ import { Game } from '../types/game';
 })
 export class AddGameComponent implements OnInit {
     game: Game = new Game();
+    saving: boolean = false;
+
     constructor(private business: BusinessService, private router: Router, private loginInfoService: LoginInfoService) {
     }
 
     addGame(): void {
-        this.business.addGame(this.game);
-
-        let navigationExtras: NavigationExtras = {
-            queryParams: { 'message': 'Game Saved Successfully!' },
-        };
-        this.router.navigate(['/games'], navigationExtras);
+        this.saving = true;
+        this.business.addGame(this.game, (r) => {
+            this.saving = false;
+            let navigationExtras: NavigationExtras = {
+                queryParams: { 'message': 'Game Saved Successfully!' },
+            };
+            this.router.navigate(['/games'], navigationExtras);
+        });
     }
 
     ngOnInit(): void {

@@ -97,7 +97,6 @@ export class DbService {
     }
 
     addGame(game: Game, successCallback?: (r: Response) => void) {
-        debugger;
         this.http.post(this.addGameUrl, game)
             .toPromise()
             .then(response => {
