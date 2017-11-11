@@ -85,43 +85,6 @@ export class DbService {
         return Promise.resolve(itemsList.valueChanges());
     }
 
-    addPlaytest(playtest: Playtest, successCallback?: (r: Response) => void) {
-        this.http.post(this.addPlaytestUrl, playtest)
-            .toPromise()
-            .then(response => {
-                if (successCallback) {
-                    successCallback(response);
-                }
-            })
-            .catch((error) => { debugger; });
-    }
-
-    addGame(game: Game, successCallback?: (r: Response) => void) {
-        this.http.post(this.addGameUrl, game)
-            .toPromise()
-            .then(response => {
-                if (successCallback) {
-                    successCallback(response);
-                }
-            })
-            .catch((error) => {
-                debugger;
-            });
-    }
-
-    updateGame(game: Game, successCallback?: (r: Response) => void) {
-        this.http.post(this.updateGameUrl, game)
-            .toPromise()
-            .then(response => {
-                if (successCallback) {
-                    successCallback(response);
-                }
-            })
-            .catch((error) => {
-                debugger;
-            });
-    }
-
     getUser(id: string): Promise<Observable<User>> {
         let user: Observable<User> = this.db.doc<User>('users/' + id).valueChanges();
         return Promise.resolve(user);
@@ -142,32 +105,6 @@ export class DbService {
                 }
             });
         return Promise.resolve(subject);
-    }
-
-    saveUser(user: User, successCallback?: (r: Response) => void) {
-        this.http.post(this.saveUserUrl, user)
-            .toPromise()
-            .then(response => {
-                if (successCallback) {
-                    successCallback(response);
-                }
-            })
-            .catch((error) => {
-                debugger;
-            });
-    }
-
-    updateUser(user: User, successCallback?: (r: Response) => void) {
-        this.http.post(this.updateUserUrl, user)
-            .toPromise()
-            .then(response => {
-                if (successCallback) {
-                    successCallback(response);
-                }
-            })
-            .catch((error) => {
-                debugger;
-            });
     }
 
     getFeedbackReadyForApproval(): Promise<Observable<Feedback[]>> {
@@ -223,71 +160,6 @@ export class DbService {
         return Promise.resolve(subject);
     }
 
-    saveFeedback(feedback: Feedback, successCallback?: (r: Response) => void) {
-        this.http.post(this.saveFeedbackUrl, feedback)
-            .toPromise()
-            .then(response => {
-                if (successCallback) {
-                    successCallback(response);
-                }
-            })
-            .catch((error) => {
-                debugger;
-            });
-    }
-
-    rejectFeedback(feedback: Feedback, uid: string, successCallback?: (r: Response) => void) {
-        this.http.post(this.rejectFeedbackUrl, { feedback: feedback, uid: uid })
-            .toPromise()
-            .then(response => {
-                if (successCallback) {
-                    successCallback(response);
-                }
-            })
-            .catch((error) => {
-                debugger;
-            });
-    }
-
-    submitFeedback(feedback: Feedback, successCallback?: (r: Response) => void): void {
-        this.http.post(this.submitFeedbackUrl, feedback)
-            .toPromise()
-            .then(response => {
-                if (successCallback) {
-                    successCallback(response);
-                }
-            })
-            .catch((error) => {
-                debugger;
-            });
-    }
-    
-    approveFeedback(feedback: Feedback, uid: string, successCallback?: (r: Response) => void) {
-        this.http.post(this.approveFeedbackUrl, { feedback: feedback, uid: uid })
-            .toPromise()
-            .then(response => {
-                if (successCallback) {
-                    successCallback(response);
-                }
-            })
-            .catch((error) => {
-                debugger;
-            });
-    }
-
-    applyPoints(gameId: string, points: number, uid: string, successCallback?: (r: Response) => void) {
-        this.http.post(this.applyPointUrl, { gameId: gameId, points: points, uid: uid })
-            .toPromise()
-            .then(response => {
-                if (successCallback) {
-                    successCallback(response);
-                }
-            })
-            .catch((error) => {
-                debugger;
-            });;
-    }
-
     getMessages(uid: string): Promise<Observable<Message[]>> {
         let subject: Subject<Message[]> = new Subject;
 
@@ -319,8 +191,20 @@ export class DbService {
         return Promise.resolve(itemsList.valueChanges());
     }
 
-    sendMessage(message: Message, successCallback?: (r: Response) => void) {
-        this.http.post(this.sendMessageUrl, message)
+
+    addPlaytest(playtest: Playtest, uid: string, successCallback?: (r: Response) => void) {
+        this.http.post(this.addPlaytestUrl, { playtest: playtest, uid: uid })
+            .toPromise()
+            .then(response => {
+                if (successCallback) {
+                    successCallback(response);
+                }
+            })
+            .catch((error) => { debugger; });
+    }
+
+    addGame(game: Game, uid: string, successCallback?: (r: Response) => void) {
+        this.http.post(this.addGameUrl, { game: game, uid: uid })
             .toPromise()
             .then(response => {
                 if (successCallback) {
@@ -332,8 +216,8 @@ export class DbService {
             });
     }
 
-    markMessageRead(id: string, isRead: boolean, successCallback?: (r: Response) => void) {
-        this.http.post(this.markMessageReadUrl, { id: id, isRead: isRead })
+    updateGame(game: Game, uid: string, successCallback?: (r: Response) => void) {
+        this.http.post(this.updateGameUrl, { game: game, uid: uid })
             .toPromise()
             .then(response => {
                 if (successCallback) {
@@ -345,8 +229,125 @@ export class DbService {
             });
     }
 
-    deleteMessage(id: string, successCallback?: (r: Response) => void) {
-        this.http.post(this.deleteMessageUrl, { id: id })
+    saveUser(user: User, successCallback?: (r: Response) => void) {
+        this.http.post(this.saveUserUrl, user)
+            .toPromise()
+            .then(response => {
+                if (successCallback) {
+                    successCallback(response);
+                }
+            })
+            .catch((error) => {
+                debugger;
+            });
+    }
+
+    updateUser(user: User, successCallback?: (r: Response) => void) {
+        this.http.post(this.updateUserUrl, user)
+            .toPromise()
+            .then(response => {
+                if (successCallback) {
+                    successCallback(response);
+                }
+            })
+            .catch((error) => {
+                debugger;
+            });
+    }
+
+    saveFeedback(feedback: Feedback, uid: string, successCallback?: (r: Response) => void) {
+        this.http.post(this.saveFeedbackUrl, { feedback: feedback, uid: uid })
+            .toPromise()
+            .then(response => {
+                if (successCallback) {
+                    successCallback(response);
+                }
+            })
+            .catch((error) => {
+                debugger;
+            });
+    }
+
+    rejectFeedback(feedback: Feedback, uid: string, successCallback?: (r: Response) => void) {
+        this.http.post(this.rejectFeedbackUrl, { feedback: feedback, uid: uid })
+            .toPromise()
+            .then(response => {
+                if (successCallback) {
+                    successCallback(response);
+                }
+            })
+            .catch((error) => {
+                debugger;
+            });
+    }
+
+    submitFeedback(feedback: Feedback, uid: string, successCallback?: (r: Response) => void): void {
+        this.http.post(this.submitFeedbackUrl, { feedback: feedback, uid: uid })
+            .toPromise()
+            .then(response => {
+                if (successCallback) {
+                    successCallback(response);
+                }
+            })
+            .catch((error) => {
+                debugger;
+            });
+    }
+
+    approveFeedback(feedback: Feedback, uid: string, successCallback?: (r: Response) => void) {
+        this.http.post(this.approveFeedbackUrl, { feedback: feedback, uid: uid })
+            .toPromise()
+            .then(response => {
+                if (successCallback) {
+                    successCallback(response);
+                }
+            })
+            .catch((error) => {
+                debugger;
+            });
+    }
+
+    applyPoints(gameId: string, points: number, uid: string, successCallback?: (r: Response) => void) {
+        this.http.post(this.applyPointUrl, { gameId: gameId, points: points, uid: uid })
+            .toPromise()
+            .then(response => {
+                if (successCallback) {
+                    successCallback(response);
+                }
+            })
+            .catch((error) => {
+                debugger;
+            });;
+    }
+
+    sendMessage(message: Message, uid: string, successCallback?: (r: Response) => void) {
+        this.http.post(this.sendMessageUrl, { message: message, uid: uid })
+            .toPromise()
+            .then(response => {
+                if (successCallback) {
+                    successCallback(response);
+                }
+            })
+            .catch((error) => {
+                debugger;
+            });
+    }
+
+    markMessageRead(id: string, isRead: boolean, uid: string, successCallback?: (r: Response) => void) {
+        this.http.post(this.markMessageReadUrl, { id: id, isRead: isRead, uid: uid })
+            .toPromise()
+            .then(response => {
+                if (successCallback) {
+                    successCallback(response);
+                }
+            })
+            .catch((error) => {
+                debugger;
+            });
+    }
+
+    deleteMessage(id: string, uid: string, successCallback?: (r: Response) => void) {
+        this.http.post(this.deleteMessageUrl, { id: id, uid: uid })
             .toPromise()
             .then(response => {
                 if (successCallback) {

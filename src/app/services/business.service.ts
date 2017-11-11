@@ -45,7 +45,7 @@ export class BusinessService {
     }
 
     addPlaytest(playtest: Playtest, user: User, game: Game, successCallback?: (r: Response) => void) {
-        this.db.addPlaytest(playtest,
+        this.db.addPlaytest(playtest, user.uid,
             response => {
                 if (successCallback) {
                     successCallback(response);
@@ -54,7 +54,7 @@ export class BusinessService {
                     feelings: ['', '', ''], categorization: ['', '', ''], general: ['', ''], length: ['', '', ''],
                     art: ['', ''], rules: ['', '', ''], mechanics: ['', '', ''], final: ['', '', '', ''],
                     userId: user.id, gameId: game.id, id: '', approved: false, submitted: false, submitDate: null
-                });
+                }, user.uid);
                 let message: Message = {
                     id: '',
                     subject: "Congrats!",
@@ -64,7 +64,7 @@ export class BusinessService {
                     isRead: false,
                     sentDate: new Date(),
                 };
-                this.sendMessage(message);
+                this.sendMessage(message, "");
             });
     }
 
@@ -75,12 +75,12 @@ export class BusinessService {
         return url;
     };
 
-    addGame(game: Game, successCallback?: (r: Response) => void) {
+    addGame(game: Game, uid: string, successCallback?: (r: Response) => void) {
         game.createDate = new Date();
         game.pnpUrl = this.appendHttp(game.pnpUrl);
         game.rulesUrl = this.appendHttp(game.rulesUrl);
 
-        this.db.addGame(game, response => {
+        this.db.addGame(game, uid, response => {
             if (successCallback) {
                 successCallback(response);
             }
@@ -93,15 +93,15 @@ export class BusinessService {
                 isRead: false,
                 sentDate: new Date(),
             };
-            this.sendMessage(message);
+            this.sendMessage(message, "");
         });
     }
 
-    updateGame(game: Game, successCallback?: (r: Response) => void) {
+    updateGame(game: Game, uid: string, successCallback?: (r: Response) => void) {
         game.pnpUrl = this.appendHttp(game.pnpUrl);
         game.rulesUrl = this.appendHttp(game.rulesUrl);
 
-        this.db.updateGame(game, successCallback);
+        this.db.updateGame(game, uid, successCallback);
     }
 
     getUser(id: string): Promise<Observable<User>> {
@@ -124,7 +124,7 @@ export class BusinessService {
             isRead: false,
             sentDate: new Date(),
         };
-        this.sendMessage(message);
+        this.sendMessage(message, "");
     }
 
     updateUser(user: User, successCallback?: (r: Response) => void) {
@@ -143,8 +143,8 @@ export class BusinessService {
         return this.db.getFeedbackReadyForApprovalByUser(userId);
     }
 
-    saveFeedback(feedback: Feedback, successCallback?: (r: Response) => void) {
-        this.db.saveFeedback(feedback, successCallback);
+    saveFeedback(feedback: Feedback, uid: string, successCallback?: (r: Response) => void) {
+        this.db.saveFeedback(feedback, uid, successCallback);
     }
 
     rejectFeedback(feedback: Feedback, reason: string, uid: string, successCallback?: (r: Response) => void) {
@@ -162,16 +162,16 @@ export class BusinessService {
                     isRead: false,
                     sentDate: new Date(),
                 };
-                this.sendMessage(message);
+                this.sendMessage(message, "");
             }));
         });
     }
 
-    submitFeedback(feedback: Feedback, successCallback?: (r: Response) => void): string[] {
+    submitFeedback(feedback: Feedback, uid: string, successCallback?: (r: Response) => void): string[] {
         let errors: string[] = this.validate(feedback);
         if (errors.length === 0) {
             feedback.submitDate = new Date();
-            this.db.submitFeedback(feedback, (response => {
+            this.db.submitFeedback(feedback, uid, (response => {
                 if (successCallback) {
                     successCallback(response);
                 }
@@ -185,7 +185,7 @@ export class BusinessService {
                         isRead: false,
                         sentDate: new Date(),
                     };
-                    this.sendMessage(message);
+                    this.sendMessage(message, "");
                 }));
             }));
             return [];
@@ -233,7 +233,7 @@ export class BusinessService {
                     isRead: false,
                     sentDate: new Date(),
                 };
-                this.sendMessage(message)
+                this.sendMessage(message, "")
 
                 let message2: Message = {
                     id: '',
@@ -244,10 +244,9 @@ export class BusinessService {
                     isRead: false,
                     sentDate: new Date(),
                 };
-                this.sendMessage(message2)
+                this.sendMessage(message2, "")
             }));
         });
-        
     }
 
     applyPoints(gameId: string, points: number, uid: string, successCallback?: (r: Response) => void) {
@@ -262,15 +261,15 @@ export class BusinessService {
         return this.db.getSentMessages(uid);
     }
 
-    sendMessage(message: Message, successCallback?: (r: Response) => void) {
-        this.db.sendMessage(message, successCallback);
+    sendMessage(message: Message, uid: string, successCallback?: (r: Response) => void) {
+        this.db.sendMessage(message, uid, successCallback);
     }
 
-    markMessageRead(id: string, isRead: boolean, successCallback?: (r: Response) => void) {
-        this.db.markMessageRead(id, isRead, successCallback);
+    markMessageRead(id: string, uid: string, isRead: boolean, successCallback?: (r: Response) => void) {
+        this.db.markMessageRead(id, isRead, uid, successCallback);
     }
 
-    deleteMessage(id: string, successCallback?: (r: Response) => void) {
-        this.db.deleteMessage(id, successCallback);
+    deleteMessage(id: string, uid: string, successCallback?: (r: Response) => void) {
+        this.db.deleteMessage(id, uid, successCallback);
     }
 }

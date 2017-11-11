@@ -155,61 +155,70 @@ exports.addGame = functions.https.onRequest((req, res) => {
 
 exports.addPlaytest = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
-        const gameId = req.body.gameId;
-        const id = req.body.id;
+        const gameId = playtest.gameId;
+        const uid = req.body.uid
         var db = admin.firestore();
 
-        db.collection('games').doc(gameId).get()
-            .then((doc) => {
-                var obj = doc.data();
-                //make sure that the game's priority is high enough to do it
-                if (obj.priority >= 0) {
+        db.collection('users')
+            .where("uid", "==", uid)
+            .get()
+            .then((usnap) => {
+                if (usnap.size == 1) {
+                    var user = usnap.docs[0].data();
+                    const id = user.id;
+                    db.collection('games').doc(gameId).get()
+                        .then((doc) => {
+                            var obj = doc.data();
+                            //make sure that the game's priority is high enough to do it
+                            if (obj.priority >= 0) {
 
-                    //make sure that the old playtest (if one exists) is propery dealt with
-                    db.collection('playtests').doc(id).get()
-                        .then((s) => {
-                            //if an old one exists
-                            if (s.exists) {
-                                var playTest = s.data();
-                                //if the old one was for a different game
-                                if (playTest.gameId != gameId) {
-                                    //Fix the old game's priority
-                                    db.collection('games').doc(playTest.gameId).get()
-                                        .then((oldSnap) => {
-                                            var oldObj = oldSnap.data();
-                                            db.collection('games').doc(playTest.gameId).update({ priority: oldObj.priority + 1 });
-                                        });
-                                    //Delete old feedback
-                                    db.collection('feedback')
-                                        .where("userId", "==", playTest.id)
-                                        .where("gameId", "==", playTest.gameId)
-                                        .get()
-                                        .then((snap) => {
-                                            for (var i = 0; i < snap.size; i++) {
-                                                var feedback = snap.docs[i].data();
-                                                db.collection('feedback').doc(feedback.id).delete();
+                                //make sure that the old playtest (if one exists) is propery dealt with
+                                db.collection('playtests').doc(id).get()
+                                    .then((s) => {
+                                        //if an old one exists
+                                        if (s.exists) {
+                                            var playTest = s.data();
+                                            //if the old one was for a different game
+                                            if (playTest.gameId != gameId) {
+                                                //Fix the old game's priority
+                                                db.collection('games').doc(playTest.gameId).get()
+                                                    .then((oldSnap) => {
+                                                        var oldObj = oldSnap.data();
+                                                        db.collection('games').doc(playTest.gameId).update({ priority: oldObj.priority + 1 });
+                                                    });
+                                                //Delete old feedback
+                                                db.collection('feedback')
+                                                    .where("userId", "==", playTest.id)
+                                                    .where("gameId", "==", playTest.gameId)
+                                                    .get()
+                                                    .then((snap) => {
+                                                        for (var i = 0; i < snap.size; i++) {
+                                                            var feedback = snap.docs[i].data();
+                                                            db.collection('feedback').doc(feedback.id).delete();
+                                                        }
+                                                    });
                                             }
-                                        });
-                                }
-                                else {
-                                    //you can't reset your playtest duration this way
-                                    res.status(406).send("Already playtesting that game.");
-                                    return;
-                                }
+                                            else {
+                                                //you can't reset your playtest duration this way
+                                                res.status(406).send("Already playtesting that game.");
+                                                return;
+                                            }
+                                        }
+
+                                        //record the playtest, and reduce the score.
+                                        var date = new Date();
+                                        db.collection('games').doc(gameId).update({ priority: obj.priority - 1 });
+
+                                        var pt = { gameId: gameId, id: id, started: date, gameName: req.body.gameName };
+                                        db.collection('playtests').doc(id).set(pt);
+
+                                        res.status(200).send("success");
+                                    });
                             }
-
-                            //record the playtest, and reduce the score.
-                            var date = new Date();
-                            db.collection('games').doc(gameId).update({ priority: obj.priority - 1 });
-
-                            var pt = { gameId: gameId, id: id, started: date, gameName: req.body.gameName };
-                            db.collection('playtests').doc(id).set(pt);
-
-                            res.status(200).send("success");
+                            else {
+                                res.status(406).send("Not enough priority!");
+                            }
                         });
-                }
-                else {
-                    res.status(406).send("Not enough priority!");
                 }
             });
     });
