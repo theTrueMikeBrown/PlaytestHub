@@ -56,7 +56,7 @@ export class GameDetailComponent implements OnInit {
 
     deleteGame(): void {
         this.deleting = true;
-        this.business.updateGame(this.game, (r) => {
+        this.business.updateGame(this.game, this.user.uid, (r) => {
             this.game.active = false;
             this.deleting = false;
         });
@@ -64,7 +64,7 @@ export class GameDetailComponent implements OnInit {
 
     undeleteGame(): void {
         this.undeleting = true;
-        this.business.updateGame(this.game, (r) => {
+        this.business.updateGame(this.game, this.user.uid, (r) => {
             this.undeleting = false;
             this.game.active = true;
         });

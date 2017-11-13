@@ -203,8 +203,8 @@ export class DbService {
             .catch((error) => { debugger; });
     }
 
-    addGame(game: Game, uid: string, successCallback?: (r: Response) => void) {
-        this.http.post(this.addGameUrl, { game: game, uid: uid })
+    updateGame(game: Game, uid: string, successCallback?: (r: Response) => void) {
+        this.http.post(this.updateGameUrl, { game: game, uid: uid })
             .toPromise()
             .then(response => {
                 if (successCallback) {
@@ -216,8 +216,8 @@ export class DbService {
             });
     }
 
-    updateGame(game: Game, uid: string, successCallback?: (r: Response) => void) {
-        this.http.post(this.updateGameUrl, { game: game, uid: uid })
+    addGame(game: Game, uid: string, successCallback?: (r: Response) => void) {
+        this.http.post(this.addGameUrl, { game: game, uid: uid })
             .toPromise()
             .then(response => {
                 if (successCallback) {
@@ -268,8 +268,8 @@ export class DbService {
             });
     }
 
-    rejectFeedback(feedback: Feedback, uid: string, successCallback?: (r: Response) => void) {
-        this.http.post(this.rejectFeedbackUrl, { feedback: feedback, uid: uid })
+    submitFeedback(feedback: Feedback, uid: string, successCallback?: (r: Response) => void): void {
+        this.http.post(this.submitFeedbackUrl, { feedback: feedback, uid: uid })
             .toPromise()
             .then(response => {
                 if (successCallback) {
@@ -281,8 +281,8 @@ export class DbService {
             });
     }
 
-    submitFeedback(feedback: Feedback, uid: string, successCallback?: (r: Response) => void): void {
-        this.http.post(this.submitFeedbackUrl, { feedback: feedback, uid: uid })
+    rejectFeedback(feedback: Feedback, uid: string, successCallback?: (r: Response) => void) {
+        this.http.post(this.rejectFeedbackUrl, { feedback: feedback, uid: uid })
             .toPromise()
             .then(response => {
                 if (successCallback) {

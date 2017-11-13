@@ -48,7 +48,7 @@ export class AdminPageComponent implements OnInit {
             subject: this.messageSubject,
             text: this.messageText
         };
-        this.business.sendMessage(message, (r) => {
+        this.business.sendMessage(message, this.user.uid, (r) => {
             this.messageRecipient = "";
             this.messageSubject = "";
             this.messageText = "";

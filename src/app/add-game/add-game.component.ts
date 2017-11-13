@@ -4,6 +4,7 @@ import { Router, NavigationExtras } from '@angular/router';
 import { LoginInfoService } from '../services/loginInfo.service';
 import { BusinessService } from '../services/business.service';
 import { Game } from '../types/game';
+import { User } from '../types/user';
 
 @Component({
     selector: 'add-game',
@@ -12,6 +13,7 @@ import { Game } from '../types/game';
 })
 export class AddGameComponent implements OnInit {
     game: Game = new Game();
+    user: User;
     saving: boolean = false;
 
     constructor(private business: BusinessService, private router: Router, private loginInfoService: LoginInfoService) {
@@ -19,7 +21,7 @@ export class AddGameComponent implements OnInit {
 
     addGame(): void {
         this.saving = true;
-        this.business.addGame(this.game, (r) => {
+        this.business.addGame(this.game, this.user.uid, (r) => {
             this.saving = false;
             let navigationExtras: NavigationExtras = {
                 queryParams: { 'message': 'Game Saved Successfully!' },
@@ -30,6 +32,7 @@ export class AddGameComponent implements OnInit {
 
     ngOnInit(): void {
         this.loginInfoService.getLoginInfo().then(user => {
+            this.user = user;
             this.game.owner = user.id;
             this.game.ownerName = user.displayName;
             this.game.priority = 0;

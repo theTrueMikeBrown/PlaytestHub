@@ -35,14 +35,14 @@ export class LeaveFeedbackComponent implements OnInit {
 
     saveFeedback(): void {
         this.saving = true;
-        this.business.saveFeedback(this.feedback, (r) => {
+        this.business.saveFeedback(this.feedback, this.user.uid, (r) => {
             this.saving = false;
         });
     }
 
     submitFeedback(): void {
         this.submitting = true;
-        let errors: string[] = this.business.submitFeedback(this.feedback, (r) => {
+        let errors: string[] = this.business.submitFeedback(this.feedback, this.user.uid, (r) => {
             this.submitting = false;
             let navigationExtras: NavigationExtras = {
                 queryParams: { 'message': 'Feedback Submitted Successfully!' },

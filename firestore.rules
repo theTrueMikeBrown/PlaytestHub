@@ -1,5 +1,8 @@
 ﻿service cloud.firestore {
   match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read, write: if false;
+    }
     match /{document=**} {
       allow read: if request.auth != null;
       allow write: if false;

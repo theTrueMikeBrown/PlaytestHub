@@ -43,13 +43,13 @@ export class ViewMessagesComponent implements OnInit {
                 }
             }));
         }
-        this.business.markMessageRead(this.message.id, true);
+        this.business.markMessageRead(this.message.id, this.user.uid, true);
     }
 
     delete(): void {
         this.deleting = true;
         let id = this.message.id;
-        this.business.deleteMessage(id, (r) => {
+        this.business.deleteMessage(id, this.user.uid, (r) => {
             this.message = null;
             this.deleting = false;
         });

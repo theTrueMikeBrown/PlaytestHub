@@ -19,14 +19,16 @@ export class GameEditComponent implements OnInit {
     message: Subject<string>;
     messageActive: string;
     saving: boolean = false;
+    user: User;
 
     constructor(private router: Router,
         private route: ActivatedRoute,
-        private business: BusinessService) { }
+        private business: BusinessService,
+        private loginInfoService: LoginInfoService) { }
     
     saveGame(): void {
         this.saving = true;
-        this.business.updateGame(this.game, (response) => {
+        this.business.updateGame(this.game, this.user.uid, (response) => {
             this.saving = false;
             this.message.next("Saved!");
             this.messageActive = "message";
@@ -45,5 +47,8 @@ export class GameEditComponent implements OnInit {
                 this.game = game;
             }));
         this.message = new Subject<string>();
+        this.loginInfoService.getLoginInfo().then(user => {
+            this.user = user;
+        });
     }
 }

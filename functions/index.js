@@ -5,20 +5,10 @@ const cors = require('cors')({ origin: true });
 
 admin.initializeApp(functions.config().firebase);
 
-function sendCleanupMessage(id) {
-    var message = {
-        id: '',
-        subject: "Hmm...",
-        text: "Your playtest has been active for an entire week. We have removed it so that the game is not unfairly punished by someone not playtesting it for too long. If you actually desire to playtest it, you can sign up again.\r\n\r\n-PlaytestHub",
-        sender: '',
-        recipient: id,
-        isRead: false,
-        sentDate: new Date(),
-    };
+function internalSendMessage(message) {
     message.isRead = false;
     message.sentDate = new Date();
-    admin.firestore()
-        .collection('messages')
+    db.collection('messages')
         .add(message)
         .then((snap) => {
             const key = snap.id;
@@ -26,28 +16,63 @@ function sendCleanupMessage(id) {
             admin.firestore().collection('messages').doc(key).set(message);
         });
 }
-function doSave(feedback, res) {
-    if (!feedback.id) {
-        admin.firestore()
-            .collection('feedback')
-            .add(feedback)
-            .then((snap) => {
-                const key = snap.id;
-                feedback.id = key;
-                admin.firestore().collection('feedback').doc(key).update(feedback).then(r => {
-                    res.status(200).send("success");
-                });
-            });
-    }
-    else {
-        admin.firestore()
-            .collection('feedback')
-            .doc(feedback.id)
-            .set(feedback)
-            .then((snap) => {
-                res.status(200).send("success");
-            });
-    }
+
+function sendCleanupMessage(id) {
+    internalSendMessage({
+        id: '',
+        subject: "Hmm...",
+        text: "Your playtest has been active for an entire week. We have removed it so that the game is not unfairly punished by someone not playtesting it for too long. If you actually desire to playtest it, you can sign up again.\r\n\r\n-PlaytestHub",
+        sender: '',
+        recipient: id
+    });
+}
+function doSaveFeedback(feedback, uid, res) {
+    var db = admin.firestore();
+    db.collection('users')
+        .where("uid", "==", uid)
+        .get()
+        .then((usnap) => {
+            if (usnap.size == 1) {
+                var user = usnap.docs[0].data();
+                if (!feedback.id) {
+                    feedback.userId = user.id;
+                    db.collection('feedback')
+                        .add(feedback)
+                        .then((snap) => {
+                            const key = snap.id;
+                            feedback.id = key;
+                            db.collection('feedback').doc(key).update(feedback).then(r => {
+                                res.status(200).send("success");
+                            });
+                        });
+                }
+                else {
+                    db.collection('feedback')
+                        .doc(feedback.id)
+                        .get().then((doc) => {
+                            var oldFeedback = doc.data();
+                            if (oldFeedback.userId !== user.id) {
+                                res.status(401).send("You do not own that feedback!")
+                                return;
+                            }
+                            if (oldFeedback.submitted || oldFeedback.approved) {
+                                res.status(406).send("That feedback is already approved!")
+                                return;
+                            }
+
+                            db.collection('feedback')
+                                .doc(feedback.id)
+                                .set(feedback)
+                                .then((snap) => {
+                                    res.status(200).send("success");
+                                });
+                        });
+                }
+            }
+            else {
+                res.status(406).send(usnap.length + " users with that uid!")
+            }
+        });
 }
 
 //https://cron-job.org/en/members/jobs/details/?jobid=825596
@@ -106,17 +131,27 @@ exports.dailyCleanup = functions.https.onRequest((req, res) => {
 exports.updateUser = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         var user = req.body;
-        var val = {};
-        if (user.displayName) { val.displayName = user.displayName; }
-        if (user.photoURL) { val.photoURL = user.photoURL; }
-        if (user.personalInfo) { val.personalInfo = user.personalInfo; }
-
-        admin.firestore()
-            .collection('users')
-            .doc(user.id)
-            .update(val)
-            .then((snap) => {
-                res.status(200).send("success");
+        var updates = {};
+        if (user.displayName) { updates.displayName = user.displayName; }
+        if (user.photoURL) { updates.photoURL = user.photoURL; }
+        if (user.personalInfo) { updates.personalInfo = user.personalInfo; }
+        var db = admin.firestore();
+        db.collection('users')
+            .where("uid", "==", user.uid)
+            .get()
+            .then((usnap) => {
+                if (usnap.size == 1) {
+                    var oldUser = usnap.docs[0].data();
+                    db.collection('users')
+                        .doc(oldUser.id)
+                        .update(updates)
+                        .then((snap) => {
+                            res.status(200).send("success");
+                        });
+                }
+                else {
+                    res.status(406).send(usnap.length + " users with that uid!")
+                }
             });
     });
 });
@@ -139,23 +174,37 @@ exports.saveUser = functions.https.onRequest((req, res) => {
 
 exports.addGame = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
-        const game = req.body;
+        const game = req.body.game;
+        const uid = req.body.uid;
         game.priority = 0;
-        admin.firestore()
-            .collection('games')
-            .add(game)
-            .then((snap) => {
-                const key = snap.id;
-                game.id = key;
-                admin.firestore().collection('games').doc(key).set(game);
-                res.status(200).send("success");
+        var db = admin.firestore();
+
+        db.collection('users')
+            .where("uid", "==", uid)
+            .get()
+            .then((usnap) => {
+                if (usnap.size == 1) {
+                    var user = usnap.docs[0].data();
+                    game.owner = user.id;
+                    db.collection('games')
+                        .add(game)
+                        .then((snap) => {
+                            const key = snap.id;
+                            game.id = key;
+                            admin.firestore().collection('games').doc(key).set(game);
+                            res.status(200).send("success");
+                        });
+                }
+                else {
+                    res.status(406).send(usnap.length + " users with that uid!")
+                }
             });
     });
 });
 
 exports.addPlaytest = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
-        const gameId = playtest.gameId;
+        const gameId = req.body.playtest.gameId;
         const uid = req.body.uid
         var db = admin.firestore();
 
@@ -168,9 +217,9 @@ exports.addPlaytest = functions.https.onRequest((req, res) => {
                     const id = user.id;
                     db.collection('games').doc(gameId).get()
                         .then((doc) => {
-                            var obj = doc.data();
+                            var game = doc.data();
                             //make sure that the game's priority is high enough to do it
-                            if (obj.priority >= 0) {
+                            if (game.priority >= 0) {
 
                                 //make sure that the old playtest (if one exists) is propery dealt with
                                 db.collection('playtests').doc(id).get()
@@ -207,7 +256,7 @@ exports.addPlaytest = functions.https.onRequest((req, res) => {
 
                                         //record the playtest, and reduce the score.
                                         var date = new Date();
-                                        db.collection('games').doc(gameId).update({ priority: obj.priority - 1 });
+                                        db.collection('games').doc(gameId).update({ priority: game.priority - 1 });
 
                                         var pt = { gameId: gameId, id: id, started: date, gameName: req.body.gameName };
                                         db.collection('playtests').doc(id).set(pt);
@@ -220,13 +269,17 @@ exports.addPlaytest = functions.https.onRequest((req, res) => {
                             }
                         });
                 }
+                else {
+                    res.status(406).send(usnap.length + " users with that uid!")
+                }
             });
     });
 });
 
 exports.updateGame = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
-        const game = req.body;
+        const game = req.body.game;
+        const uid = req.body.uid;
         var cleanGame = {};
         if (game.id) { cleanGame.id = game.id; }
         if (game.name) { cleanGame.name = game.name; }
@@ -240,17 +293,35 @@ exports.updateGame = functions.https.onRequest((req, res) => {
         if (game.pnpUrl) { cleanGame.pnpUrl = game.pnpUrl; }
         cleanGame.priority = 0;
         cleanGame.active = !!game.active;
+        var db = admin.firestore();
 
-        admin.firestore()
-            .collection('games').doc(game.id).get()
-            .then((snap) => {
-                if (snap.exists) {
-                    var oldGame = snap.data();
-
-                    cleanGame.priority = oldGame.priority;
-                    admin.firestore().collection('games').doc(game.id)
-                        .update(cleanGame)
-                        .then((f) => res.status(200).send("success"));
+        db.collection('users')
+            .where("uid", "==", uid)
+            .get()
+            .then((usnap) => {
+                if (usnap.size == 1) {
+                    var user = usnap.docs[0].data();
+                    db.collection('games').doc(game.id).get()
+                        .then((snap) => {
+                            if (snap.exists) {
+                                var oldGame = snap.data();
+                                if (oldGame.owner === user.id) {
+                                    cleanGame.priority = oldGame.priority;
+                                    admin.firestore().collection('games').doc(game.id)
+                                        .update(cleanGame)
+                                        .then((f) => res.status(200).send("success"));
+                                }
+                                else {
+                                    res.status(406).send("You don't own that game!")
+                                }
+                            }
+                            else {
+                                res.status(406).send("That game doesn't exist!")
+                            }
+                        });
+                }
+                else {
+                    res.status(406).send(usnap.length + " users with that uid!")
                 }
             });
     });
@@ -258,10 +329,12 @@ exports.updateGame = functions.https.onRequest((req, res) => {
 
 exports.saveFeedback = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
-        const feedback = req.body;
+        const feedback = req.body.feedback;
+        const uid = req.body.uid;
+
         feedback.approved = false;
         feedback.submitted = false;
-        doSave(feedback, res);
+        doSaveFeedback(feedback, uid, res);
     });
 });
 
@@ -278,12 +351,16 @@ exports.rejectFeedback = functions.https.onRequest((req, res) => {
                     var user = usnap.docs[0].data();
                     var mod = user.isModerator;
                     if (mod) {
-                        feedback.approved = false;
-                        feedback.submitted = false;
-                        doSave(feedback, res);
+                        var modifications = { approved: false, submitted: false };
+                        db.collection('feedback')
+                            .doc(feedback.id)
+                            .update(mods)
+                            .then((snap) => {
+                                res.status(200).send("success");
+                            });
                         return;
                     }
-                    res.status(401).send("unauthorized.");
+                    res.status(401).send("You are not authorized to reject this feedback.");
                 }
             });
     });
@@ -291,10 +368,11 @@ exports.rejectFeedback = functions.https.onRequest((req, res) => {
 
 exports.submitFeedback = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
-        const feedback = req.body;
+        const feedback = req.body.feedback;
+        const uid = req.body.uid;
         feedback.approved = false;
         feedback.submitted = true;
-        doSave(feedback, res);
+        doSaveFeedback(feedback, uid, res);
     });
 });
 
@@ -316,9 +394,14 @@ exports.approveFeedback = functions.https.onRequest((req, res) => {
                                 var game = gsnap.data();
                                 var isGameOwner = user.id == game.owner;
                                 if (mod || isGameOwner) {
-                                    feedback.approved = true;
-                                    feedback.submitted = true;
-                                    doSave(feedback, res);
+                                    var modifications = { approved: true, submitted: true };
+                                    db.collection('feedback')
+                                        .doc(feedback.id)
+                                        .update(mods)
+                                        .then((snap) => {
+                                            res.status(200).send("success");
+                                        });
+
                                     db.collection('playtests').doc(feedback.userId).delete();
                                     db.collection('users').doc(feedback.userId).get()
                                         .then(lsnap => {
@@ -385,34 +468,61 @@ exports.applyPoints = functions.https.onRequest((req, res) => {
 
 exports.sendMessage = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
-        var message = req.body;
-        message.isRead = false;
-        message.sentDate = new Date();
-        admin.firestore()
-            .collection('messages')
-            .add(message)
-            .then((snap) => {
-                const key = snap.id;
-                message.id = key;
-                admin.firestore().collection('messages').doc(key).set(message);
-                res.status(200).send("success");
+        var message = req.body.message;
+        var db = admin.firestore();
+
+        db.collection('users')
+            .where("uid", "==", uid)
+            .get()
+            .then((usnap) => {
+                if (usnap.size == 1) {
+                    var user = usnap.docs[0].data();
+                    message.sender = user.id;
+
+                    internalSendMessage(message);
+                    res.status(200).send("success");                }
+                else {
+                    res.status(406).send(usnap.length + " users with that uid!")
+                }
             });
     });
-});
+ });
 
 exports.markMessageRead = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         var id = req.body.id;
         var isRead = req.body.isRead;
-        admin.firestore()
-            .collection('messages')
-            .doc(id)
-            .update({ isRead: isRead })
-            .then(() => {
-                res.status(200).send("success");
-            })
-            .catch((error) => {
-                res.status(500).send("error: " + error);
+        var uid = req.body.uid;
+        var db = admin.firestore();
+
+        db.collection('users')
+            .where("uid", "==", uid)
+            .get()
+            .then((usnap) => {
+                if (usnap.size == 1) {
+                    var user = usnap.docs[0].data();
+                    db.collection('messages')
+                        .doc(id)
+                        .get().then((doc) => {
+                            var oldMessage = doc.data();
+                            if (oldMessage.recipient !== user.id) {
+                                res.status(401).send("You are not authorized to mark this message read.");
+                                return;
+                            }
+                            db.collection('messages')
+                                .doc(id)
+                                .update({ isRead: isRead })
+                                .then(() => {
+                                    res.status(200).send("success");
+                                })
+                                .catch((error) => {
+                                    res.status(500).send("error: " + error);
+                                });
+                        });
+                }
+                else {
+                    res.status(406).send(usnap.length + " users with that uid!")
+                }
             });
     });
 });
@@ -420,16 +530,37 @@ exports.markMessageRead = functions.https.onRequest((req, res) => {
 exports.deleteMessage = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         var id = req.body.id;
-        var isRead = req.body.isRead;
-        admin.firestore()
-            .collection('messages')
-            .doc(id)
-            .delete()
-            .then(() => {
-                res.status(200).send("success");
-            })
-            .catch((error) => {
-                res.status(500).send("error: " + error);
+        var uid = req.body.uid;
+        var db = admin.firestore();
+
+        db.collection('users')
+            .where("uid", "==", uid)
+            .get()
+            .then((usnap) => {
+                if (usnap.size == 1) {
+                    var user = usnap.docs[0].data();
+                    db.collection('messages')
+                        .doc(id)
+                        .get().then((doc) => {
+                            var oldMessage = doc.data();
+                            if (oldMessage.recipient !== user.id) {
+                                res.status(401).send("You are not authorized to mark this message read.");
+                                return;
+                            }
+                            db.collection('messages')
+                                .doc(id)
+                                .delete()
+                                .then(() => {
+                                    res.status(200).send("success");
+                                })
+                                .catch((error) => {
+                                    res.status(500).send("error: " + error);
+                                });
+                        });
+                }
+                else {
+                    res.status(406).send(usnap.length + " users with that uid!")
+                }
             });
     });
 });
