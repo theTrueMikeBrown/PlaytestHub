@@ -29,6 +29,9 @@ export class DbService {
     readonly deleteMessageUrl = "https://us-central1-playtesthub.cloudfunctions.net/deleteMessage";
     readonly dailyCleanupUrl = "https://us-central1-playtesthub.cloudfunctions.net/dailyCleanup";
 
+    readonly getUserByIdUrl = "https://us-central1-playtesthub.cloudfunctions.net/getUserById";
+    readonly getUserBySecretIdUrl = "https://us-central1-playtesthub.cloudfunctions.net/getUserBySecretId";
+
     constructor(private db: AngularFirestore,
         private http: Http) { }
 
@@ -86,24 +89,26 @@ export class DbService {
     }
 
     getUser(id: string): Promise<Observable<User>> {
-        let user: Observable<User> = this.db.doc<User>('users/' + id).valueChanges();
-        return Promise.resolve(user);
+        let subject: Subject<User> = new Subject;
+        this.http.post(this.getUserByIdUrl, id)
+            .toPromise()
+            .then(response => {
+                subject.next(response.json());
+            })
+            .catch((error) => { debugger; });
+        return Promise.resolve(subject);
     }
 
     getUserBySecretId(uid: string): Promise<Observable<User>> {
         let subject: Subject<User> = new Subject;
-        let list = this.db
-            .collection<User>("users", ref =>
-                ref.where('uid', '==', uid))
-            .valueChanges()
-            .subscribe(list => {
-                if (list && list[0]) {
-                    subject.next(list[0]);
-                }
-                else {
-                    subject.next(null);
-                }
-            });
+        this.http.post(this.getUserBySecretIdUrl, uid)
+            .toPromise()
+            .then(response => {
+                let user: User = response.json();
+                user.uid = uid;
+                subject.next(user);
+            })
+            .catch((error) => { debugger; });
         return Promise.resolve(subject);
     }
 

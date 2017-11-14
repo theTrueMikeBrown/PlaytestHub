@@ -5,6 +5,11 @@ const cors = require('cors')({ origin: true });
 
 admin.initializeApp(functions.config().firebase);
 
+function cleanUser(user) {
+    user.uid = '';
+    return user;
+}
+
 function internalSendMessage(message) {
     var db = admin.firestore();
     message.isRead = false;
@@ -27,6 +32,7 @@ function sendCleanupMessage(id) {
         recipient: id
     });
 }
+
 function doSaveFeedback(feedback, uid, res) {
     var db = admin.firestore();
     db.collection('users')
@@ -75,6 +81,38 @@ function doSaveFeedback(feedback, uid, res) {
             }
         });
 }
+
+exports.getUserBySecretId = functions.https.onRequest((req, res) => {
+    cors(req, res, () => {
+        var uid = req.body;
+        var db = admin.firestore();
+        db.collection('users')
+            .where("uid", "==", uid)
+            .get()
+            .then((usnap) => {
+                if (usnap.size == 1) {
+                    var user = usnap.docs[0].data();
+                    res.json(cleanUser(user));
+                }
+            });
+    })
+});
+
+exports.getUserById = functions.https.onRequest((req, res) => {
+    cors(req, res, () => {
+        var id = req.body;
+        var db = admin.firestore();
+        db.collection('users')
+            .doc(id)
+            .get()
+            .then(usnap => {
+                if (usnap.exists) {
+                    var user = usnap.data();
+                    res.json(cleanUser(user));
+                }
+            });
+    })
+});
 
 //https://cron-job.org/en/members/jobs/details/?jobid=825596
 exports.dailyCleanup = functions.https.onRequest((req, res) => {
