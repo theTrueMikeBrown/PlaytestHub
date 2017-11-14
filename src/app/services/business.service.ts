@@ -117,22 +117,14 @@ export class BusinessService {
     }
 
     rejectFeedback(feedback: Feedback, reason: string, uid: string, successCallback?: (r: Response) => void) {
-        this.db.rejectFeedback(feedback, reason, uid, (response: Response) => {
-            if (successCallback) {
-                successCallback(response);
-            }
-        });
+        this.db.rejectFeedback(feedback, reason, uid, successCallback);
     }
 
     submitFeedback(feedback: Feedback, uid: string, successCallback?: (r: Response) => void): string[] {
         let errors: string[] = this.validate(feedback);
         if (errors.length === 0) {
             feedback.submitDate = new Date();
-            this.db.submitFeedback(feedback, uid, (response => {
-                if (successCallback) {
-                    successCallback(response);
-                }
-            }));
+            this.db.submitFeedback(feedback, uid, successCallback);
             return [];
         }
         return errors;
@@ -164,11 +156,7 @@ export class BusinessService {
     }
 
     approveFeedback(feedback: Feedback, uid: string, successCallback?: (r: Response) => void) {
-        this.db.approveFeedback(feedback, uid, (response: Response) => {
-            if (successCallback) {
-                successCallback(response);
-            }
-        });
+        this.db.approveFeedback(feedback, uid, successCallback);
     }
 
     applyPoints(gameId: string, points: number, uid: string, successCallback?: (r: Response) => void) {
