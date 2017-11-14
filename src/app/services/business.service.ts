@@ -55,16 +55,6 @@ export class BusinessService {
                     art: ['', ''], rules: ['', '', ''], mechanics: ['', '', ''], final: ['', '', '', ''],
                     userId: user.id, gameId: game.id, id: '', approved: false, submitted: false, submitDate: null
                 }, user.uid);
-                let message: Message = {
-                    id: '',
-                    subject: "Congrats!",
-                    text: user.displayName + " just signed up to playtest " + game.name + "!\r\n\r\n-PlaytestHub",
-                    sender: '',
-                    recipient: game.owner,
-                    isRead: false,
-                    sentDate: new Date(),
-                };
-                this.sendMessage(message, "");
             });
     }
 
@@ -84,16 +74,6 @@ export class BusinessService {
             if (successCallback) {
                 successCallback(response);
             }
-            let message: Message = {
-                id: '',
-                subject: "Hey!",
-                text: "You just added a new game to PlaytestHub!\r\n\r\nIn order for it to get to the top of the list and be playtested, you should sign up to playtest other player's games. Select a game <a href=\"/games\">here</a>, and then click \"Playtest\" in the menu. Play the game then click Leave Feedback in the menu. Once your feedback is accepted you can get a point with which to make your game appear higher in the list of games to playtest.\r\n\r\n-PlaytestHub",
-                sender: '',
-                recipient: game.owner,
-                isRead: false,
-                sentDate: new Date(),
-            };
-            this.sendMessage(message, "");
         });
     }
 
@@ -114,17 +94,6 @@ export class BusinessService {
 
     saveUser(user: User, successCallback?: (r: Response) => void) {
         this.db.saveUser(user, successCallback);
-
-        let message: Message = {
-            id: '',
-            subject: "Welcome to PlaytestHub!",
-            text: "Thanks for trying out PlaytestHub!\r\n\r\nIn order to get your games playtested you will need to do 2 things: Add them to the database, and get them to the top of the list so that other users will select them to playtest.\r\n\r\nTo get your games to the top of the list, you need to apply points to them. The easiest way to do this is to earn points by playtesting other user's games.\r\n\r\nIf you have any questions, praise, or feedback, contact theTrueMikeBrown at BGG\r\n\r\n-PlaytestHub",
-            sender: '',
-            recipient: user.id,
-            isRead: false,
-            sentDate: new Date(),
-        };
-        this.sendMessage(message, "");
     }
 
     updateUser(user: User, successCallback?: (r: Response) => void) {
@@ -148,22 +117,10 @@ export class BusinessService {
     }
 
     rejectFeedback(feedback: Feedback, reason: string, uid: string, successCallback?: (r: Response) => void) {
-        this.db.rejectFeedback(feedback, uid, (response: Response) => {
+        this.db.rejectFeedback(feedback, reason, uid, (response: Response) => {
             if (successCallback) {
                 successCallback(response);
             }
-            this.getGame(feedback.gameId).then(g => g.subscribe(game => {
-                let message: Message = {
-                    id: '',
-                    subject: "Oh Noes!",
-                    text: "Your feedback for " + game.name + " was rejected!\r\n\r\nThe reason that the moderator gave was:\r\n\r\n" + reason + "\r\n\r\nDon't get discouraged! You can fix your feedback <a href=\"/feedback/" + feedback.id + "\">here</a> and resubmit it.\r\n\r\n-PlaytestHub",
-                    sender: '',
-                    recipient: feedback.userId,
-                    isRead: false,
-                    sentDate: new Date(),
-                };
-                this.sendMessage(message, "");
-            }));
         });
     }
 
@@ -175,18 +132,6 @@ export class BusinessService {
                 if (successCallback) {
                     successCallback(response);
                 }
-                this.getGame(feedback.gameId).then(g => g.subscribe(game => {
-                    let message: Message = {
-                        id: '',
-                        subject: "Woot!",
-                        text: "Someone left feedback on " + game.name + "!\r\n\r\nClick <a href=\"/feedback/" + feedback.id + "\">here</a> to view it.\r\n\r\n-PlaytestHub",
-                        sender: '',
-                        recipient: game.owner,
-                        isRead: false,
-                        sentDate: new Date(),
-                    };
-                    this.sendMessage(message, "");
-                }));
             }));
             return [];
         }
@@ -223,29 +168,6 @@ export class BusinessService {
             if (successCallback) {
                 successCallback(response);
             }
-            this.getGame(feedback.gameId).then(g => g.subscribe(game => {
-                let message: Message = {
-                    id: '',
-                    subject: "Yes!",
-                    text: "Your feedbaack for " + game.name + " was approved, and you have earned a point!\r\n\r\nClick <a href=\"/applyPoints\">here</a> to increase your game's priority in the list.\r\n\r\n-PlaytestHub",
-                    sender: '',
-                    recipient: feedback.userId,
-                    isRead: false,
-                    sentDate: new Date(),
-                };
-                this.sendMessage(message, "")
-
-                let message2: Message = {
-                    id: '',
-                    subject: "Sweet!",
-                    text: "Feedback for " + game.name + " was approved.\r\n\r\nClick <a href=\"/feedbackList/" + feedback.id + "\">here</a> to view it.\r\n\r\n-PlaytestHub",
-                    sender: '',
-                    recipient: game.owner,
-                    isRead: false,
-                    sentDate: new Date(),
-                };
-                this.sendMessage(message2, "")
-            }));
         });
     }
 

@@ -191,7 +191,6 @@ export class DbService {
         return Promise.resolve(itemsList.valueChanges());
     }
 
-
     addPlaytest(playtest: Playtest, uid: string, successCallback?: (r: Response) => void) {
         this.http.post(this.addPlaytestUrl, { playtest: playtest, uid: uid })
             .toPromise()
@@ -281,8 +280,8 @@ export class DbService {
             });
     }
 
-    rejectFeedback(feedback: Feedback, uid: string, successCallback?: (r: Response) => void) {
-        this.http.post(this.rejectFeedbackUrl, { feedback: feedback, uid: uid })
+    rejectFeedback(feedback: Feedback, reason: string, uid: string, successCallback?: (r: Response) => void) {
+        this.http.post(this.rejectFeedbackUrl, { feedback: feedback, uid: uid, reason: reason })
             .toPromise()
             .then(response => {
                 if (successCallback) {

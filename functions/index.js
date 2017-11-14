@@ -6,6 +6,7 @@ const cors = require('cors')({ origin: true });
 admin.initializeApp(functions.config().firebase);
 
 function internalSendMessage(message) {
+    var db = admin.firestore();
     message.isRead = false;
     message.sentDate = new Date();
     db.collection('messages')
@@ -70,7 +71,7 @@ function doSaveFeedback(feedback, uid, res) {
                 }
             }
             else {
-                res.status(406).send(usnap.length + " users with that uid!")
+                res.status(406).send(usnap.size + " users with that uid!")
             }
         });
 }
@@ -150,7 +151,7 @@ exports.updateUser = functions.https.onRequest((req, res) => {
                         });
                 }
                 else {
-                    res.status(406).send(usnap.length + " users with that uid!")
+                    res.status(406).send(usnap.size + " users with that uid!")
                 }
             });
     });
@@ -168,6 +169,16 @@ exports.saveUser = functions.https.onRequest((req, res) => {
             .set(user)
             .then((snap) => {
                 res.status(200).send("success");
+                var message = {
+                    id: '',
+                    subject: "Welcome to PlaytestHub!",
+                    text: "Thanks for trying out PlaytestHub!\r\n\r\nIn order to get your games playtested you will need to do 2 things: Add them to the database, and get them to the top of the list so that other users will select them to playtest.\r\n\r\nTo get your games to the top of the list, you need to apply points to them. The easiest way to do this is to earn points by playtesting other user's games.\r\n\r\nIf you have any questions, praise, or feedback, contact theTrueMikeBrown at BGG\r\n\r\n-PlaytestHub",
+                    sender: '',
+                    recipient: user.id,
+                    isRead: false,
+                    sentDate: new Date(),
+                };
+                internalSendMessage(message);
             });
     });
 });
@@ -193,10 +204,21 @@ exports.addGame = functions.https.onRequest((req, res) => {
                             game.id = key;
                             admin.firestore().collection('games').doc(key).set(game);
                             res.status(200).send("success");
+
+                            var message = {
+                                id: '',
+                                subject: "Hey!",
+                                text: "You just added a new game to PlaytestHub!\r\n\r\nIn order for it to get to the top of the list and be playtested, you should sign up to playtest other player's games. Select a game <a href=\"/games\">here</a>, and then click \"Playtest\" in the menu. Play the game then click Leave Feedback in the menu. Once your feedback is accepted you can get a point with which to make your game appear higher in the list of games to playtest.\r\n\r\n-PlaytestHub",
+                                sender: '',
+                                recipient: game.owner,
+                                isRead: false,
+                                sentDate: new Date(),
+                            };
+                            internalSendMessage(message);
                         });
                 }
                 else {
-                    res.status(406).send(usnap.length + " users with that uid!")
+                    res.status(406).send(usnap.size + " users with that uid!")
                 }
             });
     });
@@ -220,7 +242,6 @@ exports.addPlaytest = functions.https.onRequest((req, res) => {
                             var game = doc.data();
                             //make sure that the game's priority is high enough to do it
                             if (game.priority >= 0) {
-
                                 //make sure that the old playtest (if one exists) is propery dealt with
                                 db.collection('playtests').doc(id).get()
                                     .then((s) => {
@@ -232,8 +253,8 @@ exports.addPlaytest = functions.https.onRequest((req, res) => {
                                                 //Fix the old game's priority
                                                 db.collection('games').doc(playTest.gameId).get()
                                                     .then((oldSnap) => {
-                                                        var oldObj = oldSnap.data();
-                                                        db.collection('games').doc(playTest.gameId).update({ priority: oldObj.priority + 1 });
+                                                        var oldGame = oldSnap.data();
+                                                        db.collection('games').doc(playTest.gameId).update({ priority: oldGame.priority + 1 });
                                                     });
                                                 //Delete old feedback
                                                 db.collection('feedback')
@@ -258,10 +279,23 @@ exports.addPlaytest = functions.https.onRequest((req, res) => {
                                         var date = new Date();
                                         db.collection('games').doc(gameId).update({ priority: game.priority - 1 });
 
-                                        var pt = { gameId: gameId, id: id, started: date, gameName: req.body.gameName };
+                                        var pt = { gameId: gameId, id: id, started: date, gameName: game.name };
+                                        //console.log("pt=" + JSON.stringify(pt));
+
                                         db.collection('playtests').doc(id).set(pt);
 
                                         res.status(200).send("success");
+
+                                        var message = {
+                                            id: '',
+                                            subject: "Congrats!",
+                                            text: user.displayName + " just signed up to playtest " + game.name + "!\r\n\r\n-PlaytestHub",
+                                            sender: '',
+                                            recipient: game.owner,
+                                            isRead: false,
+                                            sentDate: new Date(),
+                                        };
+                                        internalSendMessage(message);
                                     });
                             }
                             else {
@@ -342,7 +376,8 @@ exports.rejectFeedback = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         var db = admin.firestore();
         const feedback = req.body.feedback;
-        const uid = req.body.uid
+        const uid = req.body.uid;
+        const reason = req.body.reason;
         db.collection('users')
             .where("uid", "==", uid)
             .get()
@@ -354,13 +389,34 @@ exports.rejectFeedback = functions.https.onRequest((req, res) => {
                         var modifications = { approved: false, submitted: false };
                         db.collection('feedback')
                             .doc(feedback.id)
-                            .update(mods)
+                            .update(modifications)
                             .then((snap) => {
                                 res.status(200).send("success");
+
+                                db.collection('games').doc(feedback.gameId).get()
+                                    .then((gsnap) => {
+                                        if (gsnap.exists) {
+                                            var game = gsnap.data();
+                                            var message = {
+                                                id: '',
+                                                subject: "Oh Noes!",
+                                                text: "Your feedback for " + game.name + " was rejected!\r\n\r\nThe reason that the moderator gave was:\r\n\r\n" + reason + "\r\n\r\nDon't get discouraged! You can fix your feedback <a href=\"/feedback/" + feedback.id + "\">here</a> and resubmit it.\r\n\r\n-PlaytestHub",
+                                                sender: '',
+                                                recipient: feedback.userId,
+                                                isRead: false,
+                                                sentDate: new Date(),
+                                            };
+                                            internalSendMessage(message);
+                                        }
+                                    });
+
                             });
                         return;
                     }
                     res.status(401).send("You are not authorized to reject this feedback.");
+                }
+                else {
+                    res.status(404).send("user not found.");
                 }
             });
     });
@@ -373,6 +429,24 @@ exports.submitFeedback = functions.https.onRequest((req, res) => {
         feedback.approved = false;
         feedback.submitted = true;
         doSaveFeedback(feedback, uid, res);
+
+        var db = admin.firestore();
+        db.collection('games').doc(feedback.gameId).get()
+            .then((gsnap) => {
+                if (gsnap.exists) {
+                    var game = gsnap.data();
+                    var message = {
+                        id: '',
+                        subject: "Woot!",
+                        text: "Someone left feedback on " + game.name + "!\r\n\r\nClick <a href=\"/feedback/" + feedback.id + "\">here</a> to view it.\r\n\r\n-PlaytestHub",
+                        sender: '',
+                        recipient: game.owner,
+                        isRead: false,
+                        sentDate: new Date(),
+                    };
+                    internalSendMessage(message);
+                }
+            });
     });
 });
 
@@ -397,7 +471,7 @@ exports.approveFeedback = functions.https.onRequest((req, res) => {
                                     var modifications = { approved: true, submitted: true };
                                     db.collection('feedback')
                                         .doc(feedback.id)
-                                        .update(mods)
+                                        .update(modifications)
                                         .then((snap) => {
                                             res.status(200).send("success");
                                         });
@@ -409,6 +483,34 @@ exports.approveFeedback = functions.https.onRequest((req, res) => {
                                                 var leaver = lsnap.data();
                                                 db.collection('users').doc(feedback.userId)
                                                     .update({ points: leaver.points + 1 });
+                                            }
+                                        });
+
+                                    db.collection('games').doc(feedback.gameId).get()
+                                        .then((gsnap) => {
+                                            if (gsnap.exists) {
+                                                var game = gsnap.data();
+                                                var message = {
+                                                    id: '',
+                                                    subject: "Yes!",
+                                                    text: "Your feedbaack for " + game.name + " was approved, and you have earned a point!\r\n\r\nClick <a href=\"/applyPoints\">here</a> to increase your game's priority in the list.\r\n\r\n-PlaytestHub",
+                                                    sender: '',
+                                                    recipient: feedback.userId,
+                                                    isRead: false,
+                                                    sentDate: new Date(),
+                                                };
+                                                internalSendMessage(message);
+
+                                                var message2 = {
+                                                    id: '',
+                                                    subject: "Sweet!",
+                                                    text: "Feedback for " + game.name + " was approved.\r\n\r\nClick <a href=\"/feedbackList/" + feedback.id + "\">here</a> to view it.\r\n\r\n-PlaytestHub",
+                                                    sender: '',
+                                                    recipient: game.owner,
+                                                    isRead: false,
+                                                    sentDate: new Date(),
+                                                };
+                                                internalSendMessage(message2);
                                             }
                                         });
                                 }
@@ -469,6 +571,7 @@ exports.applyPoints = functions.https.onRequest((req, res) => {
 exports.sendMessage = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         var message = req.body.message;
+        var uid = req.body.uid;
         var db = admin.firestore();
 
         db.collection('users')
@@ -480,13 +583,14 @@ exports.sendMessage = functions.https.onRequest((req, res) => {
                     message.sender = user.id;
 
                     internalSendMessage(message);
-                    res.status(200).send("success");                }
+                    res.status(200).send("success");
+                }
                 else {
-                    res.status(406).send(usnap.length + " users with that uid!")
+                    res.status(406).send(usnap.size + " users with that uid!")
                 }
             });
     });
- });
+});
 
 exports.markMessageRead = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
@@ -521,7 +625,7 @@ exports.markMessageRead = functions.https.onRequest((req, res) => {
                         });
                 }
                 else {
-                    res.status(406).send(usnap.length + " users with that uid!")
+                    res.status(406).send(usnap.size + " users with that uid!")
                 }
             });
     });
@@ -559,7 +663,7 @@ exports.deleteMessage = functions.https.onRequest((req, res) => {
                         });
                 }
                 else {
-                    res.status(406).send(usnap.length + " users with that uid!")
+                    res.status(406).send(usnap.size + " users with that uid!")
                 }
             });
     });
