@@ -80,26 +80,30 @@ export class LeaveFeedbackComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.loginInfoService.getLoginInfo().then(user => {
-            this.user = user;
-            this.route.paramMap.subscribe(p => {
-                if (p.has('id')) {
-                    this.business.getFeedback(p.get('id')).then(f => f.subscribe(feedback => {
-                        if (feedback) {
-                            this.feedback = feedback;
+        this.route.paramMap.subscribe(p => {
+            if (p.has('id')) {
+                this.business.getFeedback(p.get('id')).then(f => f.subscribe(feedback => {
+                    if (feedback) {
+                        this.feedback = feedback;
+                        this.pendingApproval = feedback.submitted && !feedback.approved;
+                        this.loginInfoService.getLoginInfo().then(user => {
+                            this.user = user;
                             this.reviewing = feedback.userId != this.user.id && feedback.submitted && !feedback.approved && this.user.isModerator;
                             this.editing = feedback.userId == this.user.id && !feedback.submitted && !feedback.approved;
-                            this.pendingApproval = feedback.submitted && !feedback.approved;
                             this.business.getGame(feedback.gameId).then(g => {
                                 g.subscribe(game => {
-                                    this.gameName = game.name;
                                     this.owner = game.owner == this.user.id;
                                 });
                             });
-                        }
-                    }));
-                }
-            });
+                        });
+                        this.business.getGame(feedback.gameId).then(g => {
+                            g.subscribe(game => {
+                                this.gameName = game.name;
+                            });
+                        });
+                    }
+                }));
+            }
         });
     }
 }
