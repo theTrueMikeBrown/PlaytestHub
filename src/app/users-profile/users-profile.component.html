@@ -9,6 +9,11 @@
       <span class="glyphicon glyphicon-menu-hamburger"></span>
     </span>
     <ul class="upperRight-buttons">
+      <li class="upperRight-buttons__item" *ngIf="!user">
+        <a class="upperRight-buttons__link" routerLink="/signIn" data-tooltip="Sign In">
+          <span class="glyphicon glyphicon-log-in"></span>
+        </a>
+      </li>
       <li class="upperRight-buttons__item" *ngIf="user && profile && profile.id===user.id && profile.points > 0">
         <a routerLink="/applyPoints" class="upperRight-buttons__link" data-tooltip="Add or remove points">
           <span class="glyphicon glyphicon-star"></span>

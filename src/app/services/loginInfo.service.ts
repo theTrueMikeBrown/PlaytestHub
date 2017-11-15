@@ -2,6 +2,8 @@
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { User as FBUser } from 'firebase';
 
 import { User } from '../types/user';
 import { BusinessService } from '../services/business.service';
@@ -11,8 +13,10 @@ export class LoginInfoService {
     userObs: Subject<User> = new Subject<User>();
     user: User;
     saving: boolean = false;
+    loggedIn: boolean = false;
 
-    constructor(private db: AngularFirestore,
+    constructor(private afAuth: AngularFireAuth,
+        private db: AngularFirestore,
         private business: BusinessService) { }
 
     getLoginInfo(): Promise<User> {
@@ -22,6 +26,35 @@ export class LoginInfoService {
         return this.userObs.toPromise();
     }
 
+    init(): void {
+        this.afAuth.authState.subscribe(d => this.signIn(d));
+    }
+
+    signIn(data: FBUser, successCallback?: () => void) {
+        if (data != null) {
+            this.setLoginInfo({
+                displayName: data.displayName,
+                uid: data.uid,
+                email: data.email,
+                photoUrl: data.photoURL,
+                id: null,
+                isModerator: false,
+                isAdmin: false,
+                points: 0,
+                joinDate: null,
+                personalInfo: ""
+            });
+            this.loggedIn = true;
+            if (successCallback) {
+                successCallback();
+            }
+        }
+    }
+
+    logout() {
+        this.afAuth.auth.signOut();
+        location.reload();
+    }
 
     setLoginInfo(loginUser: User) {
         var userPromise = this.business.getUserBySecretId(loginUser.uid);

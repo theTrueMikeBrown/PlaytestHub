@@ -27,7 +27,7 @@ export class GameDetailComponent implements OnInit {
     playtesting: boolean = false;
     deleting: boolean = false;
     undeleting: boolean = false;
-    
+
     constructor(
         private business: BusinessService,
         private route: ActivatedRoute,
@@ -71,12 +71,12 @@ export class GameDetailComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.loginInfoService.getLoginInfo().then(user => {
-            this.user = user;
-            this.route.paramMap
-                .switchMap((params: ParamMap) => this.business.getGame(params.get('id')))
-                .subscribe(g => g.subscribe(game => {
-                    this.game = game;
+        this.route.paramMap
+            .switchMap((params: ParamMap) => this.business.getGame(params.get('id')))
+            .subscribe(g => g.subscribe(game => {
+                this.game = game;
+                this.loginInfoService.getLoginInfo().then(user => {
+                    this.user = user;
                     this.business.getPlaytestByUserId(this.user.id).then(p => {
                         p.subscribe((playtest) => {
                             if (playtest && game.id === playtest.gameId) {
@@ -105,10 +105,10 @@ export class GameDetailComponent implements OnInit {
                             }
                         });
                     });
-                    this.business.getFeedbackForGame(game.id).then(f => f.subscribe(feedbacks => {
-                        this.feedbackExists = feedbacks.length > 0;
-                    }));
+                });
+                this.business.getFeedbackForGame(game.id).then(f => f.subscribe(feedbacks => {
+                    this.feedbackExists = feedbacks.length > 0;
                 }));
-        });
+            }));
     }
 }

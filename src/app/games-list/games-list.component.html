@@ -1,5 +1,5 @@
-﻿<div id="list-component" *ngIf="user">
-  <div class="upperLeft" *ngIf="unreadMessages">
+﻿<div id="list-component">
+  <div class="upperLeft" *ngIf="user && unreadMessages">
     <a routerLink="/messages" class="action-button" data-tooltip="View my messages">
       <span class="glyphicon glyphicon-envelope"></span>
     </a>
@@ -10,39 +10,43 @@
       <span class="glyphicon glyphicon-menu-hamburger"></span>
     </span>
     <ul class="upperRight-buttons">
-      <li class="upperRight-buttons__item">
+      <li class="upperRight-buttons__item" *ngIf="!user">
+        <a class="upperRight-buttons__link" routerLink="/signIn" data-tooltip="Sign In">
+          <span class="glyphicon glyphicon-log-in"></span>
+        </a>
+      </li>
+      <li class="upperRight-buttons__item" *ngIf="user">
         <a routerLink="/addgame" class="upperRight-buttons__link" data-tooltip="Add new game">
           <span class="glyphicon glyphicon-plus"></span>
         </a>
       </li>
-      <li class="upperRight-buttons__item">
+      <li class="upperRight-buttons__item" *ngIf="user">
         <a routerLink="/user/{{user.id}}/games" class="upperRight-buttons__link" data-tooltip="View my games">
           <span class="glyphicon glyphicon-th-large"></span>
         </a>
       </li>
-      <li class="upperRight-buttons__item">
+      <li class="upperRight-buttons__item" *ngIf="user">
         <a routerLink="/user/{{user.id}}/profile" class="upperRight-buttons__link" data-tooltip="View my profile">
           <span class="glyphicon glyphicon-user"></span>
         </a>
       </li>
-      <li class="upperRight-buttons__item" *ngIf="playtesting">
+      <li class="upperRight-buttons__item" *ngIf="playtesting && user">
         <a routerLink="/feedback/{{feedbackId}}" class="upperRight-buttons__link" data-tooltip="Leave Feedback">
           <span class="glyphicon glyphicon-pencil"></span>
         </a>
       </li>
-      <li class="upperRight-buttons__item">
+      <li class="upperRight-buttons__item" *ngIf="user">
         <a routerLink="/messages" class="upperRight-buttons__link" data-tooltip="View my messages">
           <span class="glyphicon glyphicon-envelope"></span>
         </a>
       </li>
-      <li class="upperRight-buttons__item" *ngIf="canModerate">
+      <li class="upperRight-buttons__item" *ngIf="canModerate && user">
         <a (click)="moderate()" class="upperRight-buttons__link" data-tooltip="Moderate Feedback">
           <span class="glyphicon glyphicon-thumbs-up"></span>
         </a>
       </li>
-      <li class="upperRight-buttons__item">
-        <a routerLink="/games"
-           (click)="logout()"
+      <li class="upperRight-buttons__item" *ngIf="user">
+        <a (click)="logout()"
            class="upperRight-buttons__link"
            data-tooltip="Log out">
           <span class="glyphicon glyphicon-log-out"></span>

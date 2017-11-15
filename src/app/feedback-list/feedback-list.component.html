@@ -10,6 +10,11 @@
       <span class="glyphicon glyphicon-menu-hamburger"></span>
     </span>
     <ul class="upperRight-buttons">
+      <li class="upperRight-buttons__item" *ngIf="!user">
+        <a class="upperRight-buttons__link" routerLink="/signIn" data-tooltip="Sign In">
+          <span class="glyphicon glyphicon-log-in"></span>
+        </a>
+      </li>
       <li class="upperRight-buttons__item" *ngIf="game">
         <a routerLink="/detail/{{game.id}}" class="upperRight-buttons__link" data-tooltip="View game">
           <span class="glyphicon glyphicon-pawn"></span>

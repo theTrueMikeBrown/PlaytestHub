@@ -31,6 +31,8 @@ import { EditUserComponent } from './edit-user/edit-user.component';
 import { BusinessService } from './services/business.service';
 import { DbService } from './services/db.service';
 import { LoginInfoService } from './services/loginInfo.service';
+import { FunnelPageComponent } from './funnel-page/funnel-page.component';
+import { SignInComponent } from './sign-in/sign-in.component';
 
 const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
     providers: [
@@ -58,7 +60,9 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
         ApplyPointsComponent,
         ViewMessagesComponent,
         AdminPageComponent,
-        EditUserComponent
+        EditUserComponent,
+        FunnelPageComponent,
+        SignInComponent
     ],
     imports: [
         BrowserModule,
@@ -127,6 +131,10 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
             {
                 path: 'editUser',
                 component: EditUserComponent
+            },
+            {
+                path: 'signIn',
+                component: SignInComponent
             }
         ])
     ],

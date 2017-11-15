@@ -1,10 +1,5 @@
 ﻿<div style="text-align:center">
-  <div *ngIf="!loggedIn">
-    <h1>PlaytestHub</h1>
-    <p>Please sign in.</p>
-    <firebase-ui (signInSuccess)="successCallback($event)"></firebase-ui>
-  </div>
-  <div *ngIf="loggedIn">
+  <div>
     <h1>PlaytestHub</h1>
     <hr />
     <router-outlet></router-outlet>

@@ -39,11 +39,11 @@ export class GamesListComponent {
         this.message = this.route
             .queryParamMap
             .map(params => params.get('message'))
+        this.business.getGames().then(g => {
+            this.games = g;
+        })
         this.loginInfoService.getLoginInfo().then(user => {
             this.user = user;
-            this.business.getGames().then(g => {
-                this.games = g;
-            })
             this.business.getFeedbackReadyForApprovalByUser(this.user.id).then(f => {
                 f.subscribe(feedbacks => {
                     if (feedbacks.length > 0) {
@@ -80,5 +80,9 @@ export class GamesListComponent {
 
     moderate(): void {
         this.router.navigate(['/feedback', this.moderateId]);
+    }
+
+    logout(): void {
+        this.loginInfoService.logout();
     }
 }
