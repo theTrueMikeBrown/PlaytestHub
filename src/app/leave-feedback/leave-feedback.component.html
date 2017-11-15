@@ -83,7 +83,7 @@
     </div>
   </div>
 
-  <div *ngIf="reviewing || owner">
+  <div *ngIf="reviewing || (owner && pendingApproval)">
     <div *ngIf="reviewing">
       <legend>Reason for rejecting feedback (leave blank if approving):</legend>
       <textarea [(ngModel)]="rejectReason"></textarea>
