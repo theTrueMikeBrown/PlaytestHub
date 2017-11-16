@@ -44,8 +44,11 @@ export class BusinessService {
         return this.db.getPlaytestByUserId(id);
     }
 
-    getGamesByUser(id: string): Promise<Observable<Game[]>> {
-        return this.db.getGamesByUser(id);
+    getGamesByUser(id: string, userId: string = null): Promise<Observable<Game[]>> {
+        if (id === userId) {
+            return this.db.getGamesByUser(id);
+        }
+        return this.db.getActiveGamesByUser(id);
     }
 
     addPlaytest(playtest: Playtest, user: User, game: Game, successCallback?: (r: Response) => void) {

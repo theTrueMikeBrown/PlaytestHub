@@ -15,7 +15,7 @@
           <span class="glyphicon glyphicon-log-in"></span>
         </a>
       </li>
-      <li *ngIf="user && user.id !== game.owner && game.priority >= 0 && !alreadyPlaytesting && !alreadyPlaytestedVersion" class="upperRight-buttons__item">
+      <li *ngIf="user && user.id !== game.owner && game.priority >= 0 && !alreadyPlaytesting && !alreadyPlaytestedVersion && game.active" class="upperRight-buttons__item">
         <a (click)="playTestGame()" class="upperRight-buttons__link" data-tooltip="Playtest">
           <span [class.fa-spin]="this.playtesting" class="glyphicon glyphicon-ok"></span>
         </a>

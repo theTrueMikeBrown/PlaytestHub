@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras, ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 
@@ -32,9 +32,12 @@ export class UsersGamesComponent implements OnInit {
         this.route.paramMap.subscribe((params: ParamMap) => {
             let id: string = params.get('id');
             this.business.getUser(id).then(u => u.subscribe(user => this.profile = user));
-            this.business.getGamesByUser(id).then(g => this.games = g);
+
+            var userId = this.user ? this.user.id : null;
+
+            this.business.getGamesByUser(id, userId).then(g => this.games = g);
         });
-      }
+    }
 
     gotoDetail(id: number): void {
         this.router.navigate(['/detail', id]);

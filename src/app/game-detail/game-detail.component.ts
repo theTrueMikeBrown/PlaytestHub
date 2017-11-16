@@ -56,17 +56,17 @@ export class GameDetailComponent implements OnInit {
 
     deleteGame(): void {
         this.deleting = true;
+        this.game.active = false;
         this.business.updateGame(this.game, this.user.uid, (r) => {
-            this.game.active = false;
             this.deleting = false;
         });
     }
 
     undeleteGame(): void {
         this.undeleting = true;
+        this.game.active = true;
         this.business.updateGame(this.game, this.user.uid, (r) => {
             this.undeleting = false;
-            this.game.active = true;
         });
     }
 

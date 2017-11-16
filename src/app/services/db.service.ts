@@ -104,6 +104,12 @@ export class DbService {
         return Promise.resolve(itemsList.valueChanges());
     }
 
+    getActiveGamesByUser(id: string): Promise<Observable<Game[]>> {
+        let itemsList = this.db.collection<Game>('games', ref =>
+            ref.where('owner', '==', id).where('active', '==', true));
+        return Promise.resolve(itemsList.valueChanges());
+    }
+
     getUser(id: string): Promise<Observable<User>> {
         let subject: Subject<User> = new Subject;
         this.http.post(this.getUserByIdUrl, id)
@@ -153,7 +159,7 @@ export class DbService {
             ref.where('submitted', '==', true)
                 .where('approved', '==', false)).valueChanges().subscribe(feedbacks => {
                     this.db.doc<User>('users/' + userId).valueChanges().subscribe(user => {
-                        if (user.isModerator) {
+                        if (user && user.isModerator) {
                             let returnFeedbacks: Feedback[] = [];
                             for (let i: number = 0; i < feedbacks.length; i++) {
                                 (feedback => {
