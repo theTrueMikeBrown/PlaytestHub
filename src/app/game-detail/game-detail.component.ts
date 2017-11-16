@@ -109,6 +109,9 @@ export class GameDetailComponent implements OnInit {
                 this.business.getFeedbackForGame(game.id).then(f => f.subscribe(feedbacks => {
                     this.feedbackExists = feedbacks.length > 0;
                 }));
+                this.business.getUser(game.owner).then(o => o.subscribe(owner => {
+                    this.owner = owner;
+                }));
             }));
     }
 }

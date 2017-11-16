@@ -34,7 +34,6 @@ export class AddGameComponent implements OnInit {
         this.loginInfoService.getLoginInfo().then(user => {
             this.user = user;
             this.game.owner = user.id;
-            this.game.ownerName = user.displayName;
             this.game.priority = 0;
             this.game.active = true;
         });

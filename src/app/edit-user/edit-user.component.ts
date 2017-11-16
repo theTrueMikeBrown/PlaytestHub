@@ -26,13 +26,6 @@ export class EditUserComponent implements OnInit {
 
         this.loginInfoService.getLoginInfo().then(user => {
             this.profile = user;
-            this.business
-                .getUser(user.id)
-                .then(p => {
-                    p.subscribe(profile => {
-                        this.profile = profile;
-                    });
-                });
         });
     }
 

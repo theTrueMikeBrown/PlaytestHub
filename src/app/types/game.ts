@@ -2,7 +2,6 @@
     id: string;
     name: string;
     owner: string;
-    ownerName: string;
     minPlayerCount: number;
     maxPlayerCount: number;
     minTimeInMinutes: number;

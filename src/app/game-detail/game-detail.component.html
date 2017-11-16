@@ -62,25 +62,25 @@
   <div>
     <span class="info">{{game.minPlayerCount}}-{{game.maxPlayerCount}} players, {{game.minTimeInMinutes}}-{{game.maxTimeInMinutes}} minutes</span>
   </div>
-  <h4>
+  <h4 *ngIf="owner">
     by:
     <span class="glyphicon glyphicon-user"></span>
-    <a routerLink="/user/{{game.owner}}/profile">{{game.ownerName}}</a>
+    <a routerLink="/user/{{game.owner}}/profile">{{owner.displayName}}</a>
   </h4>
   <div class="left">
     <div>
       <h4>Description:</h4>
-      <div class="detailBox">{{game.description}}</div>
+      <div class="detailBox line-breaker">{{game.description}}</div>
     </div>
     <div>
       <h4>Components:</h4>
-      <div class="detailBox">{{game.components}}</div>
+      <div class="detailBox line-breaker">{{game.components}}</div>
     </div>
     <div>
       <h4>Files:</h4>
       <div class="detailBox">
-        <div class="info"><a href="{{game.rulesUrl}}">Rules file</a></div>
-        <div class="info"><a href="{{game.pnpUrl}}">PNP file</a></div>
+        <div class="info"><a href="{{game.rulesUrl}}" target="_blank">Rules file</a></div>
+        <div class="info"><a href="{{game.pnpUrl}}" target="_blank">PNP file</a></div>
       </div>
     </div>
   </div>

@@ -35,8 +35,8 @@
   <h3>{{profile.displayName}}'s profile</h3>
   <div class="left">
     <div id="userImage">
-      <img *ngIf="profile.photoURL" src="{{profile.photoURL}}" id="userImage" />
-      <div *ngIf="!profile.photoURL">No user image</div>
+      <img *ngIf="profile.photoUrl" src="{{profile.photoUrl}}" id="userImage" />
+      <div *ngIf="!profile.photoUrl">No user image</div>
     </div>
     <h4>About {{profile.displayName}}</h4>
     <div class="line-breaker">{{profile.personalInfo}}</div>

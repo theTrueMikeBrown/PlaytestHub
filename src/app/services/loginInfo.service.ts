@@ -52,6 +52,7 @@ export class LoginInfoService {
     }
 
     logout() {
+        this.user = null;
         this.afAuth.auth.signOut();
         location.reload();
     }
@@ -65,6 +66,12 @@ export class LoginInfoService {
                     loginUser.isModerator = user.isModerator;
                     loginUser.isAdmin = user.isAdmin;
                     loginUser.points = user.points;
+                    loginUser.displayName = user.displayName;
+                    loginUser.photoUrl = user.photoUrl;
+                    loginUser.personalInfo = user.personalInfo;
+                    this.user = loginUser;
+                    this.userObs.next(loginUser);
+                    this.userObs.complete();
                 }
                 else if (!this.saving) {
                     this.saving = true;
@@ -83,11 +90,7 @@ export class LoginInfoService {
                         this.userObs.next(loginUser);
                         this.userObs.complete();
                     });
-                    return;
                 }
-                this.user = loginUser;
-                this.userObs.next(loginUser);
-                this.userObs.complete();
             });
         });
     }

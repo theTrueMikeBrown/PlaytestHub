@@ -73,6 +73,7 @@ export class DbService {
         let itemsList = this.db.collection<Game>('games', ref =>
             ref.where('active', '==', true)
                 .orderBy('priority', 'desc')
+                .orderBy('createDate', 'asc')
                 .limit(10));
         return Promise.resolve(itemsList.valueChanges());
     }
