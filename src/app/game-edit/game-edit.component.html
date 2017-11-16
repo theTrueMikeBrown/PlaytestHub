@@ -1,4 +1,4 @@
-﻿<div class="editGame" *ngIf="game">
+<div class="editGame" *ngIf="game">
   <div class="upperLeft">
     <a class="action-button" routerLink="/games" data-tooltip="Home">
       <span class="glyphicon glyphicon-home"></span>
@@ -28,7 +28,7 @@
         </div>
       </div>
       <div class="form-group"><label for="gameActive"><input class="form-check" id="gameActive" type="checkbox" name="isActive" (ngModelChange)="onChange($event)" [(ngModel)]="game.active" /> Is Active</label></div>
-      <div class="form-group"><label for="gameVersion">Version</label><input class="form-control" id="gameVersion" [ngModel]="game.version" type="number" min="0" /></div>
+      <div class="form-group"><label for="gameVersion">Version</label><input class="form-control" id="gameVersion" [(ngModel)]="game.version" type="number" min="0" /></div>
       <div class="form-group"><label for="gamePriority">Priority</label><input class="form-control" disabled [ngModel]="game.priority" /></div>
     </fieldset>
     <div class="lowerRightBottom">

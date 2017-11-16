@@ -1,4 +1,4 @@
-﻿var FieldValue = require("firebase-admin").FieldValue;
+var FieldValue = require("firebase-admin").FieldValue;
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const cors = require('cors')({ origin: true });
@@ -39,7 +39,7 @@ function doSaveFeedback(feedback, uid, res) {
         .where("uid", "==", uid)
         .get()
         .then((usnap) => {
-            if (usnap.size == 1) {
+            if (usnap.size === 1) {
                 var user = usnap.docs[0].data();
                 if (!feedback.id) {
                     feedback.userId = user.id;
@@ -59,11 +59,11 @@ function doSaveFeedback(feedback, uid, res) {
                         .get().then((doc) => {
                             var oldFeedback = doc.data();
                             if (oldFeedback.userId !== user.id) {
-                                res.status(401).send("You do not own that feedback!")
+                                res.status(401).send("You do not own that feedback!");
                                 return;
                             }
                             if (oldFeedback.submitted || oldFeedback.approved) {
-                                res.status(406).send("That feedback is already approved!")
+                                res.status(406).send("That feedback is already approved!");
                                 return;
                             }
 
@@ -77,45 +77,48 @@ function doSaveFeedback(feedback, uid, res) {
                 }
             }
             else {
-                res.status(406).send(usnap.size + " users with that uid!")
+                res.status(406).send(usnap.size + " users with that uid!");
             }
         });
 }
 
 exports.getUserBySecretId = functions.https.onRequest((req, res) => {
-    cors(req, res, () => {
-        var uid = req.body;
-        var db = admin.firestore();
-        db.collection('users')
-            .where("uid", "==", uid)
-            .get()
-            .then((usnap) => {
-                if (usnap.size == 1) {
-                    var user = usnap.docs[0].data();
-                    res.json(cleanUser(user));
-                }
-                else {
-                    console.log("uid:" + uid);
-                    res.status(406).send(usnap.size + " users with that uid!")
-                }
-            });
-    })
+    cors(req,
+        res,
+        () => {
+            var uid = req.body;
+            var db = admin.firestore();
+            db.collection('users')
+                .where("uid", "==", uid)
+                .get()
+                .then((usnap) => {
+                    if (usnap.size === 1) {
+                        var user = usnap.docs[0].data();
+                        res.json(cleanUser(user));
+                    } else {
+                        console.log("uid:" + uid);
+                        res.status(406).send(usnap.size + " users with that uid!");
+                    }
+                });
+        });
 });
 
 exports.getUserById = functions.https.onRequest((req, res) => {
-    cors(req, res, () => {
-        var id = req.body;
-        var db = admin.firestore();
-        db.collection('users')
-            .doc(id)
-            .get()
-            .then(usnap => {
-                if (usnap.exists) {
-                    var user = usnap.data();
-                    res.json(cleanUser(user));
-                }
-            });
-    })
+    cors(req,
+        res,
+        () => {
+            var id = req.body;
+            var db = admin.firestore();
+            db.collection('users')
+                .doc(id)
+                .get()
+                .then(usnap => {
+                    if (usnap.exists) {
+                        var user = usnap.data();
+                        res.json(cleanUser(user));
+                    }
+                });
+        });
 });
 
 //https://cron-job.org/en/members/jobs/details/?jobid=825596
@@ -124,13 +127,13 @@ exports.dailyCleanup = functions.https.onRequest((req, res) => {
         console.log("Running Cleanup...");
 
         var db = admin.firestore();
-        db.collection('history').doc('0').get().then((doc) => {
+        db.collection('history').doc('0').get().then(doc => {
             var history = doc.data();
             var now = new Date();
-            var anHourAgo = now.getTime() - (60 * 60 * 1000);
+            var anHourAgo = now.getTime() - 60 * 60 * 1000;
 
             if (history.lastDailyCleanup.getTime() < anHourAgo) {
-                var aWeekAgo = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000));
+                var aWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
                 db.collection('playtests')
                     .where("started", "<", aWeekAgo).get()
                     .then((s) => {
@@ -183,7 +186,7 @@ exports.updateUser = functions.https.onRequest((req, res) => {
             .where("uid", "==", user.uid)
             .get()
             .then((usnap) => {
-                if (usnap.size == 1) {
+                if (usnap.size === 1) {
                     var oldUser = usnap.docs[0].data();
                     db.collection('users')
                         .doc(oldUser.id)
@@ -193,7 +196,7 @@ exports.updateUser = functions.https.onRequest((req, res) => {
                         });
                 }
                 else {
-                    res.status(406).send(usnap.size + " users with that uid!")
+                    res.status(406).send(usnap.size + " users with that uid!");
                 }
             });
     });
@@ -218,7 +221,7 @@ exports.saveUser = functions.https.onRequest((req, res) => {
                     sender: '',
                     recipient: user.id,
                     isRead: false,
-                    sentDate: new Date(),
+                    sentDate: new Date()
                 };
                 internalSendMessage(message);
             });
@@ -236,7 +239,7 @@ exports.addGame = functions.https.onRequest((req, res) => {
             .where("uid", "==", uid)
             .get()
             .then((usnap) => {
-                if (usnap.size == 1) {
+                if (usnap.size === 1) {
                     var user = usnap.docs[0].data();
                     game.owner = user.id;
                     db.collection('games')
@@ -254,13 +257,13 @@ exports.addGame = functions.https.onRequest((req, res) => {
                                 sender: '',
                                 recipient: game.owner,
                                 isRead: false,
-                                sentDate: new Date(),
+                                sentDate: new Date()
                             };
                             internalSendMessage(message);
                         });
                 }
                 else {
-                    res.status(406).send(usnap.size + " users with that uid!")
+                    res.status(406).send(usnap.size + " users with that uid!");
                 }
             });
     });
@@ -269,14 +272,14 @@ exports.addGame = functions.https.onRequest((req, res) => {
 exports.addPlaytest = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         const gameId = req.body.playtest.gameId;
-        const uid = req.body.uid
+        const uid = req.body.uid;
         var db = admin.firestore();
 
         db.collection('users')
             .where("uid", "==", uid)
             .get()
             .then((usnap) => {
-                if (usnap.size == 1) {
+                if (usnap.size === 1) {
                     var user = usnap.docs[0].data();
                     const id = user.id;
                     db.collection('games').doc(gameId).get()
@@ -291,7 +294,7 @@ exports.addPlaytest = functions.https.onRequest((req, res) => {
                                         if (s.exists) {
                                             var playTest = s.data();
                                             //if the old one was for a different game
-                                            if (playTest.gameId != gameId) {
+                                            if (playTest.gameId !== gameId) {
                                                 //Fix the old game's priority
                                                 db.collection('games').doc(playTest.gameId).get()
                                                     .then((oldSnap) => {
@@ -335,7 +338,7 @@ exports.addPlaytest = functions.https.onRequest((req, res) => {
                                             sender: '',
                                             recipient: game.owner,
                                             isRead: false,
-                                            sentDate: new Date(),
+                                            sentDate: new Date()
                                         };
                                         internalSendMessage(message);
                                     });
@@ -346,7 +349,7 @@ exports.addPlaytest = functions.https.onRequest((req, res) => {
                         });
                 }
                 else {
-                    res.status(406).send(usnap.length + " users with that uid!")
+                    res.status(406).send(usnap.length + " users with that uid!");
                 }
             });
     });
@@ -367,6 +370,7 @@ exports.updateGame = functions.https.onRequest((req, res) => {
         if (game.description) { cleanGame.description = game.description; }
         if (game.rulesUrl) { cleanGame.rulesUrl = game.rulesUrl; }
         if (game.pnpUrl) { cleanGame.pnpUrl = game.pnpUrl; }
+        if (game.version) { cleanGame.version = game.version; }
         cleanGame.priority = 0;
         cleanGame.active = !!game.active;
         var db = admin.firestore();
@@ -375,7 +379,7 @@ exports.updateGame = functions.https.onRequest((req, res) => {
             .where("uid", "==", uid)
             .get()
             .then((usnap) => {
-                if (usnap.size == 1) {
+                if (usnap.size === 1) {
                     var user = usnap.docs[0].data();
                     db.collection('games').doc(game.id).get()
                         .then((snap) => {
@@ -383,21 +387,24 @@ exports.updateGame = functions.https.onRequest((req, res) => {
                                 var oldGame = snap.data();
                                 if (oldGame.owner === user.id) {
                                     cleanGame.priority = oldGame.priority;
+
+                                    //console.log("saving = " + JSON.stringify(cleanGame));
+
                                     admin.firestore().collection('games').doc(game.id)
                                         .update(cleanGame)
                                         .then((f) => res.status(200).send("success"));
                                 }
                                 else {
-                                    res.status(406).send("You don't own that game!")
+                                    res.status(406).send("You don't own that game!");
                                 }
                             }
                             else {
-                                res.status(406).send("That game doesn't exist!")
+                                res.status(406).send("That game doesn't exist!");
                             }
                         });
                 }
                 else {
-                    res.status(406).send(usnap.length + " users with that uid!")
+                    res.status(406).send(usnap.length + " users with that uid!");
                 }
             });
     });
@@ -424,7 +431,7 @@ exports.rejectFeedback = functions.https.onRequest((req, res) => {
             .where("uid", "==", uid)
             .get()
             .then((usnap) => {
-                if (usnap.size == 1) {
+                if (usnap.size === 1) {
                     var user = usnap.docs[0].data();
                     var mod = user.isModerator;
                     if (mod) {
@@ -446,7 +453,7 @@ exports.rejectFeedback = functions.https.onRequest((req, res) => {
                                                 sender: '',
                                                 recipient: feedback.userId,
                                                 isRead: false,
-                                                sentDate: new Date(),
+                                                sentDate: new Date()
                                             };
                                             internalSendMessage(message);
                                         }
@@ -484,7 +491,7 @@ exports.submitFeedback = functions.https.onRequest((req, res) => {
                         sender: '',
                         recipient: game.owner,
                         isRead: false,
-                        sentDate: new Date(),
+                        sentDate: new Date()
                     };
                     internalSendMessage(message);
                 }
@@ -496,19 +503,19 @@ exports.approveFeedback = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
         var db = admin.firestore();
         const feedback = req.body.feedback;
-        const uid = req.body.uid
+        const uid = req.body.uid;
         db.collection('users')
             .where("uid", "==", uid)
             .get()
             .then((usnap) => {
-                if (usnap.size == 1) {
+                if (usnap.size === 1) {
                     var user = usnap.docs[0].data();
                     var mod = user.isModerator;
                     db.collection('games').doc(feedback.gameId).get()
                         .then((gsnap) => {
                             if (gsnap.exists) {
                                 var game = gsnap.data();
-                                var isGameOwner = user.id == game.owner;
+                                var isGameOwner = user.id === game.owner;
                                 if (mod || isGameOwner) {
                                     var modifications = { approved: true, submitted: true };
                                     db.collection('feedback')
@@ -539,7 +546,7 @@ exports.approveFeedback = functions.https.onRequest((req, res) => {
                                                     sender: '',
                                                     recipient: feedback.userId,
                                                     isRead: false,
-                                                    sentDate: new Date(),
+                                                    sentDate: new Date()
                                                 };
                                                 internalSendMessage(message);
 
@@ -550,7 +557,7 @@ exports.approveFeedback = functions.https.onRequest((req, res) => {
                                                     sender: '',
                                                     recipient: game.owner,
                                                     isRead: false,
-                                                    sentDate: new Date(),
+                                                    sentDate: new Date()
                                                 };
                                                 internalSendMessage(message2);
                                             }
@@ -579,7 +586,7 @@ exports.applyPoints = functions.https.onRequest((req, res) => {
                     db.collection('users')
                         .where("uid", "==", uid).get()
                         .then((usnap) => {
-                            if (usnap.size == 1) {
+                            if (usnap.size === 1) {
                                 var user = usnap.docs[0].data();
                                 var pointsApplied = 0;
 
@@ -620,7 +627,7 @@ exports.sendMessage = functions.https.onRequest((req, res) => {
             .where("uid", "==", uid)
             .get()
             .then((usnap) => {
-                if (usnap.size == 1) {
+                if (usnap.size === 1) {
                     var user = usnap.docs[0].data();
                     message.sender = user.id;
 
@@ -628,7 +635,7 @@ exports.sendMessage = functions.https.onRequest((req, res) => {
                     res.status(200).send("success");
                 }
                 else {
-                    res.status(406).send(usnap.size + " users with that uid!")
+                    res.status(406).send(usnap.size + " users with that uid!");
                 }
             });
     });
@@ -645,7 +652,7 @@ exports.markMessageRead = functions.https.onRequest((req, res) => {
             .where("uid", "==", uid)
             .get()
             .then((usnap) => {
-                if (usnap.size == 1) {
+                if (usnap.size === 1) {
                     var user = usnap.docs[0].data();
                     db.collection('messages')
                         .doc(id)
@@ -667,7 +674,7 @@ exports.markMessageRead = functions.https.onRequest((req, res) => {
                         });
                 }
                 else {
-                    res.status(406).send(usnap.size + " users with that uid!")
+                    res.status(406).send(usnap.size + " users with that uid!");
                 }
             });
     });
@@ -683,7 +690,7 @@ exports.deleteMessage = functions.https.onRequest((req, res) => {
             .where("uid", "==", uid)
             .get()
             .then((usnap) => {
-                if (usnap.size == 1) {
+                if (usnap.size === 1) {
                     var user = usnap.docs[0].data();
                     db.collection('messages')
                         .doc(id)
@@ -705,7 +712,7 @@ exports.deleteMessage = functions.https.onRequest((req, res) => {
                         });
                 }
                 else {
-                    res.status(406).send(usnap.size + " users with that uid!")
+                    res.status(406).send(usnap.size + " users with that uid!");
                 }
             });
     });
