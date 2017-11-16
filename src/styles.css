@@ -165,6 +165,16 @@
   margin: 12px 0;
 }
 
+.upperRight-buttons__link.inactive {
+  background-color: #b6b6b6;
+  color: #131313;
+}
+
+.upperRight-buttons__link:hover.inactive {
+  background-color: #b6b6b6;
+  color: #131313;
+}
+
 .upperRight-buttons__link:hover {
   background-color: #1bf697;
   color: #142;

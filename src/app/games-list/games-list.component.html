@@ -20,6 +20,11 @@
           <span class="glyphicon glyphicon-plus"></span>
         </a>
       </li>
+      <li class="upperRight-buttons__item" *ngIf="!user">
+        <a class="upperRight-buttons__link inactive" data-tooltip="Add new game (requires sign in)">
+          <span class="glyphicon glyphicon-plus"></span>
+        </a>
+      </li>
       <li class="upperRight-buttons__item" *ngIf="user">
         <a routerLink="/user/{{user.id}}/games" class="upperRight-buttons__link" data-tooltip="View my games">
           <span class="glyphicon glyphicon-th-large"></span>

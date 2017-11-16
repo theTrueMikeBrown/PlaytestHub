@@ -39,7 +39,7 @@ export class DbService {
         this.http.post(this.dailyCleanupUrl, {})
             .toPromise()
             .then(response => { })
-            .catch((error) => { debugger; });
+            .catch((error) => { debugger });
     }
 
     getGame(id: string): Promise<Observable<Game>> {
@@ -95,7 +95,7 @@ export class DbService {
             .then(response => {
                 subject.next(response.json());
             })
-            .catch((error) => { debugger; });
+            .catch((error) => { debugger });
         return Promise.resolve(subject);
     }
 
@@ -108,7 +108,9 @@ export class DbService {
                 user.uid = uid;
                 subject.next(user);
             })
-            .catch((error) => { debugger; });
+            .catch((error) => {
+                subject.next(null);
+            });
         return Promise.resolve(subject);
     }
 
@@ -204,7 +206,7 @@ export class DbService {
                     successCallback(response);
                 }
             })
-            .catch((error) => { debugger; });
+            .catch((error) => { debugger });
     }
 
     updateGame(game: Game, uid: string, successCallback?: (r: Response) => void) {
@@ -215,9 +217,7 @@ export class DbService {
                     successCallback(response);
                 }
             })
-            .catch((error) => {
-                debugger;
-            });
+            .catch((error) => { debugger });
     }
 
     addGame(game: Game, uid: string, successCallback?: (r: Response) => void) {
@@ -228,9 +228,7 @@ export class DbService {
                     successCallback(response);
                 }
             })
-            .catch((error) => {
-                debugger;
-            });
+            .catch((error) => { debugger });
     }
 
     saveUser(user: User, successCallback?: (r: Response) => void) {
@@ -241,9 +239,7 @@ export class DbService {
                     successCallback(response);
                 }
             })
-            .catch((error) => {
-                debugger;
-            });
+            .catch((error) => { debugger });
     }
 
     updateUser(user: User, successCallback?: (r: Response) => void) {
@@ -254,9 +250,7 @@ export class DbService {
                     successCallback(response);
                 }
             })
-            .catch((error) => {
-                debugger;
-            });
+            .catch((error) => { debugger });
     }
 
     saveFeedback(feedback: Feedback, uid: string, successCallback?: (r: Response) => void) {
@@ -267,9 +261,7 @@ export class DbService {
                     successCallback(response);
                 }
             })
-            .catch((error) => {
-                debugger;
-            });
+            .catch((error) => { debugger });
     }
 
     submitFeedback(feedback: Feedback, uid: string, successCallback?: (r: Response) => void): void {
@@ -280,9 +272,7 @@ export class DbService {
                     successCallback(response);
                 }
             })
-            .catch((error) => {
-                debugger;
-            });
+            .catch((error) => { debugger });
     }
 
     rejectFeedback(feedback: Feedback, reason: string, uid: string, successCallback?: (r: Response) => void) {
@@ -293,9 +283,7 @@ export class DbService {
                     successCallback(response);
                 }
             })
-            .catch((error) => {
-                debugger;
-            });
+            .catch((error) => { debugger });
     }
 
     approveFeedback(feedback: Feedback, uid: string, successCallback?: (r: Response) => void) {
@@ -306,9 +294,7 @@ export class DbService {
                     successCallback(response);
                 }
             })
-            .catch((error) => {
-                debugger;
-            });
+            .catch((error) => { debugger });
     }
 
     applyPoints(gameId: string, points: number, uid: string, successCallback?: (r: Response) => void) {
@@ -319,9 +305,7 @@ export class DbService {
                     successCallback(response);
                 }
             })
-            .catch((error) => {
-                debugger;
-            });;
+            .catch((error) => { debugger });
     }
 
     sendMessage(message: Message, uid: string, successCallback?: (r: Response) => void) {
@@ -332,9 +316,7 @@ export class DbService {
                     successCallback(response);
                 }
             })
-            .catch((error) => {
-                debugger;
-            });
+            .catch((error) => { debugger });
     }
 
     markMessageRead(id: string, isRead: boolean, uid: string, successCallback?: (r: Response) => void) {
@@ -345,9 +327,7 @@ export class DbService {
                     successCallback(response);
                 }
             })
-            .catch((error) => {
-                debugger;
-            });
+            .catch((error) => { debugger });
     }
 
     deleteMessage(id: string, uid: string, successCallback?: (r: Response) => void) {
@@ -358,8 +338,6 @@ export class DbService {
                     successCallback(response);
                 }
             })
-            .catch((error) => {
-                debugger;
-            });
+            .catch((error) => { debugger });
     }
 }

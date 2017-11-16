@@ -39,7 +39,7 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
         AuthProvider.Google,
         AuthProvider.Password
     ],
-    method: AuthMethods.Popup,
+    method: AuthMethods.Redirect,
     tos: 'tos.html'
 };
 
@@ -78,6 +78,10 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
             {
                 path: 'games',
                 component: GamesListComponent
+            },
+            {
+                path: 'funnel',
+                component: FunnelPageComponent
             },
             {
                 path: '',

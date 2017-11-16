@@ -77,12 +77,25 @@ export class LoginInfoService {
 
                     loginUser.id = uuidv4();
                     loginUser.joinDate = new Date();
-                    this.business.saveUser(loginUser, (r) => this.saving = false);
+                    this.business.saveUser(loginUser, (r) => {
+                        this.saving = false;
+                        this.user = loginUser;
+                        this.userObs.next(loginUser);
+                        this.userObs.complete();
+                    });
+                    return;
                 }
                 this.user = loginUser;
                 this.userObs.next(loginUser);
                 this.userObs.complete();
             });
         });
+    }
+
+    getFunnelChoice() : string {
+        return localStorage.getItem('phFunnelChoice');
+    }
+    setFunnelChoice(choice: string) {
+        return localStorage.setItem('phFunnelChoice', choice);
     }
 }

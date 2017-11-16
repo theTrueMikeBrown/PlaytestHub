@@ -1,5 +1,6 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { LoginInfoService } from '../services/loginInfo.service';
 
 @Component({
     selector: 'app-funnel-page',
@@ -8,23 +9,24 @@ import { Router } from '@angular/router';
 })
 export class FunnelPageComponent implements OnInit {
 
-    constructor(private router: Router) { }
+    constructor(private router: Router,
+        private loginInfoService: LoginInfoService) { }
 
     ngOnInit() {
     }
 
     designer() {
-        localStorage.setItem('phFunnelChoice', 'designer');
+        this.loginInfoService.setFunnelChoice('designer');
         this.router.navigate(['/games']);
     }
 
     publisher() {
-        localStorage.setItem('phFunnelChoice', 'publisher');
+        this.loginInfoService.setFunnelChoice('publisher');
         this.router.navigate(['/games']);
     }
 
     player() {
-        localStorage.setItem('phFunnelChoice', 'player');
+        this.loginInfoService.setFunnelChoice('player');
         this.router.navigate(['/games']);
     }
 }

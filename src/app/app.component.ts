@@ -10,8 +10,6 @@ import { LoginInfoService } from './services/loginInfo.service';
     styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-    loggedIn: boolean = false;
-
     constructor(private loginInfoService: LoginInfoService) {
     }
 

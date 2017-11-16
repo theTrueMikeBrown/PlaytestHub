@@ -8,8 +8,8 @@
 <div *ngIf="profile">
   <fieldset class="left">
     <legend>User Info</legend>
-    <div class="form-group"><label for="displayName">Display Name:</label><input id="displayName" class="form-control" type="text" [(ngModel)]="profile.displayName" (ngModelChange)="onChange($event)" /></div>
-    <div class="form-group"><label for="photoUrl">Photo URL:</label><input id="photoUrl" [disabled]="!profile.isModerator" class="form-control" type="text" [(ngModel)]="profile.photoURL" (ngModelChange)="onChange($event)" /></div>
+<!--    <div class="form-group"><label for="displayName">Display Name:</label><input id="displayName" class="form-control" type="text" [(ngModel)]="profile.displayName" (ngModelChange)="onChange($event)" /></div>-->
+    <div *ngIf="profile.isModerator" class="form-group"><label for="photoUrl">Photo URL:</label><input id="photoUrl" class="form-control" type="text" [(ngModel)]="profile.photoURL" (ngModelChange)="onChange($event)" /></div>
     <div class="form-group"><label for="personalInfo">Personal Info:</label><textarea id="personalInfo" class="form-control" [(ngModel)]="profile.personalInfo" (ngModelChange)="onChange($event)" rows="5"></textarea></div>
 
     <div class="lowerRightBottom">

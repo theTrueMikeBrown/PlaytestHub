@@ -36,6 +36,10 @@ export class GamesListComponent {
     }
 
     ngOnInit(): void {
+        if (!this.loginInfoService.getFunnelChoice()) {
+            this.router.navigate(['/funnel']);
+        }
+
         this.message = this.route
             .queryParamMap
             .map(params => params.get('message'))

@@ -23,8 +23,6 @@ export class SignInComponent implements OnInit {
     }
 
     successCallback(data: FirebaseUISignInSuccess) {
-        this.loginInfoService.signIn(data.currentUser, () => {
-            this.router.navigate(['/games']);
-        });
+        this.router.navigate(['/games']);
     }
 }

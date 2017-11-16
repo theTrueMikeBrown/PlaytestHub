@@ -94,6 +94,10 @@ exports.getUserBySecretId = functions.https.onRequest((req, res) => {
                     var user = usnap.docs[0].data();
                     res.json(cleanUser(user));
                 }
+                else {
+                    console.log("uid:" + uid);
+                    res.status(406).send(usnap.size + " users with that uid!")
+                }
             });
     })
 });
