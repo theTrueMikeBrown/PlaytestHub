@@ -13,4 +13,5 @@
     priority: number;
     active: boolean;
     createDate: Date;
+    version: number;
 }
