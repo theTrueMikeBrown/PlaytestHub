@@ -28,8 +28,18 @@
         </div>
       </div>
       <div class="form-group"><label for="gameActive"><input class="form-check" id="gameActive" type="checkbox" name="isActive" (ngModelChange)="onChange($event)" [(ngModel)]="game.active" /> Is Active</label></div>
-      <div class="form-group"><label for="gameVersion">Version</label><input class="form-control" id="gameVersion" [(ngModel)]="game.version" type="number" min="0" /></div>
-      <div class="form-group"><label for="gamePriority">Priority</label><input class="form-control" disabled [ngModel]="game.priority" /></div>
+        <div class="form-group"><label for="gameVersion">
+            <span class="tooltipanchor">
+                Version
+                <span class="tooltiptext version">When you edit version, you are allowing players that have already playtested your game to playtest it again.</span>
+            </span>
+        </label><input class="form-control" id="gameVersion" [(ngModel)]="game.version" type="number" min="0" /></div>
+        <div class="form-group"><label for="gamePriority">
+            <span class="tooltipanchor">
+                Priority
+                <span class="tooltiptext version">The priority of your game determines where it appears in the list. Higher is better.</span>
+            </span>
+        </label><input class="form-control" disabled [ngModel]="game.priority" /></div>
     </fieldset>
     <div class="lowerRightBottom">
       <a class="action-button" (click)="saveGame()" data-tooltip="Save Game">

@@ -1,4 +1,4 @@
-﻿export class Feedback {
+export class Feedback {
     feelings: string[];
     categorization: string[];
     general: string[];
@@ -13,4 +13,5 @@
     approved: boolean;
     submitted: boolean;
     submitDate: Date;
+    version: number;
 }

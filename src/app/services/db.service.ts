@@ -1,4 +1,4 @@
-﻿import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import "rxjs/add/operator/map";
@@ -54,9 +54,24 @@ export class DbService {
 
     getUserFeedbackForGame(userId: string, gameId: string): Promise<Observable<Feedback>> {
         let subject: Subject<Feedback> = new Subject;
-        let list = this.db
-            .collection<Feedback>("feedback", ref =>
-                ref.where('gameId', '==', gameId).where('userId', '==', userId))
+        this.db.collection<Feedback>("feedback", ref =>
+                ref.where('gameId', '==', gameId).where('userId', '==', userId).orderBy('version', 'desc'))
+            .valueChanges()
+            .subscribe(list => {
+                if (list && list[0]) {
+                    subject.next(list[0]);
+                }
+                else {
+                    subject.next(null);
+                }
+            });
+        return Promise.resolve(subject);
+    }
+
+    getUserFeedbackForGameVersion(userId: string, gameId: string, version: number): Promise<Observable<Feedback>> {
+        let subject: Subject<Feedback> = new Subject;
+        this.db.collection<Feedback>("feedback", ref =>
+                ref.where('gameId', '==', gameId).where('userId', '==', userId).where('version', '==', version))
             .valueChanges()
             .subscribe(list => {
                 if (list && list[0]) {

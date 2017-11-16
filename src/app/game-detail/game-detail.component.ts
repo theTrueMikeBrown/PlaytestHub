@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router, NavigationExtras } from '@angular/router';
 import { Location } from '@angular/common';
 import 'rxjs/add/operator/switchMap';
@@ -21,7 +21,7 @@ export class GameDetailComponent implements OnInit {
     owner: User;
     user: User;
     alreadyPlaytesting: boolean = false;
-    alreadyPlaytested: boolean = false;
+    alreadyPlaytestedVersion: boolean = false;
     feedbackId: string;
     feedbackExists: boolean;
     playtesting: boolean = false;
@@ -77,31 +77,25 @@ export class GameDetailComponent implements OnInit {
                 this.game = game;
                 this.loginInfoService.getLoginInfo().then(user => {
                     this.user = user;
-                    this.business.getPlaytestByUserId(this.user.id).then(p => {
-                        p.subscribe((playtest) => {
-                            if (playtest && game.id === playtest.gameId) {
-                                this.alreadyPlaytesting = true;
-                                this.business.getUserFeedbackForGame(this.user.id, game.id).then(f => {
-                                    f.subscribe(feedback => {
-                                        if (feedback && !feedback.submitted) {
-                                            this.feedbackId = feedback.id;
-                                        }
-                                        else {
-                                            this.alreadyPlaytesting = false;
-                                            this.alreadyPlaytested = true;
-                                        }
+                    this.business.getUserFeedbackForGame(this.user.id, game.id).then(f => {
+                        f.subscribe(feedback => {
+                            if (feedback) {
+                                if (!feedback.submitted) {
+                                    this.feedbackId = feedback.id;
+
+                                    this.business.getPlaytestByUserId(this.user.id).then(p => {
+                                        p.subscribe((playtest) => {
+                                            if (playtest && game.id === playtest.gameId) {
+                                                this.alreadyPlaytesting = true;
+                                            }
+                                            else {
+                                                this.alreadyPlaytesting = false;
+                                            }
+                                        });
                                     });
-                                });
-                            }
-                            else {
-                                this.alreadyPlaytesting = false;
-                                this.business.getUserFeedbackForGame(this.user.id, game.id).then(f => {
-                                    f.subscribe(feedback => {
-                                        if (feedback) {
-                                            this.alreadyPlaytested = true;
-                                        }
-                                    });
-                                });
+                                } else if (feedback.version === this.game.version) {
+                                    this.alreadyPlaytestedVersion = true;
+                                }
                             }
                         });
                     });

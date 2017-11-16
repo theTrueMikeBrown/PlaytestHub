@@ -1,6 +1,7 @@
-﻿<div id="feedbackForm">
+<div id="feedbackForm">
   <h3><span *ngIf="reviewing">Review </span>Feedback</h3>
-  <h4 *ngIf="gameName">for {{gameName}}</h4>
+    <h4 *ngIf="game">for {{game.name}} <span class="small">v{{feedback.version}}</span></h4>
+    <h5 *ngIf="leaver">by {{leaver.displayName}}</h5>
   <h3 *ngIf="pendingApproval">Pending Approval</h3>
 
   <div class="upperLeft">
@@ -66,7 +67,7 @@
       </div>
       <div class="form-group"><label for="e1">What one change would you make to the game?</label><textarea id="e1" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.final[1]"></textarea></div>
       <div class="form-group"><label for="e2">Any extra feedback that you would like to give?</label><textarea id="e2" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.final[2]"></textarea></div>
-      <div class="form-group"><label for="e2">May the designer contact you regarding this feedback? if so, enter your contact info.</label><textarea id="e2" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.final[3]"></textarea></div>
+      <div class="form-group" *ngIf="!redact"><label for="e2">May the designer contact you regarding this feedback? if so, enter your contact info.</label><textarea id="e2" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.final[3]"></textarea></div>
     </fieldset>
   </div>
 

@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras, ActivatedRoute, ParamMap } from '@angular/router';
 
 import { LoginInfoService } from '../services/loginInfo.service';
@@ -15,7 +15,8 @@ import { Feedback } from '../types/feedback';
 })
 export class LeaveFeedbackComponent implements OnInit {
     feedback: Feedback;
-    gameName: string = '';
+    game: Game;
+    leaver: User;
     reviewing: boolean = false;
     editing: boolean = false;
     owner: boolean = false;
@@ -26,6 +27,7 @@ export class LeaveFeedbackComponent implements OnInit {
     approving: boolean = false;
     submitting: boolean = false;
     rejecting: boolean = false;
+    redact: boolean = true;
 
     constructor(private router: Router,
         private route: ActivatedRoute,
@@ -88,17 +90,25 @@ export class LeaveFeedbackComponent implements OnInit {
                         this.pendingApproval = feedback.submitted && !feedback.approved;
                         this.loginInfoService.getLoginInfo().then(user => {
                             this.user = user;
-                            this.reviewing = feedback.userId != this.user.id && this.pendingApproval && this.user.isModerator;
-                            this.editing = feedback.userId == this.user.id && !feedback.submitted && !feedback.approved;
+                            this.reviewing = feedback.userId !== this.user.id && this.pendingApproval && this.user.isModerator;
+                            this.editing = feedback.userId === this.user.id && !feedback.submitted && !feedback.approved;
                             this.business.getGame(feedback.gameId).then(g => {
                                 g.subscribe(game => {
-                                    this.owner = game.owner == this.user.id;
+                                    this.owner = game.owner === this.user.id;
+                                    if (this.owner || feedback.userId === this.user.id || this.user.isModerator) {
+                                        this.redact = false;
+                                    }
                                 });
                             });
                         });
                         this.business.getGame(feedback.gameId).then(g => {
                             g.subscribe(game => {
-                                this.gameName = game.name;
+                                this.game = game;
+                            });
+                        });
+                        this.business.getUser(feedback.userId).then(u => {
+                            u.subscribe(user => {
+                                this.leaver = user;
                             });
                         });
                     }

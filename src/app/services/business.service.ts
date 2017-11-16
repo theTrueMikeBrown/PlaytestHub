@@ -1,4 +1,4 @@
-﻿import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import "rxjs/add/operator/map";
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
@@ -32,6 +32,10 @@ export class BusinessService {
         return this.db.getUserFeedbackForGame(userId, gameId);
     }
 
+    getUserFeedbackForGameVersion(userId: string, gameId: string, version: number): Promise<Observable<Feedback>> {
+        return this.db.getUserFeedbackForGameVersion(userId, gameId, version);
+    }
+
     getGames(): Promise<Observable<Game[]>> {
         return this.db.getGames();
     }
@@ -53,7 +57,8 @@ export class BusinessService {
                 this.saveFeedback({
                     feelings: ['', '', ''], categorization: ['', '', ''], general: ['', ''], length: ['', '', ''],
                     art: ['', ''], rules: ['', '', ''], mechanics: ['', '', ''], final: ['', '', '', ''],
-                    userId: user.id, gameId: game.id, id: '', approved: false, submitted: false, submitDate: null
+                    userId: user.id, gameId: game.id, id: '', approved: false, submitted: false, submitDate: null,
+                    version: game.version
                 }, user.uid);
             });
     }
