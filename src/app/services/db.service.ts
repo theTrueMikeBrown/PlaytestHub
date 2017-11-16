@@ -87,6 +87,7 @@ export class DbService {
     getGames(): Promise<Observable<Game[]>> {
         let itemsList = this.db.collection<Game>('games', ref =>
             ref.where('active', '==', true)
+                .where('priority', '>=', 0)
                 .orderBy('priority', 'desc')
                 .orderBy('createDate', 'asc')
                 .limit(10));
