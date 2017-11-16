@@ -366,3 +366,7 @@ hr {
     transform: rotate(359deg);
   }
 }
+
+.modal {
+  background: rgba(0,0,0,0.6);
+}

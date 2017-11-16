@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, ViewChild, ElementRef } from '@angular/core'
 import { Router, NavigationExtras, ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 
@@ -7,6 +7,7 @@ import { BusinessService } from '../services/business.service';
 
 import { Message } from '../types/message';
 import { User } from '../types/user';
+import { ModalComponent } from '../modal/modal.component';
 
 @Component({
     selector: 'view-messages',
@@ -19,6 +20,7 @@ export class ViewMessagesComponent implements OnInit {
     senderName: string;
     user: User;
     deleting: boolean = false;
+    @ViewChild('modal') modal: ModalComponent;
 
     constructor(private business: BusinessService,
         private router: Router,
@@ -44,6 +46,7 @@ export class ViewMessagesComponent implements OnInit {
             }));
         }
         this.business.markMessageRead(this.message.id, this.user.uid, true);
+        this.modal.show()
     }
 
     delete(): void {
@@ -52,6 +55,7 @@ export class ViewMessagesComponent implements OnInit {
         this.business.deleteMessage(id, this.user.uid, (r) => {
             this.message = null;
             this.deleting = false;
+            this.modal.hide();
         });
     }
 }

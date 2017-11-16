@@ -17,10 +17,6 @@
   padding: 1em;
 }
 
-.messageDiv {
-  margin: 1em;
-}
-
 tbody:empty {
   position: relative;
 }

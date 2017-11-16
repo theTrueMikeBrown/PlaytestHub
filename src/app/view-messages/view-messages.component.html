@@ -5,19 +5,24 @@
     </a>
   </div>
 
-  <div *ngIf="message" class="messageDiv">
-    <a (click)="delete()" class="action-button inner-upper-right" data-tooltip="Delete selected message">
-      <span [class.fa-spin]="this.deleting" class="glyphicon glyphicon-trash"></span>
-    </a>
-    <h3>Subject: {{message.subject}}</h3>
-    <h5>
-      From:
-      <span *ngIf="!message.sender">{{senderName}}</span>
-      <a *ngIf="message.sender" routerLink="/user/{{message.sender}}/profile">{{senderName}}</a>
-    </h5>
-    <h5>Date: {{message.sentDate | date:'shortDate' }}</h5>
-    <div class="messageBox line-breaker" [innerHTML]="message.text"></div>
-  </div>
+  <app-modal #modal>
+    <div class="app-modal-body">
+      <div *ngIf="message" class="messageDiv">
+        <h4 *ngIf="message">{{message.subject}}</h4>
+        <h5>
+          From:
+          <span *ngIf="!message.sender">{{senderName}}</span>
+          <a *ngIf="message.sender" routerLink="/user/{{message.sender}}/profile">{{senderName}}</a>
+        </h5>
+        <h5>Date: {{message.sentDate | date:'shortDate' }}</h5>
+        <div class="messageBox line-breaker" [innerHTML]="message.text"></div>
+      </div>
+    </div>
+    <div class="app-modal-footer">
+      <button type="button" class="btn btn-default" (click)="modal.hide()">Close</button>
+      <button type="button" class="btn btn-primary" (click)="delete()">Delete</button>
+    </div>
+  </app-modal>
 
   <div>
     <table class="table table-striped">
