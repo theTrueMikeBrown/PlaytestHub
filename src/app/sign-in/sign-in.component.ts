@@ -23,6 +23,10 @@ export class SignInComponent implements OnInit {
     }
 
     successCallback(data: FirebaseUISignInSuccess) {
+        if (this.loginInfoService.getFunnelChoice() === 'publisher') {
+            //this.router.navigate(['/topGames']);
+            //return;
+        }
         this.router.navigate(['/games']);
     }
 }
