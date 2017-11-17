@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras, ActivatedRoute, ParamMap } from '@angular/router';
 
 import { LoginInfoService } from '../services/loginInfo.service';
@@ -53,6 +53,7 @@ export class LeaveFeedbackComponent implements OnInit {
         });
         if (errors.length !== 0) {
             this.submitting = false;
+            //TODO: change alert to styled popup
             alert("Errors: " + errors.join(", "));
         }
     }

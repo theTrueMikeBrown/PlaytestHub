@@ -34,6 +34,7 @@ import { LoginInfoService } from './services/loginInfo.service';
 import { FunnelPageComponent } from './funnel-page/funnel-page.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { ModalComponent } from './modal/modal.component';
+import { AboutPageComponent } from './about-page/about-page.component';
 
 const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
     providers: [
@@ -64,7 +65,8 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
         EditUserComponent,
         FunnelPageComponent,
         SignInComponent,
-        ModalComponent
+        ModalComponent,
+        AboutPageComponent
     ],
     imports: [
         BrowserModule,
@@ -84,6 +86,10 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
             {
                 path: 'funnel',
                 component: FunnelPageComponent
+            },
+            {
+                path: 'about',
+                component: AboutPageComponent
             },
             {
                 path: '',

@@ -21,8 +21,8 @@
       <div class="form-group">
         <h4>Files:</h4>
         <div class="detailBox">
-          <div><label for="gameRulesUrl">Rules file:</label><input class="form-control" id="gameRulesUrl" [(ngModel)]="game.rulesUrl"></div>
-          <div><label for="gamePnpUrl">PNP File:</label><input class="form-control" id="gamePnpUrl" [(ngModel)]="game.pnpUrl"></div>
+          <div><label for="gameRulesUrl">Rules file:</label><input placeholder="Rules Url" class="form-control" id="gameRulesUrl" [(ngModel)]="game.rulesUrl"></div>
+          <div><label for="gamePnpUrl">PNP File:</label><input placeholder="PNP Url" class="form-control" id="gamePnpUrl" [(ngModel)]="game.pnpUrl"></div>
         </div>
       </div>
       <div class="form-group"><label for="gameVersion">Version:</label><input type="number" class="form-control" id="gameVersion" [(ngModel)]="game.version" min="0"></div>
@@ -32,7 +32,7 @@
   </div>
   <div class="lowerRightBottom">
     <a class="action-button" (click)="addGame()" data-tooltip="Save Game">
-      <span [class.fa-spin]="this.saving" class="glyphicon glyphicon-floppy-disk"></span>
+      <span [class.fa-spin]="this.saving" class="fa fa-save"></span>
     </a>
   </div>
 </div>

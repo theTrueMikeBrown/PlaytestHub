@@ -1,4 +1,4 @@
-<div id="feedbackForm">
+﻿<div id="feedbackForm">
   <h3><span *ngIf="reviewing">Review </span>Feedback</h3>
     <h4 *ngIf="game">for {{game.name}} <span class="small">v{{feedback.version}}</span></h4>
     <h5 *ngIf="leaver">by {{leaver.displayName}}</h5>
@@ -74,7 +74,7 @@
   <div *ngIf="editing">
     <div class="lowerRightBottom">
       <a class="action-button" (click)="saveFeedback()" data-tooltip="Save Feedback">
-        <span [class.fa-spin]="this.saving" class="glyphicon glyphicon-floppy-disk"></span>
+        <span [class.fa-spin]="this.saving" class="fa fa-save"></span>
       </a>
     </div>
     <div class="lowerRightBottom">

@@ -21,12 +21,12 @@
       </li>
       <li class="upperRight-buttons__item" *ngIf="user && profile && profile.id===user.id">
         <a routerLink="/editUser" class="upperRight-buttons__link" data-tooltip="Edit profile">
-          <span class="glyphicon glyphicon-edit"></span>
+          <span class="fa fa-edit"></span>
         </a>
       </li>
       <li class="upperRight-buttons__item">
         <a routerLink="/user/{{profile.id}}/games" class="upperRight-buttons__link" data-tooltip="View user's games">
-          <span class="glyphicon glyphicon-th-large"></span>
+          <span class="fa fa-th-list"></span>
         </a>
       </li>
     </ul>

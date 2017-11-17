@@ -1,4 +1,4 @@
-var FieldValue = require("firebase-admin").FieldValue;
+﻿var FieldValue = require("firebase-admin").FieldValue;
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const cors = require('cors')({ origin: true });
@@ -275,83 +275,79 @@ exports.addPlaytest = functions.https.onRequest((req, res) => {
         const uid = req.body.uid;
         var db = admin.firestore();
 
-        db.collection('users')
-            .where("uid", "==", uid)
-            .get()
-            .then((usnap) => {
-                if (usnap.size === 1) {
-                    var user = usnap.docs[0].data();
-                    const id = user.id;
-                    db.collection('games').doc(gameId).get()
-                        .then((doc) => {
-                            var game = doc.data();
-                            //make sure that the game's priority is high enough to do it
-                            if (game.priority >= 0) {
-                                //make sure that the old playtest (if one exists) is propery dealt with
-                                db.collection('playtests').doc(id).get()
-                                    .then((s) => {
-                                        //if an old one exists
-                                        if (s.exists) {
-                                            var playTest = s.data();
-                                            //if the old one was for a different game
-                                            if (playTest.gameId !== gameId) {
-                                                //Fix the old game's priority
-                                                db.collection('games').doc(playTest.gameId).get()
-                                                    .then((oldSnap) => {
-                                                        var oldGame = oldSnap.data();
-                                                        db.collection('games').doc(playTest.gameId).update({ priority: oldGame.priority + 1 });
-                                                    });
-                                                //Delete old feedback
-                                                db.collection('feedback')
-                                                    .where("userId", "==", playTest.id)
-                                                    .where("gameId", "==", playTest.gameId)
-                                                    .get()
-                                                    .then((snap) => {
-                                                        for (var i = 0; i < snap.size; i++) {
-                                                            var feedback = snap.docs[i].data();
-                                                            db.collection('feedback').doc(feedback.id).delete();
-                                                        }
-                                                    });
-                                            }
-                                            else {
-                                                //you can't reset your playtest duration this way
-                                                res.status(406).send("Already playtesting that game.");
-                                                return;
-                                            }
-                                        }
+        Promise.all([
+            db.collection('users').where("uid", "==", uid).get(),
+            db.collection('games').doc(gameId).get()
+        ]).then(values => {
+            var usnap = values[0];
+            var game = values[1].data();
 
-                                        //record the playtest, and reduce the score.
-                                        var date = new Date();
-                                        db.collection('games').doc(gameId).update({ priority: game.priority - 1 });
+            if (usnap.size !== 1) {
+                res.status(406).send(usnap.length + " users with that uid!");
+                return;
+            }
+            if (game.priority < 0) {
+                res.status(406).send("Not enough priority!");
+                return;
+            }
+            var user = usnap.docs[0].data();
+            const id = user.id;
 
-                                        var pt = { gameId: gameId, id: id, started: date, gameName: game.name };
-                                        //console.log("pt=" + JSON.stringify(pt));
+            db.collection('playtests').doc(id).get()
+                .then((s) => {
+                    //make sure that the old playtest (if one exists) is propery dealt with
+                    if (s.exists) {
+                        var playTest = s.data();
+                        if (playTest.gameId !== gameId) {
+                            res.status(406).send("Already playtesting that game.");
+                            return;
+                        }
 
-                                        db.collection('playtests').doc(id).set(pt);
+                        //Fix the old game's priority
+                        db.collection('games').doc(playTest.gameId).get()
+                            .then((oldSnap) => {
+                                var oldGame = oldSnap.data();
+                                db.collection('games').doc(playTest.gameId).update({ priority: oldGame.priority + 1 });
+                            });
 
-                                        res.status(200).send("success");
+                        //Delete old feedback
+                        db.collection('feedback')
+                            .where("userId", "==", playTest.id)
+                            .where("gameId", "==", playTest.gameId)
+                            .get()
+                            .then((snap) => {
+                                for (var i = 0; i < snap.size; i++) {
+                                    var feedback = snap.docs[i].data();
+                                    db.collection('feedback').doc(feedback.id).delete();
+                                }
+                            });
+                    }
 
-                                        var message = {
-                                            id: '',
-                                            subject: "Congrats!",
-                                            text: user.displayName + " just signed up to playtest " + game.name + "!\r\n\r\n-PlaytestHub",
-                                            sender: '',
-                                            recipient: game.owner,
-                                            isRead: false,
-                                            sentDate: new Date()
-                                        };
-                                        internalSendMessage(message);
-                                    });
-                            }
-                            else {
-                                res.status(406).send("Not enough priority!");
-                            }
-                        });
-                }
-                else {
-                    res.status(406).send(usnap.length + " users with that uid!");
-                }
-            });
+                    //record the playtest, and reduce the score.
+                    var date = new Date();
+                    db.collection('games').doc(gameId).update({ priority: game.priority - 1 });
+
+                    var pt = { gameId: gameId, id: id, started: date, gameName: game.name };
+                    db.collection('playtests').doc(id).set(pt);
+                    res.status(200).send("success");
+
+                    var message = {
+                        id: '',
+                        subject: "Congrats!",
+                        text: user.displayName + " just signed up to playtest " + game.name + "!\r\n\r\n-PlaytestHub",
+                        sender: '',
+                        recipient: game.owner,
+                        isRead: false,
+                        sentDate: new Date()
+                    };
+                    internalSendMessage(message);
+                });
+
+        });
+
+        //    db.collection('playtests').doc(id).get(),
+        //    db.collection('games').doc(playTest.gameId).get(),
+        //    db.collection('feedback').where("userId", "==", playTest.id).where("gameId", "==", playTest.gameId).get()
     });
 });
 

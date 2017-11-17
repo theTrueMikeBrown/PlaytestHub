@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import "rxjs/add/operator/map";
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
@@ -150,8 +150,7 @@ export class BusinessService {
             }
             return null;
         };
-
-        return [
+        var results = [
             validateFeedback(feedback, 'feelings', 3),
             validateFeedback(feedback, 'categorization', 3),
             validateFeedback(feedback, 'general', 2),
@@ -161,6 +160,11 @@ export class BusinessService {
             validateFeedback(feedback, 'mechanics', 3),
             validateFeedback(feedback, 'final', 4)
         ].filter(n => n);
+
+        if (results.length > 5) {
+            return results;
+        }
+        return [];
     }
 
     approveFeedback(feedback: Feedback, uid: string, successCallback?: (r: Response) => void) {

@@ -1,7 +1,7 @@
 ﻿<div id="list-component">
   <div class="upperLeft" *ngIf="user && unreadMessages">
     <a routerLink="/messages" class="action-button" data-tooltip="View my messages">
-      <span class="glyphicon glyphicon-envelope"></span>
+      <span class="fa fa-envelope-o"></span>
     </a>
   </div>
 
@@ -11,7 +11,7 @@
     </span>
     <ul class="upperRight-buttons">
       <li class="upperRight-buttons__item" *ngIf="!user">
-        <a class="upperRight-buttons__link" routerLink="/signIn" data-tooltip="Sign In">
+        <a class="upperRight-buttons__link" routerLink="/signIn" data-tooltip="Sign In or Create Account">
           <span class="glyphicon glyphicon-log-in"></span>
         </a>
       </li>
@@ -27,12 +27,12 @@
       </li>
       <li class="upperRight-buttons__item" *ngIf="user">
         <a routerLink="/user/{{user.id}}/games" class="upperRight-buttons__link" data-tooltip="View my games">
-          <span class="glyphicon glyphicon-th-large"></span>
+          <span class="fa fa-th-list"></span>
         </a>
       </li>
       <li class="upperRight-buttons__item" *ngIf="user">
         <a routerLink="/user/{{user.id}}/profile" class="upperRight-buttons__link" data-tooltip="View my profile">
-          <span class="glyphicon glyphicon-user"></span>
+          <span class="fa fa-id-card-o"></span>
         </a>
       </li>
       <li class="upperRight-buttons__item" *ngIf="playtesting && user">
@@ -42,7 +42,7 @@
       </li>
       <li class="upperRight-buttons__item" *ngIf="user">
         <a routerLink="/messages" class="upperRight-buttons__link" data-tooltip="View my messages">
-          <span class="glyphicon glyphicon-envelope"></span>
+          <span class="fa fa-envelope-o"></span>
         </a>
       </li>
       <li class="upperRight-buttons__item" *ngIf="canModerate && user">

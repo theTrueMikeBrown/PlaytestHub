@@ -27,7 +27,7 @@
       </li>
       <li *ngIf="user && user.id === game.owner" class="upperRight-buttons__item">
         <a routerLink="/games/{{game.id}}/edit" class="upperRight-buttons__link" data-tooltip="Edit">
-          <span class="glyphicon glyphicon-edit"></span>
+          <span class="fa fa-edit"></span>
         </a>
       </li>
       <li class="upperRight-buttons__item" *ngIf="user && user.id === game.owner && user.points > 0">

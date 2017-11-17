@@ -1,4 +1,4 @@
-body {
+﻿body {
     color: #082211;
     background-color: #DFE
 }
@@ -374,4 +374,13 @@ hr {
 
 .modal {
     background: rgba(0,0,0,0.6);
+}
+
+.fa {
+    font-size: 1.25em;
+}
+
+.fa-edit {
+    margin: .15em;
+    margin-left: .25em;
 }
