@@ -1,6 +1,37 @@
-﻿body {
+@media (min-width:640px) {
+    app-root > div {
+        max-width: 35em;
+        margin: 0 auto;
+    }
+    
+    .lowerLeftHugger {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+    }
+
+        .lowerLeftHugger:not(:hover) {
+            animation: none !important;
+        }
+        .lowerLeftHugger:hover {
+            animation: none !important;
+        }
+}
+
+@media (min-width:1007px) {
+}
+
+html, body, app-root > div {
+    height: 100%;
+}
+
+.outletHolder {
+    margin: 0 1em;
+}
+
+app-root > div {
     color: #082211;
-    background-color: #DFE
+    background-color: #DFE;
 }
 
 .indent {
@@ -53,12 +84,12 @@
 }
 
     .lowerLeftHugger:hover {
-        animation: llhr 1s;
+        animation: llhr 0.1s;
         animation-fill-mode: forwards;
     }
 
     .lowerLeftHugger:not(:hover) {
-        animation: llh 1s;
+        animation: llh 0.1s;
         animation-fill-mode: forwards;
     }
 
