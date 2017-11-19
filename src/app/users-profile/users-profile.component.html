@@ -1,50 +1,55 @@
 ﻿<div class="upperLeft">
-  <a class="action-button" routerLink="/games" data-tooltip="Home">
-    <span class="glyphicon glyphicon-home"></span>
-  </a>
+    <a class="action-button" routerLink="/games" data-tooltip="Home">
+        <span class="glyphicon glyphicon-home"></span>
+    </a>
 </div>
 <div *ngIf="profile">
-  <div class="upperRight">
-    <span class="action-button">
-      <span class="glyphicon glyphicon-menu-hamburger"></span>
-    </span>
-    <ul class="upperRight-buttons">
-      <li class="upperRight-buttons__item" *ngIf="!user">
-        <a class="upperRight-buttons__link" routerLink="/signIn" data-tooltip="Sign In">
-          <span class="glyphicon glyphicon-log-in"></span>
-        </a>
-      </li>
-      <li class="upperRight-buttons__item" *ngIf="user && profile && profile.id===user.id && profile.points > 0">
-        <a routerLink="/applyPoints" class="upperRight-buttons__link" data-tooltip="Add or remove points">
-          <span class="glyphicon glyphicon-star"></span>
-        </a>
-      </li>
-      <li class="upperRight-buttons__item" *ngIf="user && profile && profile.id===user.id">
-        <a routerLink="/editUser" class="upperRight-buttons__link" data-tooltip="Edit profile">
-          <span class="fa fa-edit"></span>
-        </a>
-      </li>
-      <li class="upperRight-buttons__item">
-        <a routerLink="/user/{{profile.id}}/games" class="upperRight-buttons__link" data-tooltip="View user's games">
-          <span class="fa fa-th-list"></span>
-        </a>
-      </li>
-    </ul>
-  </div>
+    <div class="upperRight">
+        <span class="action-button">
+            <span class="glyphicon glyphicon-menu-hamburger"></span>
+        </span>
+        <ul class="upperRight-buttons">
+            <li class="upperRight-buttons__item" *ngIf="!user">
+                <a class="upperRight-buttons__link" routerLink="/signIn" data-tooltip="Sign In">
+                    <span class="glyphicon glyphicon-log-in"></span>
+                </a>
+            </li>
+            <li class="upperRight-buttons__item" *ngIf="user">
+                <a routerLink="/addgame" class="upperRight-buttons__link" data-tooltip="Add new game">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </a>
+            </li>
+            <li class="upperRight-buttons__item" *ngIf="user && profile && profile.id===user.id && profile.points > 0">
+                <a routerLink="/applyPoints" class="upperRight-buttons__link" data-tooltip="Add or remove points">
+                    <span class="glyphicon glyphicon-star"></span>
+                </a>
+            </li>
+            <li class="upperRight-buttons__item" *ngIf="user && profile && profile.id===user.id">
+                <a routerLink="/editUser" class="upperRight-buttons__link" data-tooltip="Edit profile">
+                    <span class="fa fa-edit"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
 
-  <h3>{{profile.displayName}}'s profile</h3>
-  <div class="left">
-    <div id="userImage">
-      <img *ngIf="profile.photoUrl" src="{{profile.photoUrl}}" id="userImage" />
-      <div *ngIf="!profile.photoUrl">No user image</div>
+    <h3>{{profile.displayName}}'s profile</h3>
+    <div class="left">
+        <div id="userImage">
+            <img *ngIf="profile.photoUrl" src="{{profile.photoUrl}}" id="userImage" />
+            <div *ngIf="!profile.photoUrl">No user image</div>
+        </div>
+        <h4>About {{profile.displayName}}</h4>
+        <div class="line-breaker">{{profile.personalInfo}}</div>
+        <div>{{profile.displayName}}'s points: {{profile.points}}</div>
+        <div *ngIf="playtest" class="section">
+            <span>Playtesting:</span>
+            <a href="/detail/{{playtest.gameId}}">{{playtest.gameName}}</a>,
+            <span> since {{playtest.started | date:'shortDate'}}</span>
+        </div>
+        <h4 *ngIf="profile">{{profile.displayName}}'s Games</h4>
+        <div *ngFor="let game of games | async"
+             (click)="gotoDetail(game.id)" class="search-result">
+            <game-stats [game]="game"></game-stats>
+        </div>
     </div>
-    <h4>About {{profile.displayName}}</h4>
-    <div class="line-breaker">{{profile.personalInfo}}</div>
-    <div>{{profile.displayName}}'s points: {{profile.points}}</div>
-    <div *ngIf="playtest" class="section">
-      <span>Playtesting:</span>
-      <a href="/detail/{{playtest.gameId}}">{{playtest.gameName}}</a>,
-      <span> since {{playtest.started | date:'shortDate'}}</span>
-    </div>
-  </div>
 </div>

@@ -1,4 +1,4 @@
-<div class="details" *ngIf="game">
+﻿<div class="details" *ngIf="game">
   <div class="upperLeft">
     <a class="action-button" routerLink="/games" data-tooltip="Home">
       <span class="glyphicon glyphicon-home"></span>
@@ -30,7 +30,7 @@
           <span class="fa fa-edit"></span>
         </a>
       </li>
-      <li class="upperRight-buttons__item" *ngIf="user && user.id === game.owner && user.points > 0">
+      <li class="upperRight-buttons__item" *ngIf="user && user.id === game.owner">
         <a routerLink="/applyPoints/{{game.id}}" class="upperRight-buttons__link" data-tooltip="Add or remove Points">
           <span class="glyphicon glyphicon-star"></span>
         </a>

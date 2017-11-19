@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { LoginInfoService } from '../services/loginInfo.service';
 import { BusinessService } from '../services/business.service';
 
+import { Game } from '../types/game';
 import { User } from '../types/user';
 import { Playtest } from '../types/playtest';
 
@@ -18,6 +19,7 @@ export class UsersProfileComponent implements OnInit {
     profile: User;
     playtest: Playtest;
     feedbackId: string;
+    games: Observable<Game[]>;
     constructor(private router: Router,
         private route: ActivatedRoute,
         private business: BusinessService,
@@ -26,36 +28,37 @@ export class UsersProfileComponent implements OnInit {
     ngOnInit(): void {
         this.loginInfoService.getLoginInfo().then(user => {
             this.user = user;
-        });
 
-        this.route.paramMap
-            .switchMap((params: ParamMap) => {
-                let id: string = params.get('id');
-                this.business
-                    .getUser(id)
-                    .then(p => {
-                        p.subscribe(profile => {
-                            this.profile = profile;
+            this.route.paramMap
+                .switchMap((params: ParamMap) => {
+                    let id: string = params.get('id');
+                    this.business
+                        .getUser(id)
+                        .then(p => {
+                            p.subscribe(profile => {
+                                this.profile = profile;
+                            });
                         });
-                    });
+                    this.business.getGamesByUser(id, user.id).then(g => this.games = g);
 
-                let result = this.business
-                    .getPlaytestByUserId(id)
-                    .then(p => {
-                        p.subscribe(playtest => {
-                            if (playtest) {
-                                this.playtest = playtest;
-                                this.business.getUserFeedbackForGame(this.user.id, playtest.gameId).then(f => {
-                                    f.subscribe(feedback => {
-                                        if (feedback) {
-                                            this.feedbackId = feedback.id;
-                                        }
+                    let result = this.business
+                        .getPlaytestByUserId(id)
+                        .then(p => {
+                            p.subscribe(playtest => {
+                                if (playtest) {
+                                    this.playtest = playtest;
+                                    this.business.getUserFeedbackForGame(this.user.id, playtest.gameId).then(f => {
+                                        f.subscribe(feedback => {
+                                            if (feedback) {
+                                                this.feedbackId = feedback.id;
+                                            }
+                                        });
                                     });
-                                });
-                            }
+                                }
+                            });
                         });
-                    });
-                return result;
-            }).subscribe(g => { });
+                    return result;
+                }).subscribe(g => { });
+        });
     }
 }

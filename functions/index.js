@@ -639,40 +639,44 @@ exports.sendMessage = functions.https.onRequest((req, res) => {
 
 exports.markMessageRead = functions.https.onRequest((req, res) => {
     cors(req, res, () => {
-        var id = req.body.id;
-        var isRead = req.body.isRead;
-        var uid = req.body.uid;
-        var db = admin.firestore();
+        try {
+            var id = req.body.id;
+            var isRead = req.body.isRead;
+            var uid = req.body.uid;
+            var db = admin.firestore();
 
-        db.collection('users')
-            .where("uid", "==", uid)
-            .get()
-            .then((usnap) => {
-                if (usnap.size === 1) {
-                    var user = usnap.docs[0].data();
-                    db.collection('messages')
-                        .doc(id)
-                        .get().then((doc) => {
-                            var oldMessage = doc.data();
-                            if (oldMessage.recipient !== user.id) {
-                                res.status(401).send("You are not authorized to mark this message read.");
-                                return;
-                            }
-                            db.collection('messages')
-                                .doc(id)
-                                .update({ isRead: isRead })
-                                .then(() => {
-                                    res.status(200).send("success");
-                                })
-                                .catch((error) => {
-                                    res.status(500).send("error: " + error);
-                                });
-                        });
-                }
-                else {
-                    res.status(406).send(usnap.size + " users with that uid!");
-                }
-            });
+            db.collection('users')
+                .where("uid", "==", uid)
+                .get()
+                .then((usnap) => {
+                    if (usnap.size === 1) {
+                        var user = usnap.docs[0].data();
+                        db.collection('messages')
+                            .doc(id)
+                            .get().then((doc) => {
+                                var oldMessage = doc.data();
+                                if (oldMessage.recipient !== user.id) {
+                                    res.status(401).send("You are not authorized to mark this message read.");
+                                    return;
+                                }
+                                db.collection('messages')
+                                    .doc(id)
+                                    .update({ isRead: isRead })
+                                    .then(() => {
+                                        res.status(200).send("success");
+                                    })
+                                    .catch((error) => {
+                                        res.status(500).send("error: " + error);
+                                    });
+                            });
+                    }
+                    else {
+                        res.status(406).send(usnap.size + " users with that uid!");
+                    }
+                });
+        } catch (exception e) {
+            res.status(500).send("Exception was thrown: " + e);
+        }
     });
 });
 

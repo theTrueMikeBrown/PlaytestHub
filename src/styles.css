@@ -1,37 +1,44 @@
-@media (min-width:640px) {
-    app-root > div {
+﻿@media (min-width:490px) {
+    .outletHolder {
         max-width: 35em;
         margin: 0 auto;
+        padding-bottom: 1em;
     }
-    
+
     .lowerLeftHugger {
         position: fixed;
         left: 0;
         bottom: 0;
     }
 
-        .lowerLeftHugger:not(:hover) {
-            animation: none !important;
-        }
-        .lowerLeftHugger:hover {
-            animation: none !important;
-        }
+    .upperLeft {
+        left: 50% !important;
+        margin-left: -17em;
+    }
+
+    .upperRight {
+        right: 50% !important;
+        margin-right: -17em;
+    }
 }
 
-@media (min-width:1007px) {
+@media (min-width:870px) {
+    .lowerLeftHugger:not(:hover) {
+        animation: none !important;
+    }
+
+    .lowerLeftHugger:hover {
+        animation: none !important;
+    }
 }
 
-html, body, app-root > div {
-    height: 100%;
+body {
+    color: #082211;
+    background-color: #DFE;
 }
 
 .outletHolder {
-    margin: 0 1em;
-}
-
-app-root > div {
-    color: #082211;
-    background-color: #DFE;
+    text-align: left;
 }
 
 .indent {
@@ -414,4 +421,21 @@ hr {
 .fa-edit {
     margin: .15em;
     margin-left: .25em;
+}
+
+.inlineForm {
+    display: inline;
+}
+
+    .inlineForm input {
+        height: 1em;
+    }
+
+.tldr div {
+    margin-bottom: .5em;
+    text-indent: 1em;
+}
+
+.tldr h1, .tldr h2, .tldr h3 {
+    text-align: center;
 }
