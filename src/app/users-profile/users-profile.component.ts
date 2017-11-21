@@ -17,6 +17,7 @@ import { Playtest } from '../types/playtest';
 export class UsersProfileComponent implements OnInit {
     user: User;
     profile: User;
+    isUsersProfile: boolean;
     playtest: Playtest;
     feedbackId: string;
     games: Observable<Game[]>;
@@ -26,39 +27,45 @@ export class UsersProfileComponent implements OnInit {
         private loginInfoService: LoginInfoService) { }
 
     ngOnInit(): void {
-        this.loginInfoService.getLoginInfo().then(user => {
-            this.user = user;
+        this.route.paramMap.subscribe((params: ParamMap) => {
+            let id: string = params.get('id');
+            this.business
+                .getUser(id)
+                .then(p => {
+                    p.subscribe(profile => {
+                        this.profile = profile;
+                    });
+                });
 
-            this.route.paramMap
-                .switchMap((params: ParamMap) => {
-                    let id: string = params.get('id');
-                    this.business
-                        .getUser(id)
-                        .then(p => {
-                            p.subscribe(profile => {
-                                this.profile = profile;
-                            });
+            this.loginInfoService.getLoginInfo().then(user => {
+                this.user = user;
+
+                this.business
+                    .getUser(id)
+                    .then(p => {
+                        p.subscribe(profile => {
+                            this.isUsersProfile = this.profile.id === this.user.id;
                         });
-                    this.business.getGamesByUser(id, user.id).then(g => this.games = g);
+                    });
+                this.business.getGamesByUser(id, user.id).then(g => this.games = g);
 
-                    let result = this.business
-                        .getPlaytestByUserId(id)
-                        .then(p => {
-                            p.subscribe(playtest => {
-                                if (playtest) {
-                                    this.playtest = playtest;
-                                    this.business.getUserFeedbackForGame(this.user.id, playtest.gameId).then(f => {
-                                        f.subscribe(feedback => {
-                                            if (feedback) {
-                                                this.feedbackId = feedback.id;
-                                            }
-                                        });
+                this.business
+                    .getPlaytestByUserId(id)
+                    .then(p => {
+                        p.subscribe(playtest => {
+                            if (playtest) {
+                                this.playtest = playtest;
+                                this.business.getUserFeedbackForGame(this.user.id, playtest.gameId).then(f => {
+                                    f.subscribe(feedback => {
+                                        if (feedback) {
+                                            this.feedbackId = feedback.id;
+                                        }
                                     });
-                                }
-                            });
+                                });
+                            }
                         });
-                    return result;
-                }).subscribe(g => { });
+                    });
+            });
         });
     }
 }

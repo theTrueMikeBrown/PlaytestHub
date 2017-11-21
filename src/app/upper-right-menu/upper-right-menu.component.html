@@ -1,0 +1,112 @@
+﻿<div class="upperRight">
+    <span class="action-button">
+        <span class="glyphicon glyphicon-menu-hamburger"></span>
+    </span>
+    <ul class="upperRight-buttons">
+        <li class="upperRight-buttons__item" *ngIf="editProfile">
+            <a routerLink="/editUser" class="upperRight-buttons__link" data-tooltip="Edit profile">
+                <span class="fa fa-edit"></span>
+            </a>
+        </li>
+
+        <li *ngIf="editProfile">
+            <hr />
+        </li>
+
+        <li class="upperRight-buttons__item" *ngIf="playtesting && user">
+            <a routerLink="/feedback/{{feedbackId}}" class="upperRight-buttons__link" data-tooltip="Leave Feedback">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </a>
+        </li>
+        <li class="upperRight-buttons__item" *ngIf="canModerate && user">
+            <a routerLink="/feedback/{{moderateId}}" (click)="moderate()" class="upperRight-buttons__link" data-tooltip="Moderate Feedback">
+                <span class="glyphicon glyphicon-thumbs-up"></span>
+            </a>
+        </li>
+
+        <li *ngIf="playtesting || canModerate">
+            <hr />
+        </li>
+
+        <li *ngIf="user && game && user.id !== game.owner && game.priority >= 0 && !alreadyPlaytesting && !alreadyPlaytestedVersion && game.active" class="upperRight-buttons__item">
+            <a (click)="playtestGameClicked()" class="upperRight-buttons__link" data-tooltip="Playtest this game">
+                <span [class.fa-spin]="this.playtestingWait" class="glyphicon glyphicon-ok"></span>
+            </a>
+        </li>
+        <li class="upperRight-buttons__item" *ngIf="user && game && alreadyPlaytesting">
+            <a routerLink="/feedback/{{feedbackId}}" class="upperRight-buttons__link" data-tooltip="Leave Feedback for this game">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </a>
+        </li>
+        <li *ngIf="user && game && user.id === game.owner" class="upperRight-buttons__item">
+            <a routerLink="/games/{{game.id}}/edit" class="upperRight-buttons__link" data-tooltip="Edit this game">
+                <span class="fa fa-edit"></span>
+            </a>
+        </li>
+        <li *ngIf="user && game && user.id === game.owner && game.active" class="upperRight-buttons__item">
+            <a (click)="deleteGameClicked()" class="upperRight-buttons__link" data-tooltip="Delete this game">
+                <span [class.fa-spin]="this.deletingWait" class="glyphicon glyphicon-trash"></span>
+            </a>
+        </li>
+        <li *ngIf="user && game && user.id === game.owner && !game.active" class="upperRight-buttons__item">
+            <a (click)="undeleteGameClicked()" class="upperRight-buttons__link" data-tooltip="Undelete this game">
+                <span [class.fa-spin]="this.undeletingWait" class="glyphicon glyphicon-repeat"></span>
+            </a>
+        </li>
+        <li *ngIf="feedbackExists && game" class="upperRight-buttons__item">
+            <a routerLink="/feedbackList/{{game.id}}" class="upperRight-buttons__link" data-tooltip="View Feedback for this game">
+                <span class="glyphicon glyphicon-eye-open"></span>
+            </a>
+        </li>
+        <li *ngIf="game" class="upperRight-buttons__item">
+            <a routerLink="/user/{{game.owner}}/profile" class="upperRight-buttons__link" data-tooltip="View this game's owner's profile">
+                <span class="fa fa-id-card-o"></span>
+            </a>
+        </li>
+        <li class="upperRight-buttons__item" *ngIf="user && game && user.id === game.owner">
+            <a routerLink="/applyPoints/{{game.id}}" class="upperRight-buttons__link" data-tooltip="Apply points to this game">
+                <span class="glyphicon glyphicon-star"></span>
+            </a>
+        </li>
+
+        <li *ngIf="gameDetail">
+            <hr />
+        </li>
+
+        <li class="upperRight-buttons__item" *ngIf="user && !gameDetail && !addGame">
+            <a routerLink="/addgame" class="upperRight-buttons__link" data-tooltip="Add new game">
+                <span class="glyphicon glyphicon-plus"></span>
+            </a>
+        </li>
+        <li class="upperRight-buttons__item" *ngIf="!user && !gameDetail">
+            <a class="upperRight-buttons__link inactive" data-tooltip="Add new game (requires sign in)">
+                <span class="glyphicon glyphicon-plus"></span>
+            </a>
+        </li>
+        <li class="upperRight-buttons__item" *ngIf="user && !gameDetail && !editProfile">
+            <a routerLink="/user/{{user.id}}/profile" class="upperRight-buttons__link" data-tooltip="View profile">
+                <span class="fa fa-id-card-o"></span>
+            </a>
+        </li>
+        <li class="upperRight-buttons__item" *ngIf="user && !viewMessages">
+            <a routerLink="/messages" class="upperRight-buttons__link" data-tooltip="View messages">
+                <span class="fa fa-envelope-o"></span>
+            </a>
+        </li>
+        <li class="upperRight-buttons__item" *ngIf="user && !game && !applyPoints">
+            <a routerLink="/applyPoints" class="upperRight-buttons__link" data-tooltip="Apply points">
+                <span class="glyphicon glyphicon-star"></span>
+            </a>
+        </li>
+        <li class="upperRight-buttons__item" *ngIf="!user">
+            <a class="upperRight-buttons__link" routerLink="/signIn" data-tooltip="Log In or Create Account">
+                <span class="glyphicon glyphicon-log-in"></span>
+            </a>
+        </li>
+        <li class="upperRight-buttons__item" *ngIf="user">
+            <a (click)="logout()" class="upperRight-buttons__link" data-tooltip="Log out">
+                <span class="glyphicon glyphicon-log-out"></span>
+            </a>
+        </li>
+    </ul>
+</div>

@@ -91,7 +91,7 @@ export class LeaveFeedbackComponent implements OnInit {
                         this.pendingApproval = feedback.submitted && !feedback.approved;
                         this.loginInfoService.getLoginInfo().then(user => {
                             this.user = user;
-                            this.reviewing = feedback.userId !== this.user.id && this.pendingApproval && this.user.isModerator;
+                            this.reviewing = ((feedback.userId !== this.user.id && this.user.isModerator) || (this.user.isAdmin)) && this.pendingApproval;
                             this.editing = feedback.userId === this.user.id && !feedback.submitted && !feedback.approved;
                             this.business.getGame(feedback.gameId).then(g => {
                                 g.subscribe(game => {

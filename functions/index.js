@@ -283,10 +283,12 @@ exports.addPlaytest = functions.https.onRequest((req, res) => {
             var game = values[1].data();
 
             if (usnap.size !== 1) {
+                console.log("addPlaytest = " + usnap.length + " users with that uid!");
                 res.status(406).send(usnap.length + " users with that uid!");
                 return;
             }
             if (game.priority < 0) {
+                console.log("addPlaytest = " + JSON.stringify(game) + " not enough priority!");
                 res.status(406).send("Not enough priority!");
                 return;
             }
@@ -298,7 +300,8 @@ exports.addPlaytest = functions.https.onRequest((req, res) => {
                     //make sure that the old playtest (if one exists) is propery dealt with
                     if (s.exists) {
                         var playTest = s.data();
-                        if (playTest.gameId !== gameId) {
+                        if (playTest.gameId === gameId) {
+                            console.log("addPlaytest = " + JSON.stringify(playTest) + " already playtesting!");
                             res.status(406).send("Already playtesting that game.");
                             return;
                         }
@@ -674,7 +677,7 @@ exports.markMessageRead = functions.https.onRequest((req, res) => {
                         res.status(406).send(usnap.size + " users with that uid!");
                     }
                 });
-        } catch (exception e) {
+        } catch (e) {
             res.status(500).send("Exception was thrown: " + e);
         }
     });

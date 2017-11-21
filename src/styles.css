@@ -67,6 +67,7 @@ body {
     width: 56px;
     right: 5px;
     top: 15px;
+    z-index: 999;
 }
 
 .lowerRightBottom {
@@ -296,30 +297,6 @@ hr {
     margin-top: 1em;
 }
 
-#feedbackForm ul {
-    text-align: left;
-    margin: .5em 0;
-    padding-left: .5em;
-}
-
-#feedbackForm ul {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-#feedbackForm li {
-    margin: .5em;
-    display: block;
-}
-
-#feedbackForm textarea {
-    width: 100%;
-}
-
-#feedbackForm input {
-    width: 100%;
-}
-
 .tooltipanchor {
     position: relative;
     display: inline-block;
@@ -438,4 +415,9 @@ hr {
 
 .tldr h1, .tldr h2, .tldr h3 {
     text-align: center;
+}
+
+.explanitory {
+    color: #777;
+    font-style: italic;
 }

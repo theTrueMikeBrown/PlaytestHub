@@ -35,6 +35,7 @@ import { FunnelPageComponent } from './funnel-page/funnel-page.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { ModalComponent } from './modal/modal.component';
 import { AboutPageComponent } from './about-page/about-page.component';
+import { UpperRightMenuComponent } from './upper-right-menu/upper-right-menu.component';
 
 const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
     providers: [
@@ -66,7 +67,8 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
         FunnelPageComponent,
         SignInComponent,
         ModalComponent,
-        AboutPageComponent
+        AboutPageComponent,
+        UpperRightMenuComponent
     ],
     imports: [
         BrowserModule,

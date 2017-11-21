@@ -37,7 +37,7 @@ export class GameDetailComponent implements OnInit {
         private loginInfoService: LoginInfoService) {
     }
 
-    playTestGame(): void {
+    playtestGame(): void {
         //TODO: change this confirm into a styled thing.
         var r = !this.alreadyPlaytestingSomethingElse || confirm("You are already playtesting a different game! Playtest this game instead?");
         if (r == true) {
@@ -114,7 +114,7 @@ export class GameDetailComponent implements OnInit {
                     });
 
                 });
-                this.business.getFeedbackForGame(game.id).then(f => f.subscribe(feedbacks => {
+                this.business.getFeedbackForGame(this.game.id).then(f => f.subscribe(feedbacks => {
                     this.feedbackExists = feedbacks.length > 0;
                 }));
                 this.business.getUser(game.owner).then(o => o.subscribe(owner => {

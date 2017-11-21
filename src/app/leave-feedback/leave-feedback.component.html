@@ -1,109 +1,111 @@
 ﻿<div id="feedbackForm">
-  <h3><span *ngIf="reviewing">Review </span>Feedback</h3>
+    <h3><span *ngIf="reviewing">Review </span>Feedback</h3>
     <h4 *ngIf="game">for {{game.name}} <span class="small">v{{feedback.version}}</span></h4>
     <h5 *ngIf="leaver">by {{leaver.displayName}}</h5>
-  <h3 *ngIf="pendingApproval">Pending Approval</h3>
+    <h3 *ngIf="pendingApproval">Pending Approval</h3>
 
-  <div class="upperLeft">
-    <a class="action-button" routerLink="/games" data-tooltip="Home">
-      <span class="glyphicon glyphicon-home"></span>
-    </a>
-  </div>
-  <div *ngIf="feedback" class="left">
-    <fieldset>
-      <legend>Feelings</legend>
-      <div class="form-group"><label for="f0">What was the most fun part of the game?</label><textarea id="f0" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.feelings[0]"></textarea></div>
-      <div class="form-group"><label for="f1">What was the worst part of the game?</label><textarea id="f1" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.feelings[1]"></textarea></div>
-      <div class="form-group"><label for="f2">Would you want to play the game again?</label><select id="f2" class="form-control form-select" [disabled]="!editing" [(ngModel)]="feedback.feelings[2]"><option>Yes</option><option>No</option></select></div>
+    <div class="upperLeft">
+        <a class="action-button" routerLink="/games" data-tooltip="Home">
+            <span class="glyphicon glyphicon-home"></span>
+        </a>
+    </div>
+    <menu></menu>
 
-      <legend>Categorization</legend>
-      <div class="form-group"><label for="c0">What category would you put the game in?</label><input id="c0" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.categorization[0]" /></div>
-      <div class="form-group"><label for="c1">How do you feel toward that category of game?</label><select id="c1" class="form-control form-select" [disabled]="!editing" [(ngModel)]="feedback.categorization[1]"><option>I like it</option><option>I am ambivalent toward it</option><option>I dislike it</option></select></div>
-      <div class="form-group"><label for="c2">List some similar games you have played.</label><textarea id="c2" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.categorization[2]"></textarea></div>
+    <div *ngIf="feedback" class="left">
+        <fieldset>
+            <legend>Feelings</legend>
+            <div class="form-group"><label for="f0">What was the most fun part of the game?</label><textarea id="f0" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.feelings[0]"></textarea></div>
+            <div class="form-group"><label for="f1">What was the worst part of the game?</label><textarea id="f1" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.feelings[1]"></textarea></div>
+            <div class="form-group"><label for="f2">Would you want to play the game again?</label><select id="f2" class="form-control form-select" [disabled]="!editing" [(ngModel)]="feedback.feelings[2]"><option>Yes</option><option>No</option></select></div>
 
-      <legend>General</legend>
-      <div class="form-group"><label for="g0">How many players did you play with?</label><input id="g0" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.general[0]" type="number" min="0" /></div>
-      <div class="form-group"><label for="g1">How much would this game cost in a store, and would you buy it?</label><textarea id="g1" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.general[1]"></textarea></div>
+            <legend>Categorization</legend>
+            <div class="form-group"><label for="c0">What category would you put the game in?</label><input id="c0" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.categorization[0]" /></div>
+            <div class="form-group"><label for="c1">How do you feel toward that category of game?</label><select id="c1" class="form-control form-select" [disabled]="!editing" [(ngModel)]="feedback.categorization[1]"><option>I like it</option><option>I am ambivalent toward it</option><option>I dislike it</option></select></div>
+            <div class="form-group"><label for="c2">List some similar games you have played.</label><textarea id="c2" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.categorization[2]"></textarea></div>
 
-      <legend>Length</legend>
-      <div class="form-group"><label for="l0">How long did setup take?</label><input id="l0" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.length[0]" /></div>
-      <div class="form-group"><label for="l1">How long did the game take?</label><input id="l1" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.length[1]" /></div>
-      <div class="form-group"><label for="l2">Was the game the right length? If no, explain.</label><textarea id="l2" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.length[2]"></textarea></div>
+            <legend>General</legend>
+            <div class="form-group"><label for="g0">How many players did you play with?</label><input id="g0" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.general[0]" type="number" min="0" /></div>
+            <div class="form-group"><label for="g1">How much would this game cost in a store, and would you buy it?</label><textarea id="g1" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.general[1]"></textarea></div>
 
-      <legend>Art/Theme</legend>
-      <div class="form-group"><label for="a0">Discuss the art (What worked, what didn't and what improvements would you suggest?)</label><textarea id="a0" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.art[0]"></textarea></div>
-      <div class="form-group"><label for="a1">Did the mechanics match the theme? If no, explain.</label><textarea id="a1" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.art[1]"></textarea></div>
+            <legend>Length</legend>
+            <div class="form-group"><label for="l0">How long did setup take?</label><input id="l0" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.length[0]" /></div>
+            <div class="form-group"><label for="l1">How long did the game take?</label><input id="l1" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.length[1]" /></div>
+            <div class="form-group"><label for="l2">Was the game the right length? If no, explain.</label><textarea id="l2" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.length[2]"></textarea></div>
 
-      <legend>Rules</legend>
-      <div class="form-group"><label for="r0">Did the rules make sense? If no, which parts were confusing?</label><textarea id="r0" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.rules[0]"></textarea></div>
-      <div class="form-group"><label for="r1">Did you have to reference the rule document during the game? If so, what rules did you reference?</label><textarea id="r1" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.rules[1]"></textarea></div>
-      <div class="form-group"><label for="r2">Are there any changes that you would make to the rule document?</label><textarea id="r2" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.rules[2]"></textarea></div>
+            <legend>Art/Theme</legend>
+            <div class="form-group"><label for="a0">Discuss the art (What worked, what didn't and what improvements would you suggest?)</label><textarea id="a0" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.art[0]"></textarea></div>
+            <div class="form-group"><label for="a1">Did the mechanics match the theme? If no, explain.</label><textarea id="a1" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.art[1]"></textarea></div>
 
-      <legend>Mechanics</legend>
-      <div class="form-group"><label for="m0">Describe the game's balance.</label><textarea id="m0" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.mechanics[0]"></textarea></div>
-      <div class="form-group"><label for="m1">What was the best or worst mechanic in the game?</label><textarea id="m1" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.mechanics[1]"></textarea></div>
-      <div class="form-group"><label for="m2">Could you imagine more than one strategy to win this game? If yes, list a few.</label><textarea id="m2" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.mechanics[2]"></textarea></div>
+            <legend>Rules</legend>
+            <div class="form-group"><label for="r0">Did the rules make sense? If no, which parts were confusing?</label><textarea id="r0" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.rules[0]"></textarea></div>
+            <div class="form-group"><label for="r1">Did you have to reference the rule document during the game? If so, what rules did you reference?</label><textarea id="r1" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.rules[1]"></textarea></div>
+            <div class="form-group"><label for="r2">Are there any changes that you would make to the rule document?</label><textarea id="r2" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.rules[2]"></textarea></div>
 
-      <legend>Final Thoughts</legend>
-      <div class="form-group">
-        <label for="">
-          Overall raiting <span class="tooltipanchor">
-            (1-10)
-            <span class="tooltiptext">
-              <b>10</b> - Awesome. Always and forever want to play it.<br />
-              <b>9</b> - Excellent. Always want to play it.<br />
-              <b>8</b> - Very good. I like it. I'd suggest it and not turn it down.<br />
-              <b>7</b> - Good, usually willing to play.<br />
-              <b>6</b> - Ok, a little fun, I'd play if in the right mood.<br />
-              <b>5</b> - Average, slightly boring, take it or leave it.<br />
-              <b>4</b> - Not good. Dislike it. Could be talked into it maybe.<br />
-              <b>3</b> - Probably would never play this again. Bad.<br />
-              <b>2</b> - Extremely annoying. Won't play this ever again.<br />
-              <b>1</b> - Not even a game. I will never play it. Clearly broken.
+            <legend>Mechanics</legend>
+            <div class="form-group"><label for="m0">Describe the game's balance.</label><textarea id="m0" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.mechanics[0]"></textarea></div>
+            <div class="form-group"><label for="m1">What was the best or worst mechanic in the game?</label><textarea id="m1" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.mechanics[1]"></textarea></div>
+            <div class="form-group"><label for="m2">Could you imagine more than one strategy to win this game? If yes, list a few.</label><textarea id="m2" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.mechanics[2]"></textarea></div>
+
+            <legend>Final Thoughts</legend>
+            <div class="form-group">
+                <label for="">
+                    Overall raiting <span class="tooltipanchor">
+                        (1-10)
+                        <span class="tooltiptext">
+                            <b>10</b> - Awesome. Always and forever want to play it.<br />
+                            <b>9</b> - Excellent. Always want to play it.<br />
+                            <b>8</b> - Very good. I like it. I'd suggest it and not turn it down.<br />
+                            <b>7</b> - Good, usually willing to play.<br />
+                            <b>6</b> - Ok, a little fun, I'd play if in the right mood.<br />
+                            <b>5</b> - Average, slightly boring, take it or leave it.<br />
+                            <b>4</b> - Not good. Dislike it. Could be talked into it maybe.<br />
+                            <b>3</b> - Probably would never play this again. Bad.<br />
+                            <b>2</b> - Extremely annoying. Won't play this ever again.<br />
+                            <b>1</b> - Not even a game. I will never play it. Clearly broken.
+                        </span>
+                    </span>
+                </label>
+                <select id="e0" class="form-control form-select" [disabled]="!editing" [(ngModel)]="feedback.final[0]"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select>
+            </div>
+            <div class="form-group"><label for="e1">What one change would you make to the game?</label><textarea id="e1" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.final[1]"></textarea></div>
+            <div class="form-group"><label for="e2">Any extra feedback that you would like to give?</label><textarea id="e2" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.final[2]"></textarea></div>
+            <div class="form-group" *ngIf="!redact"><label for="e2">May the designer contact you regarding this feedback? if so, enter your contact info.</label><textarea id="e2" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.final[3]"></textarea></div>
+        </fieldset>
+    </div>
+
+    <div *ngIf="editing">
+        <div class="lowerRightBottom">
+            <a class="action-button" (click)="saveFeedback()" data-tooltip="Save Feedback">
+                <span [class.fa-spin]="this.saving" class="fa fa-save"></span>
+            </a>
+        </div>
+        <div class="lowerRightBottom">
+            <a class="action-button" (click)="submitFeedback()" data-tooltip="Submit Feedback">
+                <span [class.fa-spin]="this.submitting" class="glyphicon glyphicon-send"></span>
+            </a>
+        </div>
+    </div>
+
+    <div *ngIf="reviewing || (owner && pendingApproval)">
+        <div *ngIf="reviewing">
+            <legend>Reason for rejecting feedback (leave blank if approving):</legend>
+            <textarea [(ngModel)]="rejectReason"></textarea>
+        </div>
+
+        <div class="lowerRightBottom">
+            <a class="action-button" (click)="approveFeedback()" data-tooltip="Approve Feedback">
+                <span [class.fa-spin]="this.approving" class="glyphicon glyphicon-ok"></span>
+            </a>
+        </div>
+        <div class="lowerRightBottom" *ngIf="reviewing">
+            <a class="action-button" (click)="rejectFeedback()" data-tooltip="Reject Feedback">
+                <span [class.fa-spin]="this.rejecting" class="glyphicon glyphicon-remove"></span>
+            </a>
+        </div>
+        <div class="lowerRightBottom" *ngIf="!reviewing">
+            <span class="action-button inactive" data-tooltip="Reject Feedback (Requires Moderator)">
+                <span class="glyphicon glyphicon-remove"></span>
             </span>
-          </span>
-        </label>
-        <select id="e0" class="form-control form-select" [disabled]="!editing" [(ngModel)]="feedback.final[0]"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select>
-      </div>
-      <div class="form-group"><label for="e1">What one change would you make to the game?</label><textarea id="e1" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.final[1]"></textarea></div>
-      <div class="form-group"><label for="e2">Any extra feedback that you would like to give?</label><textarea id="e2" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.final[2]"></textarea></div>
-      <div class="form-group" *ngIf="!redact"><label for="e2">May the designer contact you regarding this feedback? if so, enter your contact info.</label><textarea id="e2" class="form-control" [readonly]="!editing" [(ngModel)]="feedback.final[3]"></textarea></div>
-    </fieldset>
-  </div>
-
-  <div *ngIf="editing">
-    <div class="lowerRightBottom">
-      <a class="action-button" (click)="saveFeedback()" data-tooltip="Save Feedback">
-        <span [class.fa-spin]="this.saving" class="fa fa-save"></span>
-      </a>
+        </div>
     </div>
-    <div class="lowerRightBottom">
-      <a class="action-button" (click)="submitFeedback()" data-tooltip="Submit Feedback">
-        <span [class.fa-spin]="this.submitting" class="glyphicon glyphicon-send"></span>
-      </a>
-    </div>
-  </div>
-
-  <div *ngIf="reviewing || (owner && pendingApproval)">
-    <div *ngIf="reviewing">
-      <legend>Reason for rejecting feedback (leave blank if approving):</legend>
-      <textarea [(ngModel)]="rejectReason"></textarea>
-    </div>
-
-    <div class="lowerRightBottom">
-      <a class="action-button" (click)="approveFeedback()" data-tooltip="Approve Feedback">
-        <span [class.fa-spin]="this.approving" class="glyphicon glyphicon-ok"></span>
-      </a>
-    </div>
-    <div class="lowerRightBottom" *ngIf="reviewing">
-      <a class="action-button" (click)="rejectFeedback()" data-tooltip="Reject Feedback">
-        <span [class.fa-spin]="this.rejecting" class="glyphicon glyphicon-remove"></span>
-      </a>
-    </div>
-    <div class="lowerRightBottom" *ngIf="!reviewing">
-      <span class="action-button inactive" data-tooltip="Reject Feedback (Requires Moderator)">
-        <span class="glyphicon glyphicon-remove"></span>
-      </span>
-    </div>
-  </div>
 </div>

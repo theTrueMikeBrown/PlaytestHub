@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -80,13 +80,5 @@ export class GamesListComponent {
 
     gotoDetail(id: number): void {
         this.router.navigate(['/detail', id]);
-    }
-
-    moderate(): void {
-        this.router.navigate(['/feedback', this.moderateId]);
-    }
-
-    logout(): void {
-        this.loginInfoService.logout();
     }
 }

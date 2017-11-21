@@ -1,41 +1,43 @@
 ﻿<div id="list-component">
-  <div class="upperLeft">
-    <a class="action-button" routerLink="/games" data-tooltip="Home">
-      <span class="glyphicon glyphicon-home"></span>
-    </a>
-  </div>
-
-  <app-modal #modal>
-    <div class="app-modal-body">
-      <div *ngIf="message" class="messageDiv">
-        <h4 *ngIf="message">{{message.subject}}</h4>
-        <h5>
-          From:
-          <span *ngIf="!message.sender">{{senderName}}</span>
-          <a *ngIf="message.sender" routerLink="/user/{{message.sender}}/profile">{{senderName}}</a>
-        </h5>
-        <h5>Date: {{message.sentDate | date:'shortDate' }}</h5>
-        <div class="messageBox line-breaker" [innerHTML]="message.text"></div>
-      </div>
+    <div class="upperLeft">
+        <a class="action-button" routerLink="/games" data-tooltip="Home">
+            <span class="glyphicon glyphicon-home"></span>
+        </a>
     </div>
-    <div class="app-modal-footer">
-      <button type="button" class="btn btn-default" (click)="modal.hide()">Close</button>
-      <button type="button" class="btn btn-primary" (click)="delete()">Delete</button>
-    </div>
-  </app-modal>
+    <menu viewMessages="true"></menu>
+    <app-modal #modal>
+        <div class="app-modal-body">
+            <div *ngIf="message" class="messageDiv">
+                <h4 *ngIf="message">{{message.subject}}</h4>
+                <h5>
+                    From:
+                    <span *ngIf="!message.sender">{{senderName}}</span>
+                    <a *ngIf="message.sender" routerLink="/user/{{message.sender}}/profile">{{senderName}}</a>
+                </h5>
+                <h5>Date: {{message.sentDate | date:'shortDate' }}</h5>
+                <div class="messageBox line-breaker" [innerHTML]="message.text"></div>
+            </div>
+        </div>
+        <div class="app-modal-footer">
+            <button type="button" class="btn btn-default" (click)="modal.hide()">Close</button>
+            <button type="button" class="btn btn-primary" (click)="delete()">Delete</button>
+        </div>
+    </app-modal>
 
-  <div>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Sender</th>
-          <th>Subject</th>
-          <th>Date</th>
-        </tr>
-      </thead>
-      <tbody><tr *ngFor="let m of messages | async"
-            (click)="openMessage(m)" [ngClass]="['search-result', (message && m.id == message.id ? 'selected' : '')]"
-            message-stats [message]="m"></tr></tbody>
-    </table>
-  </div>
+    <div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Sender</th>
+                    <th>Subject</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let m of messages | async"
+                    (click)="openMessage(m)" [ngClass]="['search-result', (message && m.id == message.id ? 'selected' : '')]"
+                    message-stats [message]="m"></tr>
+            </tbody>
+        </table>
+    </div>
 </div>

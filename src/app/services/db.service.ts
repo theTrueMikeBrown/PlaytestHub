@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import "rxjs/add/operator/map";
@@ -164,7 +164,7 @@ export class DbService {
                             let returnFeedbacks: Feedback[] = [];
                             for (let i: number = 0; i < feedbacks.length; i++) {
                                 (feedback => {
-                                    if (feedback.userId != userId) {
+                                    if (feedback.userId != userId || user.isAdmin) {
                                         returnFeedbacks.push(feedback);
                                     }
                                 })(feedbacks[i]);
@@ -255,6 +255,7 @@ export class DbService {
     }
 
     saveUser(user: User, successCallback?: (r: Response) => void) {
+        debugger;
         this.http.post(this.saveUserUrl, user)
             .toPromise()
             .then(response => {

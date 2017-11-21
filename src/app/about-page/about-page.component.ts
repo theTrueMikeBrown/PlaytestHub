@@ -1,15 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
+
+import { LoginInfoService } from '../services/loginInfo.service';
+import { User } from '../types/user';
 
 @Component({
-  selector: 'app-about-page',
-  templateUrl: './about-page.component.html',
-  styleUrls: ['./about-page.component.css']
+    selector: 'app-about-page',
+    templateUrl: './about-page.component.html',
+    styleUrls: ['./about-page.component.css']
 })
 export class AboutPageComponent implements OnInit {
+    user: User;
 
-  constructor() { }
+    constructor(private loginInfoService: LoginInfoService) {
+    }
 
-  ngOnInit() {
-  }
-
+    ngOnInit() {
+        this.loginInfoService.getLoginInfo().then(user => {
+            this.user = user;
+        });
+    }
 }

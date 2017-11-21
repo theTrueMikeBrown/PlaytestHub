@@ -1,90 +1,51 @@
 ﻿<div class="details" *ngIf="game">
-  <div class="upperLeft">
-    <a class="action-button" routerLink="/games" data-tooltip="Home">
-      <span class="glyphicon glyphicon-home"></span>
-    </a>
-  </div>
+    <div class="upperLeft">
+        <a class="action-button" routerLink="/games" data-tooltip="Home">
+            <span class="glyphicon glyphicon-home"></span>
+        </a>
+    </div>
 
-  <div class="upperRight">
-    <span class="action-button">
-      <span class="glyphicon glyphicon-menu-hamburger"></span>
-    </span>
-    <ul class="upperRight-buttons">
-      <li class="upperRight-buttons__item" *ngIf="!user">
-        <a class="upperRight-buttons__link" routerLink="/signIn" data-tooltip="Sign In">
-          <span class="glyphicon glyphicon-log-in"></span>
-        </a>
-      </li>
-      <li *ngIf="user && user.id !== game.owner && game.priority >= 0 && !alreadyPlaytesting && !alreadyPlaytestedVersion && game.active" class="upperRight-buttons__item">
-        <a (click)="playTestGame()" class="upperRight-buttons__link" data-tooltip="Playtest">
-          <span [class.fa-spin]="this.playtesting" class="glyphicon glyphicon-ok"></span>
-        </a>
-      </li>
-      <li class="upperRight-buttons__item" *ngIf="user && alreadyPlaytesting">
-        <a routerLink="/feedback/{{feedbackId}}" class="upperRight-buttons__link" data-tooltip="Leave Feedback">
-          <span class="glyphicon glyphicon-pencil"></span>
-        </a>
-      </li>
-      <li *ngIf="user && user.id === game.owner" class="upperRight-buttons__item">
-        <a routerLink="/games/{{game.id}}/edit" class="upperRight-buttons__link" data-tooltip="Edit">
-          <span class="fa fa-edit"></span>
-        </a>
-      </li>
-      <li class="upperRight-buttons__item" *ngIf="user && user.id === game.owner">
-        <a routerLink="/applyPoints/{{game.id}}" class="upperRight-buttons__link" data-tooltip="Add or remove Points">
-          <span class="glyphicon glyphicon-star"></span>
-        </a>
-      </li>
-      <li *ngIf="user && user.id === game.owner && game.active" class="upperRight-buttons__item">
-        <a (click)="deleteGame()" class="upperRight-buttons__link" data-tooltip="Delete">
-          <span [class.fa-spin]="this.deleting" class="glyphicon glyphicon-trash"></span>
-        </a>
-      </li>
-      <li *ngIf="user && user.id === game.owner && !game.active" class="upperRight-buttons__item">
-        <a (click)="undeleteGame()" class="upperRight-buttons__link" data-tooltip="Undelete">
-          <span [class.fa-spin]="this.undeleting" class="glyphicon glyphicon-repeat"></span>
-        </a>
-      </li>
-      <li *ngIf="feedbackExists" class="upperRight-buttons__item">
-        <a routerLink="/feedbackList/{{game.id}}" class="upperRight-buttons__link" data-tooltip="View Feedback">
-          <span class="glyphicon glyphicon-eye-open"></span>
-        </a>
-      </li>
-      <li class="upperRight-buttons__item">
-        <a routerLink="/user/{{game.owner}}/profile" class="upperRight-buttons__link" data-tooltip="View owner's profile">
-          <span class="glyphicon glyphicon-user"></span>
-        </a>
-      </li>
-    </ul>
-  </div>
-
-  <h3>{{game.name}}</h3>
-  <div>
-    <span class="info">{{game.minPlayerCount}}-{{game.maxPlayerCount}} players, {{game.minTimeInMinutes}}-{{game.maxTimeInMinutes}} minutes</span>
-  </div>
-  <h4 *ngIf="owner">
-    by:
-    <span class="glyphicon glyphicon-user"></span>
-    <a routerLink="/user/{{game.owner}}/profile">{{owner.displayName}}</a>
-  </h4>
-  <div class="left">
+    <menu [game]="game" 
+          [alreadyPlaytesting]="alreadyPlaytesting"
+          [alreadyPlaytestedVersion]="alreadyPlaytestedVersion"
+          [feedbackExists]="feedbackExists"
+          [feedbackId]="feedbackId"
+          (playtestGame)="playtestGame()"
+          [playtestingWait]="playtesting"
+          (deleteGame)="deleteGame()"
+          [deletingWait]="deleting"
+          (undeleteGame)="undeleteGame()"
+          [undeletingWait]="undeleting"
+          ></menu>
+    <h3>{{game.name}}</h3>
     <div>
-      <h4>Description:</h4>
-      <div class="detailBox line-breaker">{{game.description}}</div>
+        <span class="info">{{game.minPlayerCount}}-{{game.maxPlayerCount}} players, {{game.minTimeInMinutes}}-{{game.maxTimeInMinutes}} minutes</span>
     </div>
-    <div>
-      <h4>Components:</h4>
-      <div class="detailBox line-breaker">{{game.components}}</div>
+    <h4 *ngIf="owner">
+        by:
+        <span class="glyphicon glyphicon-user"></span>
+        <a routerLink="/user/{{game.owner}}/profile">{{owner.displayName}}</a>
+    </h4>
+    <div class="left">
+        <div>
+            <h4>Description:</h4>
+            <div class="detailBox line-breaker">{{game.description}}</div>
+        </div>
+        <div>
+            <h4>Components:</h4>
+            <div class="detailBox line-breaker">{{game.components}}</div>
+        </div>
+        <div>
+            <h4>Files:</h4>
+            <div class="detailBox">
+                <div *ngIf="game.rulesUrl && game.rulesUrl !== 'http://undefined'" class="info"><a href="{{game.rulesUrl}}" target="_blank">Rules file</a></div>
+                <div *ngIf="game.pnpUrl && game.pnpUrl !== 'http://undefined'" class="info"><a href="{{game.pnpUrl}}" target="_blank">PNP file</a></div>
+                <div *ngIf="!game.pnpUrl || game.pnpUrl === 'http://undefined' && !game.rulesUrl || game.rulesUrl === 'http://undefined'"
+                     class="explanitory">none yet</div>
+            </div>
+        </div>
     </div>
-    <div>
-      <h4>Files:</h4>
-      <div class="detailBox">
-        <div class="info"><a href="{{game.rulesUrl}}" target="_blank">Rules file</a></div>
-        <div class="info"><a href="{{game.pnpUrl}}" target="_blank">PNP file</a></div>
-      </div>
-    </div>
-  </div>
-  <div><h4>Version: {{game.version}}</h4></div>
-  <div><h4>Priority: {{game.priority}}</h4></div>
-  <div><h4>Active: {{game.active}}</h4></div>
+    <div><h4>Version: {{game.version}}</h4></div>
+    <div><h4>Priority: {{game.priority}}</h4></div>
+    <div><h4>Active: {{game.active}}</h4></div>
 </div>

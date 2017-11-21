@@ -1,5 +1,4 @@
 ﻿import { Component, Input, OnInit } from '@angular/core';
-
 import { BusinessService } from '../services/business.service';
 
 import { Feedback } from '../types/feedback';
