@@ -1,40 +1,40 @@
 ﻿<div class="upperLeft">
-  <a class="action-button" routerLink="/games" data-tooltip="Home">
-    <span class="glyphicon glyphicon-home"></span>
-  </a>
+    <a class="action-button" routerLink="/user/{{profile.id}}/profile" data-tooltip="Return to Profile">
+        <span class="fa fa-id-card-o"></span>
+    </a>
 </div>
 <menu></menu>
 <div *ngIf="message" [ngClass]="messageActive">{{message | async}}</div>
 
 <div *ngIf="profile">
-  <fieldset class="left">
-    <legend>User Info</legend>
-    <div class="form-group"><label for="displayName">Display Name:</label><input id="displayName" class="form-control" type="text" [(ngModel)]="profile.displayName" (ngModelChange)="onChange($event)" /></div>
-    <div *ngIf="profile.isModerator" class="form-group"><label for="photoUrl">Photo URL:</label><input id="photoUrl" class="form-control" type="text" [(ngModel)]="profile.photoUrl" (ngModelChange)="onChange($event)" /></div>
-    <div class="form-group"><label for="personalInfo">Personal Info:</label><textarea id="personalInfo" class="form-control" [(ngModel)]="profile.personalInfo" (ngModelChange)="onChange($event)"></textarea></div>
+    <fieldset class="left">
+        <legend>User Info</legend>
+        <div class="form-group"><label for="displayName">Display Name:</label><input id="displayName" class="form-control" type="text" [(ngModel)]="profile.displayName" (ngModelChange)="onChange($event)" /></div>
+        <div *ngIf="profile.isModerator" class="form-group"><label for="photoUrl">Photo URL:</label><input id="photoUrl" class="form-control" type="text" [(ngModel)]="profile.photoUrl" (ngModelChange)="onChange($event)" /></div>
+        <div class="form-group"><label for="personalInfo">Personal Info:</label><textarea id="personalInfo" class="form-control" [(ngModel)]="profile.personalInfo" (ngModelChange)="onChange($event)"></textarea></div>
 
-    <div class="lowerRightBottom">
-      <a class="action-button" (click)="saveUser()" data-tooltip="Save Changes">
-        <span [class.fa-spin]="this.saving" class="fa fa-save"></span>
-      </a>
-    </div>
-  </fieldset>
+        <div class="form-group"><label for="displayName">Display Name:</label><input id="displayName" class="form-control" type="text" [(ngModel)]="profile.displayName" (ngModelChange)="onChange($event)" /></div>
+        <div class="lowerRightBottom">
+            <a class="action-button" (click)="saveUser()" data-tooltip="Save Changes">
+                <span [class.fa-spin]="this.saving" class="fa fa-save"></span>
+            </a>
+        </div>
+    </fieldset>
 
-  <hr />
-  <h3>{{profile.displayName}}'s profile</h3>
-  <div class="left">
-    <div id="userImage">
-      <img *ngIf="profile.photoUrl" src="{{profile.photoUrl}}" id="userImage" />
-      <div *ngIf="!profile.photoUrl">No user image</div>
+    <hr />
+    <h3>{{profile.displayName}}'s profile</h3>
+    <div class="left">
+        <div id="userImage">
+            <img *ngIf="profile.photoUrl" src="{{profile.photoUrl}}" id="userImage" />
+            <div *ngIf="!profile.photoUrl">No user image</div>
+        </div>
+        <h4>About {{profile.displayName}}</h4>
+        <div class="line-breaker">{{profile.personalInfo}}</div>
+        <div>{{profile.displayName}}'s points: {{profile.points}}</div>
+        <div *ngIf="playtest" class="section">
+            <span>Playtesting:</span>
+            <a href="/detail/{{playtest.gameId}}">{{playtest.gameName}}</a>,
+            <span> since {{playtest.started | date:'shortDate'}}</span>
+        </div>
     </div>
-    <h4>About {{profile.displayName}}</h4>
-    <div class="line-breaker">{{profile.personalInfo}}</div>
-    <div>{{profile.displayName}}'s points: {{profile.points}}</div>
-    <div *ngIf="playtest" class="section">
-      <span>Playtesting:</span>
-      <a href="/detail/{{playtest.gameId}}">{{playtest.gameName}}</a>,
-      <span> since {{playtest.started | date:'shortDate'}}</span>
-    </div>
-  </div>
-
 </div>

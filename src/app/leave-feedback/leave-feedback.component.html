@@ -1,16 +1,21 @@
-﻿<div id="feedbackForm">
+﻿<div class="upperLeft">
+    <a class="action-button" routerLink="/games" data-tooltip="Home">
+        <span class="glyphicon glyphicon-home"></span>
+    </a>
+</div>
+<menu></menu>
+
+<div id="feedbackForm">
     <h3><span *ngIf="reviewing">Review </span>Feedback</h3>
-    <h4 *ngIf="game">for {{game.name}} <span class="small">v{{feedback.version}}</span></h4>
+    <h4 *ngIf="game">
+        for
+        <a routerLink="/detail/{{game.id}}">
+            {{game.name}}
+        </a>
+        <span class="small">v{{feedback.version}}</span>
+    </h4>
     <h5 *ngIf="leaver">by {{leaver.displayName}}</h5>
     <h3 *ngIf="pendingApproval">Pending Approval</h3>
-
-    <div class="upperLeft">
-        <a class="action-button" routerLink="/games" data-tooltip="Home">
-            <span class="glyphicon glyphicon-home"></span>
-        </a>
-    </div>
-    <menu></menu>
-
     <div *ngIf="feedback" class="left">
         <fieldset>
             <legend>Feelings</legend>

@@ -3,9 +3,9 @@
         <span class="glyphicon glyphicon-home"></span>
     </a>
 </div>
-<div *ngIf="profile">
-    <menu [editProfile]="isUsersProfile"></menu>
+<menu [editProfile]="isUsersProfile"></menu>
 
+<div *ngIf="profile">
     <h3>{{profile.displayName}}'s profile</h3>
     <div class="left">
         <div id="userImage">
