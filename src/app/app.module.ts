@@ -21,7 +21,6 @@ import { MessageStatsComponent } from './message-stats/message-stats.component';
 import { FeedbackStatsComponent } from './feedback-stats/feedback-stats.component';
 import { GameDetailComponent } from './game-detail/game-detail.component';
 import { AddGameComponent } from './add-game/add-game.component';
-import { UsersGamesComponent } from './users-games/users-games.component';
 import { ViewMessagesComponent } from './view-messages/view-messages.component';
 import { UsersProfileComponent } from './users-profile/users-profile.component';
 import { GameEditComponent } from './game-edit/game-edit.component';
@@ -56,7 +55,6 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
         FeedbackStatsComponent,
         GameDetailComponent,
         AddGameComponent,
-        UsersGamesComponent,
         UsersProfileComponent,
         GameEditComponent,
         LeaveFeedbackComponent,
@@ -105,10 +103,6 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
             {
                 path: 'addgame',
                 component: AddGameComponent
-            },
-            {
-                path: 'user/:id/games',
-                component: UsersGamesComponent
             },
             {
                 path: 'user/:id/profile',
