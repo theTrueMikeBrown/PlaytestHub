@@ -151,6 +151,7 @@ export class BusinessService {
             return null;
         };
         var results = [
+            "You might want to fill out a few more of the answers in order to get your feedback approved.",
             validateFeedback(feedback, 'feelings', 3),
             validateFeedback(feedback, 'categorization', 3),
             validateFeedback(feedback, 'general', 2),

@@ -35,6 +35,7 @@ import { SignInComponent } from './sign-in/sign-in.component';
 import { ModalComponent } from './modal/modal.component';
 import { AboutPageComponent } from './about-page/about-page.component';
 import { UpperRightMenuComponent } from './upper-right-menu/upper-right-menu.component';
+import { ThanksPageComponent } from './thanks-page/thanks-page.component';
 
 const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
     providers: [
@@ -66,7 +67,8 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
         SignInComponent,
         ModalComponent,
         AboutPageComponent,
-        UpperRightMenuComponent
+        UpperRightMenuComponent,
+        ThanksPageComponent
     ],
     imports: [
         BrowserModule,
@@ -143,6 +145,10 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
             {
                 path: 'signIn',
                 component: SignInComponent
+            },
+            {
+                path: 'thanks',
+                component: ThanksPageComponent
             }
         ])
     ],

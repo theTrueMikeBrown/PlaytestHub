@@ -26,6 +26,10 @@ export class UsersProfileComponent implements OnInit {
         private business: BusinessService,
         private loginInfoService: LoginInfoService) { }
 
+    gotoDetail(id: number): void {
+        this.router.navigate(['/detail', id]);
+    }
+
     ngOnInit(): void {
         this.route.paramMap.subscribe((params: ParamMap) => {
             let id: string = params.get('id');

@@ -328,7 +328,7 @@ hr {
 
 .message {
     position: absolute;
-    z-index: 101;
+    z-index: 9999;
     top: 0;
     left: 0;
     right: 0;

@@ -1,16 +1,16 @@
 ﻿<div id="list-component">
+    <div *ngIf="message" class="message">{{message | async}}</div>
+
     <div class="upperLeft" *ngIf="user && unreadMessages">
         <a routerLink="/messages" class="action-button" data-tooltip="View my messages">
             <span class="fa fa-envelope-o"></span>
         </a>
     </div>
-
     <menu gameDetail="true"
           [playtesting]="playtesting"
           [canModerate]="canModerate"
           [moderateId]="moderateId"
           [feedbackId]="feedbackId"></menu>
-    <div *ngIf="message" class="message">{{message | async}}</div>
 
     <h3>Games to playtest</h3>
     <div *ngFor="let game of games | async"
