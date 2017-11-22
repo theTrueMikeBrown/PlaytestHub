@@ -2,34 +2,3 @@
   text-align: left;
   margin: 1em;
 }
-
-.message {
-  position: absolute;
-  z-index: 101;
-  top: 0;
-  left: 0;
-  right: 0;
-  background: #142;
-  color: #3C6;
-  text-align: center;
-  line-height: 2.5;
-  overflow: hidden;
-  -webkit-box-shadow: 0 0 5px black;
-  -moz-box-shadow: 0 0 5px black;
-  box-shadow: 0 0 5px black;
-  animation-name: example;
-  animation-duration: 1s;
-  animation-delay: 2s;
-  animation-fill-mode: forwards;
-}
-
-@keyframes example {
-  from {
-    top: 0em;
-    opacity: 1;
-  }
-  to {
-    top: -3em;
-    opacity: 0;
-  }
-}

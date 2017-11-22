@@ -255,7 +255,6 @@ export class DbService {
     }
 
     saveUser(user: User, successCallback?: (r: Response) => void) {
-        debugger;
         this.http.post(this.saveUserUrl, user)
             .toPromise()
             .then(response => {
