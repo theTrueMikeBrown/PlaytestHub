@@ -564,7 +564,7 @@ exports.approveFeedback = functions.https.onRequest((req, res) => {
                                                 var message2 = {
                                                     id: '',
                                                     subject: "Sweet!",
-                                                    text: "Feedback for " + game.name + " was approved.\r\n\r\nClick <a href=\"/feedbackList/" + feedback.id + "\">here</a> to view it.\r\n\r\n-PlaytestHub",
+                                                    text: "Feedback for " + game.name + " was approved.\r\n\r\nClick <a href=\"/feedback/" + feedback.id + "\">here</a> to view it.\r\n\r\n-PlaytestHub",
                                                     sender: '',
                                                     recipient: game.owner,
                                                     isRead: false,

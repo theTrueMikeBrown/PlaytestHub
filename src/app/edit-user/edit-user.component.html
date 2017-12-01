@@ -1,4 +1,4 @@
-﻿<div class="upperLeft">
+﻿<div *ngIf="profile" class="upperLeft">
     <a class="action-button" routerLink="/user/{{profile.id}}/profile" data-tooltip="Return to Profile">
         <span class="fa fa-id-card-o"></span>
     </a>
