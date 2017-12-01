@@ -83,24 +83,36 @@ function doSaveFeedback(feedback, uid, res) {
 }
 
 exports.getUserBySecretId = functions.https.onRequest((req, res) => {
-    cors(req,
-        res,
-        () => {
-            var uid = req.body;
-            var db = admin.firestore();
-            db.collection('users')
-                .where("uid", "==", uid)
-                .get()
-                .then((usnap) => {
-                    if (usnap.size === 1) {
-                        var user = usnap.docs[0].data();
-                        res.json(cleanUser(user));
-                    } else {
-                        console.log("uid:" + uid);
-                        res.status(406).send(usnap.size + " users with that uid!");
-                    }
-                });
-        });
+    cors(req, res, () => {
+        var uid = req.body;
+        var db = admin.firestore();
+        db.collection('users')
+            .where("uid", "==", uid)
+            .get()
+            .then((usnap) => {
+                if (usnap.size > 1) {
+                    //find the oldest one
+                    var min = usnap.docs.reduce(function (a, b) {
+                        return new Date(a.data().joinDate) < new Date(b.data().joinDate) ? a : b;
+                    });
+                    var user = min.data();
+                    res.json(cleanUser(user));
+                    
+                    //wipe out the other one
+                    usnap.docs.forEach((d) => {
+                        var doc = d.data();
+                        if (doc.id !== user.id) {
+                            db.collection("users").doc(doc.id).delete();
+                        }
+                    });
+                } else if (usnap.size === 1) {
+                    var user = usnap.docs[0].data();
+                    res.json(cleanUser(user));
+                } else {
+                    res.status(406).send(usnap.size + " users with that uid!");
+                }
+            });
+    });
 });
 
 exports.getUserById = functions.https.onRequest((req, res) => {
