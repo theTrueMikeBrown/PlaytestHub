@@ -98,11 +98,11 @@
                 <span class="glyphicon glyphicon-star"></span>
             </a>
         </li>
-        <li class="upperRight-buttons__item" *ngIf="!user">
+        <!--<li class="upperRight-buttons__item" *ngIf="!user">
             <a class="upperRight-buttons__link" routerLink="/signIn" data-tooltip="Log In or Create Account">
                 <span class="glyphicon glyphicon-log-in"></span>
             </a>
-        </li>
+        </li>-->
         <li class="upperRight-buttons__item" *ngIf="user">
             <a (click)="logout()" class="upperRight-buttons__link" data-tooltip="Log out">
                 <span class="glyphicon glyphicon-log-out"></span>

@@ -12,3 +12,18 @@
         <img src="assets/patreon.png" title="Support me on Patreon!" class="patreon-widget" style="position: static; visibility: visible; width: 177px; height: 35px;" />
     </a>
 </div>
+<div>
+    <div *ngIf="user" class="loggedInStatus">
+        <a class="info-button disabled" data-tooltip="Logged In">
+            <span class="glyphicon glyphicon-lock"></span>
+        </a>
+    </div>
+</div>
+
+<div>
+    <div *ngIf="!user" class="notLoggedInStatus">
+        <a class="action-button" routerLink="/signIn" data-tooltip="Log In or Create Account">
+            <span class="glyphicon glyphicon-log-in"></span>
+        </a>
+    </div>
+</div>

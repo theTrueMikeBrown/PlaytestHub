@@ -13,12 +13,12 @@
 
     .upperLeft {
         left: 50% !important;
-        margin-left: -17em;
+        margin-left: -236px;
     }
 
-    .upperRight {
+    .upperRight, .notLoggedInStatus {
         right: 50% !important;
-        margin-right: -17em;
+        margin-right: -236px;
     }
 }
 
@@ -68,6 +68,22 @@ body {
     right: 5px;
     top: 15px;
     z-index: 999;
+}
+
+.loggedInStatus {
+    position: fixed;
+    width: 56px;
+    right: -22px;
+    bottom: 42px;
+    z-index: 999;
+}
+
+.notLoggedInStatus {
+    position: absolute;
+    width: 56px;
+    right: 5px;
+    top: 64px;
+    z-index: 998;
 }
 
 .lowerRightBottom {
@@ -127,6 +143,27 @@ body {
     left: 15px;
     top: 15px;
 }
+
+.info-button {
+    position: absolute;
+    top: 0;
+    display: block;
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    color: #082211;
+    font-size: 1.5em;
+    padding-top: 0.37em;
+    text-align: center;
+}
+
+    .info-button:hover {
+        color: #122;
+    }
+
+    .info-button.disabled:hover, .info-button.disabled {
+        color: #768f7f;
+    }
 
 .action-button:hover {
     background-color: #1bf697;
