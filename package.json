@@ -28,6 +28,7 @@
     "firebase-functions": "^0.7.0",
     "firebaseui": "^2.3.0",
     "firebaseui-angular": "^0.4.3",
+    "intl": "^1.2.5",
     "rxjs": "^5.4.2",
     "web-animations-js": "^2.3.1",
     "zone.js": "^0.8.14"
