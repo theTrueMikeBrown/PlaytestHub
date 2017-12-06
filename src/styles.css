@@ -1,4 +1,10 @@
-﻿@media (min-width:490px) {
+﻿@media (min-width:500px) {
+    body {
+        font-size: 1.5em;
+    }
+}
+
+@media (min-width:490px) {
     .outletHolder {
         max-width: 35em;
         margin: 0 auto;
@@ -13,12 +19,12 @@
 
     .upperLeft {
         left: 50% !important;
-        margin-left: -236px;
+        margin-left: -15.7em;
     }
 
-    .upperRight, .notLoggedInStatus {
+    .upperRight {
         right: 50% !important;
-        margin-right: -236px;
+        margin-right: -16.86em;
     }
 }
 
@@ -29,6 +35,10 @@
 
     .lowerLeftHugger:hover {
         animation: none !important;
+    }
+
+    body {
+        font-size: 1.6em;
     }
 }
 
@@ -64,41 +74,25 @@ body {
 
 .upperRight {
     position: absolute;
-    width: 56px;
-    right: 5px;
-    top: 15px;
+    width: 4em;
+    right: 0.357142857em;
+    top: 1.071428571em;
     z-index: 999;
 }
 
 .loggedInStatus {
     position: fixed;
-    width: 56px;
-    right: -22px;
-    bottom: 42px;
+    width: 4em;
+    right: -1.571428571em;
+    bottom: 3em;
     z-index: 999;
-}
-
-.notLoggedInStatus {
-    position: absolute;
-    width: 56px;
-    right: 5px;
-    top: 64px;
-    z-index: 998;
 }
 
 .lowerRightBottom {
     position: relative;
-    width: 56px;
-    margin-bottom: 56px;
+    width: 3.6em;
+    margin-bottom: 4em !important;
     float: right;
-}
-
-.lowerRight {
-    position: absolute;
-    width: 56px;
-    margin-bottom: 56px;
-    right: 5px;
-    bottom: 5px;
 }
 
 .lowerLeftHugger {
@@ -139,17 +133,17 @@ body {
 
 .upperLeft {
     position: absolute;
-    width: 56px;
-    left: 15px;
-    top: 15px;
+    width: 4em;
+    left: 1.071428571em;
+    top: 1.071428571em;
 }
 
 .info-button {
     position: absolute;
     top: 0;
     display: block;
-    width: 40px;
-    height: 40px;
+    width: 2.25em;
+    height: 2.25em;
     background-color: transparent;
     color: #082211;
     font-size: 1.5em;
@@ -170,18 +164,12 @@ body {
     color: #142;
 }
 
-.action-button.inner-upper-right {
-    position: absolute;
-    right: 21px;
-    top: 100px;
-}
-
 .action-button {
     position: absolute;
     top: 0;
     display: block;
-    width: 40px;
-    height: 40px;
+    width: 1.904761905em;
+    height: 1.904761905em;
     background-color: #70feb6;
     color: #082211;
     border-radius: 50%;
@@ -221,8 +209,8 @@ body {
 .upperRight-buttons {
     position: absolute;
     left: 0;
-    right: 15px;
-    top: 40px;
+    right: 1.071428571em;
+    top: 2.857142857em;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -232,13 +220,13 @@ body {
 }
 
 .upperRight-buttons__item:first-child {
-    margin-top: 25px;
+    margin-top: 1.785714286em;
 }
 
 .upperRight-buttons__item {
     display: block;
     text-align: center;
-    margin: 12px 0;
+    margin: 0.857142857em 0;
 }
 
 .upperRight-buttons__link.inactive {
@@ -258,8 +246,8 @@ body {
 
 .upperRight-buttons__link {
     display: inline-block;
-    width: 40px;
-    height: 40px;
+    width: 2.857142857em;
+    height: 2.857142857em;
     text-decoration: none;
     border-radius: 50%;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
@@ -268,25 +256,25 @@ body {
     -webkit-transition: .3s;
     -o-transition: .3s;
     transition: .3s;
-    padding-top: 10px;
+    padding-top: 0.714285714em;
     background-color: #70feb6;
     color: #082211;
 }
 
 [data-tooltip]:before {
     top: 50%;
-    margin-top: -11px;
+    margin-top: -0.75em;
     font-weight: 600;
-    border-radius: 2px;
+    border-radius: 0.15em;
     background: #585858;
     color: #fff;
     content: attr(data-tooltip);
-    font-size: 12px;
+    font-size: .85em;
     text-decoration: none;
     visibility: hidden;
     opacity: 0;
-    padding: 4px 7px;
-    margin-right: 12px;
+    padding: 0.25em 0.5em;
+    margin-right: 0.85em;
     position: absolute;
     transform: scale(0);
     right: 100%;
@@ -305,7 +293,7 @@ body {
 
 .upperLeft [data-tooltip]:before {
     transition: all .3s cubic-bezier(.25, .8, .25, 1);
-    margin-left: 12px;
+    margin-left: .85em;
     left: 100%;
     right: unset;
     transform-origin: top left;
@@ -313,12 +301,6 @@ body {
 
 .upperLeft [data-tooltip]:hover:before {
     transform-origin: left center 0;
-}
-
-.icon-material {
-    display: inline-block;
-    width: 40px;
-    height: 40px;
 }
 
 hr {
@@ -337,7 +319,7 @@ hr {
 .tooltipanchor {
     position: relative;
     display: inline-block;
-    border-bottom: 1px dotted black;
+    border-bottom: 0.1em dotted black;
 }
 
     .tooltipanchor .tooltiptext {
@@ -345,11 +327,11 @@ hr {
         width: 760%;
         background-color: #70feb6;
         color: #082211;
-        padding: 5px 0;
-        border-radius: 6px;
+        padding: .35em 0;
+        border-radius: .4em;
         position: absolute;
         z-index: 1;
-        left: -90px;
+        left: -6.4em;
         font-size: .8em;
         padding-left: .25em;
     }
@@ -458,3 +440,49 @@ hr {
     color: #777;
     font-style: italic;
 }
+
+
+.fa-lock:before {
+    content: "\f023"
+}
+
+.fa-unlock:before {
+    content: "\f09c"
+}
+
+.fa-unlock-alt:before {
+    content: "\f13e"
+}
+
+.form-control {
+    height: 2.43em;
+    padding: 0.43em 0.86em;
+    font-size: 1em;
+    border-radius: .25em;
+}
+
+
+.h1, h1 {
+    font-size: 2em;
+}
+
+.h2, h2 {
+    font-size: 1.5em;
+}
+
+.h3, h3 {
+    font-size: 1.6em;
+}
+
+.h4, h4 {
+    font-size: 1.4em;
+}
+
+.h5, h5 {
+    font-size: 1.2em;
+}
+
+.h6, h6 {
+    font-size: 12px
+}
+
