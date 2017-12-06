@@ -1,4 +1,4 @@
-﻿<div class="upperRight">
+<div onclick="void(0)" class="upperRight">
     <span class="action-button">
         <span class="glyphicon glyphicon-menu-hamburger"></span>
     </span>
@@ -10,7 +10,7 @@
         </li>
 
         <li *ngIf="editProfile">
-            <hr />
+            <hr/>
         </li>
 
         <li class="upperRight-buttons__item" *ngIf="playtesting && user">
@@ -25,7 +25,7 @@
         </li>
 
         <li *ngIf="playtesting || canModerate">
-            <hr />
+            <hr/>
         </li>
 
         <li *ngIf="user && game && user.id !== game.owner && game.priority >= 0 && !alreadyPlaytesting && !alreadyPlaytestedVersion && game.active" class="upperRight-buttons__item">
@@ -70,7 +70,7 @@
         </li>
 
         <li *ngIf="gameDetail">
-            <hr />
+            <hr/>
         </li>
 
         <li class="upperRight-buttons__item" *ngIf="user && !gameDetail && !addGame">

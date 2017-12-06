@@ -1,4 +1,4 @@
-﻿import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 
 import { LoginInfoService } from '../services/loginInfo.service';
 import { User } from '../types/user';
@@ -55,5 +55,5 @@ export class UpperRightMenuComponent implements OnInit {
 
     logout() {
         this.loginInfoService.logout();
-    }
+    } 
 }
