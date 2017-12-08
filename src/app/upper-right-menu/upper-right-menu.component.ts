@@ -1,17 +1,21 @@
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+﻿import { Component, Input, Output, OnInit, EventEmitter, ElementRef } from '@angular/core';
 
 import { LoginInfoService } from '../services/loginInfo.service';
 import { User } from '../types/user';
 import { Game } from '../types/game';
 
 @Component({
-  selector: 'menu',
-  templateUrl: './upper-right-menu.component.html',
-  styleUrls: ['./upper-right-menu.component.css']
+    host: {
+        '(document:click)': 'onClick($event)',
+    },
+    selector: 'menu',
+    templateUrl: './upper-right-menu.component.html',
+    styleUrls: ['./upper-right-menu.component.css']
 })
 export class UpperRightMenuComponent implements OnInit {
     user: User;
     gameDetail: boolean;
+    isOpen: boolean = false;
     @Input() game: Game;
     @Input() alreadyPlaytesting: boolean;
     @Input() alreadyPlaytestedVersion: boolean;
@@ -32,7 +36,7 @@ export class UpperRightMenuComponent implements OnInit {
     @Output() deleteGame: EventEmitter<any> = new EventEmitter<any>();
     @Output() undeleteGame: EventEmitter<any> = new EventEmitter<any>();
 
-    constructor(private loginInfoService: LoginInfoService) {
+    constructor(private _eref: ElementRef, private loginInfoService: LoginInfoService) {
     }
 
     ngOnInit() {
@@ -41,6 +45,16 @@ export class UpperRightMenuComponent implements OnInit {
         this.loginInfoService.getLoginInfo().then(user => {
             this.user = user;
         });
+    }
+
+    open() {
+        this.isOpen = !this.isOpen;
+    }
+
+    onClick(event) {
+        if (!this._eref.nativeElement.contains(event.target)) {
+            this.isOpen = false;
+        }
     }
 
     playtestGameClicked() {
@@ -55,5 +69,5 @@ export class UpperRightMenuComponent implements OnInit {
 
     logout() {
         this.loginInfoService.logout();
-    } 
+    }
 }

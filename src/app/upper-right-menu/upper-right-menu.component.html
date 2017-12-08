@@ -1,5 +1,5 @@
-<div onclick="void(0)" class="upperRight">
-    <span class="action-button">
+﻿<div class="upperRight" [class.open]="isOpen">
+    <span class="action-button" [class.open]="isOpen" (click)="open()">
         <span class="glyphicon glyphicon-menu-hamburger"></span>
     </span>
     <ul class="upperRight-buttons">
