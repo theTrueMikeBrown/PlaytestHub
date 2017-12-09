@@ -2,7 +2,7 @@
     <div *ngIf="message" class="message">{{message | async}}</div>
 
     <div class="upperLeft" *ngIf="user && unreadMessages">
-        <a routerLink="/messages" class="action-button" data-tooltip="View my messages">
+        <a routerLink="/messages" class="action-button pulse" data-tooltip="New Unread Messages">
             <span class="fa fa-envelope-o"></span>
         </a>
     </div>

@@ -40,7 +40,8 @@
             <div class="detailBox">
                 <div *ngIf="game.rulesUrl && game.rulesUrl !== 'http://undefined'" class="info"><a href="{{game.rulesUrl}}" target="_blank">Rules file</a></div>
                 <div *ngIf="game.pnpUrl && game.pnpUrl !== 'http://undefined'" class="info"><a href="{{game.pnpUrl}}" target="_blank">PNP file</a></div>
-                <div *ngIf="!game.pnpUrl || game.pnpUrl === 'http://undefined' && !game.rulesUrl || game.rulesUrl === 'http://undefined'"
+                <div *ngIf="game.websiteUrl && game.websiteUrl !== 'http://undefined'" class="info"><a href="{{game.websiteUrl}}" target="_blank">Website Url</a></div>
+                <div *ngIf="(!game.pnpUrl || game.pnpUrl === 'http://undefined') && (!game.rulesUrl || game.rulesUrl === 'http://undefined') && (!game.websiteUrl && game.websiteUrl === 'http://undefined')"
                      class="explanitory">none yet</div>
             </div>
         </div>

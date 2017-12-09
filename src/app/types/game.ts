@@ -10,6 +10,7 @@
     description: string;
     rulesUrl: string;
     pnpUrl: string;
+    websiteUrl: string;
     priority: number;
     active: boolean;
     createDate: Date;

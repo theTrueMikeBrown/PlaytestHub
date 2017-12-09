@@ -2,3 +2,29 @@
   text-align: left;
   margin: 1em;
 }
+
+.pulse {
+    animation: pulse 3s 1s forwards;
+}
+
+@keyframes pulse {
+    0% {
+        background-color: #70feb6;
+    }
+
+    25% {
+        background-color: #feb607;
+    }
+
+    50% {
+        background-color: #70feb6;
+    }
+
+    75% {
+        background-color: #feb607;
+    }
+
+    100% {
+        background-color: #70feb6;
+    }
+}

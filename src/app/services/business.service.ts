@@ -77,6 +77,7 @@ export class BusinessService {
         game.createDate = new Date();
         game.pnpUrl = this.appendHttp(game.pnpUrl);
         game.rulesUrl = this.appendHttp(game.rulesUrl);
+        game.websiteUrl = this.appendHttp(game.websiteUrl);
 
         this.db.addGame(game, uid, response => {
             if (successCallback) {
@@ -88,6 +89,7 @@ export class BusinessService {
     updateGame(game: Game, uid: string, successCallback?: (r: Response) => void) {
         game.pnpUrl = this.appendHttp(game.pnpUrl);
         game.rulesUrl = this.appendHttp(game.rulesUrl);
+        game.websiteUrl = this.appendHttp(game.websiteUrl);
 
         this.db.updateGame(game, uid, successCallback);
     }

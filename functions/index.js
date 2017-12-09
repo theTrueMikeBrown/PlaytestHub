@@ -381,6 +381,7 @@ exports.updateGame = functions.https.onRequest((req, res) => {
         if (game.description) { cleanGame.description = game.description; }
         if (game.rulesUrl) { cleanGame.rulesUrl = game.rulesUrl; }
         if (game.pnpUrl) { cleanGame.pnpUrl = game.pnpUrl; }
+        if (game.websiteUrl) { cleanGame.websiteUrl = game.websiteUrl; }
         if (game.version) { cleanGame.version = game.version; }
         cleanGame.priority = 0;
         cleanGame.active = !!game.active;

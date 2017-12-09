@@ -1,13 +1,21 @@
 ﻿.title {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 .info {
-  font-style: italic;
+    font-style: italic;
 }
 
 .stats {
-  border-bottom: 1pt solid #284;
-  margin: 1em;
-  cursor: pointer;
+    border-bottom: 1pt solid #284;
+    margin: 1em;
+    cursor: pointer;
 }
+
+.indenter {
+    padding-left: 2em;
+}
+
+    .indenter:first-of-type {
+        text-indent: -.75em;
+    }
