@@ -43,32 +43,33 @@ export class UsersProfileComponent implements OnInit {
 
             this.loginInfoService.getLoginInfo().then(user => {
                 this.user = user;
-
-                this.business
-                    .getUser(id)
-                    .then(p => {
-                        p.subscribe(profile => {
-                            this.isUsersProfile = this.profile.id === this.user.id;
+                if (this.user) {
+                    this.business
+                        .getUser(id)
+                        .then(p => {
+                            p.subscribe(profile => {
+                                this.isUsersProfile = this.profile && this.profile.id === this.user.id;
+                            });
                         });
-                    });
-                this.business.getGamesByUser(id, user.id).then(g => this.games = g);
+                    this.business.getGamesByUser(id, user.id).then(g => this.games = g);
 
-                this.business
-                    .getPlaytestByUserId(id)
-                    .then(p => {
-                        p.subscribe(playtest => {
-                            if (playtest) {
-                                this.playtest = playtest;
-                                this.business.getUserFeedbackForGame(this.user.id, playtest.gameId).then(f => {
-                                    f.subscribe(feedback => {
-                                        if (feedback) {
-                                            this.feedbackId = feedback.id;
-                                        }
+                    this.business
+                        .getPlaytestByUserId(id)
+                        .then(p => {
+                            p.subscribe(playtest => {
+                                if (playtest) {
+                                    this.playtest = playtest;
+                                    this.business.getUserFeedbackForGame(this.user.id, playtest.gameId).then(f => {
+                                        f.subscribe(feedback => {
+                                            if (feedback) {
+                                                this.feedbackId = feedback.id;
+                                            }
+                                        });
                                     });
-                                });
-                            }
+                                }
+                            });
                         });
-                    });
+                }
             });
         });
     }

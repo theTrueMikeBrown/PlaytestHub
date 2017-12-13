@@ -9,4 +9,7 @@
     isAdmin: boolean;
     joinDate: Date;
     personalInfo: string;
+    allowsPrivateMessages: boolean;
+    forwardMessages: boolean;
+
 }

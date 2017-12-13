@@ -42,7 +42,9 @@ export class LoginInfoService {
                 isAdmin: false,
                 points: 0,
                 joinDate: null,
-                personalInfo: ""
+                personalInfo: "",
+                allowsPrivateMessages: true,
+                forwardMessages: false
             });
             this.loggedIn = true;
             if (successCallback) {

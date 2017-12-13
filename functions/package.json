@@ -5,7 +5,8 @@
     "cors": "^2.8.4",
     "@google-cloud/firestore": "^0.8.1",
     "firebase-admin": "^5.4.1",
-    "firebase-functions": "^0.7.0"
+    "firebase-functions": "^0.7.0",
+    "nodemailer": "^4.4.1"
   },
   "private": true
 }

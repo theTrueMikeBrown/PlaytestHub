@@ -12,8 +12,10 @@
         <div class="form-group"><label for="displayName">Display Name:</label><input id="displayName" class="form-control" type="text" [(ngModel)]="profile.displayName" (ngModelChange)="onChange($event)" /></div>
         <div *ngIf="profile.isModerator" class="form-group"><label for="photoUrl">Photo URL:</label><input id="photoUrl" class="form-control" type="text" [(ngModel)]="profile.photoUrl" (ngModelChange)="onChange($event)" /></div>
         <div class="form-group"><label for="personalInfo">Personal Info:</label><textarea id="personalInfo" class="form-control" [(ngModel)]="profile.personalInfo" (ngModelChange)="onChange($event)"></textarea></div>
-
         <div class="form-group"><label for="displayName">Display Name:</label><input id="displayName" class="form-control" type="text" [(ngModel)]="profile.displayName" (ngModelChange)="onChange($event)" /></div>
+        <div class="form-group"><label for="allowsPrivateMessages"><input id="allowsPrivateMessages" type="checkbox" class="form-check-input" [(ngModel)]="profile.allowsPrivateMessages" /> Allow users to send private messages to me</label></div>
+        <div class="form-group"><label for="forwardMessages"><input id="forwardMessages" type="checkbox" class="form-check-input" [(ngModel)]="profile.forwardMessages" /> Forward all messages to my email account</label></div>
+
         <div class="lowerRightBottom">
             <a class="action-button" (click)="saveUser()" data-tooltip="Save Changes">
                 <span [class.fa-spin]="this.saving" class="fa fa-save"></span>
