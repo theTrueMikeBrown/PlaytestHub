@@ -2,6 +2,16 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const cors = require('cors')({ origin: true });
+const nodemailer = require('nodemailer');
+const gmailEmail = functions.config().gmail.email;
+const gmailPassword = functions.config().gmail.password;
+const mailTransport = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: gmailEmail,
+        pass: gmailPassword
+    }
+});
 
 admin.initializeApp(functions.config().firebase);
 
@@ -193,6 +203,9 @@ exports.updateUser = functions.https.onRequest((req, res) => {
         if (user.displayName) { updates.displayName = user.displayName; }
         if (user.photoURL) { updates.photoURL = user.photoURL; }
         if (user.personalInfo) { updates.personalInfo = user.personalInfo; }
+        updates.allowsPrivateMessages = !!user.allowsPrivateMessages;
+        updates.forwardMessages = !!user.forwardMessages;
+
         var db = admin.firestore();
         db.collection('users')
             .where("uid", "==", user.uid)
