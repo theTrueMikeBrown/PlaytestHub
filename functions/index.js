@@ -32,28 +32,28 @@ function internalSendMessage(message) {
             admin.firestore().collection('messages').doc(key).set(message);
         });
 
-//    db.collection('users').doc(message.recipient).get()
-//        .then(usnap => {
-//            if (usnap.exists) {
-//                var user = usnap.data();
-//                if (user.forwardMessages) {
-//                    var emailAddress = user.email;
-//                    var subject = `[PH] ${message.subject}`;
-//                    var sender = message.sender || "PlaytestHub";
-//                    var messageText = message.text.replace(/\r\n/g, "<br />");
-//                    var body = `Subject: ${subject} <br />
-//From: ${sender} <br />
-//---------------------------------------------- <br />
-//${messageText} <br />
-//<br />
-//This message was forwarded to you from the PlaytestHub MessageCenter. <br />
-//View the original message at: <br />
-//<a href="https://playtesthub.firebaseapp.com/messages">https://playtesthub.firebaseapp.com/messages</a> <br />`;
+    db.collection('users').doc(message.recipient).get()
+        .then(usnap => {
+            if (usnap.exists) {
+                var user = usnap.data();
+                if (user.forwardMessages && user.email) {
+                    var emailAddress = user.email;
+                    var subject = `[PH] ${message.subject}`;
+                    var sender = message.sender || "PlaytestHub";
+                    var messageText = message.text;//.replace(/\r\n/g, "<br />");
+                    var body = `Subject: ${subject}
+From: ${sender}
+----------------------------------------------
+${messageText}
+
+This message was forwarded to you from the PlaytestHub MessageCenter.
+View the original message at:
+https://playtesthub.firebaseapp.com/messages`;
                 
-//                    sendEmail(emailAddress, subject, body);
-//                }
-//            }
-//        });
+                    sendEmail(emailAddress, subject, body);
+                }
+            }
+        });
 }
 
 function sendEmail(to, subject, body) {
