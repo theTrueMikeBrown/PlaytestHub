@@ -31,15 +31,41 @@ function internalSendMessage(message) {
             message.id = key;
             admin.firestore().collection('messages').doc(key).set(message);
         });
+
+//    db.collection('users').doc(message.recipient).get()
+//        .then(usnap => {
+//            if (usnap.exists) {
+//                var user = usnap.data();
+//                if (user.forwardMessages) {
+//                    var emailAddress = user.email;
+//                    var subject = `[PH] ${message.subject}`;
+//                    var sender = message.sender || "PlaytestHub";
+//                    var messageText = message.text.replace(/\r\n/g, "<br />");
+//                    var body = `Subject: ${subject} <br />
+//From: ${sender} <br />
+//---------------------------------------------- <br />
+//${messageText} <br />
+//<br />
+//This message was forwarded to you from the PlaytestHub MessageCenter. <br />
+//View the original message at: <br />
+//<a href="https://playtesthub.firebaseapp.com/messages">https://playtesthub.firebaseapp.com/messages</a> <br />`;
+                
+//                    sendEmail(emailAddress, subject, body);
+//                }
+//            }
+//        });
 }
 
-function sendCleanupMessage(id) {
-    internalSendMessage({
-        id: '',
-        subject: "Hmm...",
-        text: "Your playtest has been active for an entire week. We have removed it so that the game is not unfairly punished by someone not playtesting it for too long. If you actually desire to playtest it, you can sign up again.\r\n\r\n-PlaytestHub",
-        sender: '',
-        recipient: id
+function sendEmail(to, subject, body) {
+    const mailOptions = {
+        from: "playtesthub <playtesthubnotifications@gmail.com>",
+        to: to,
+        subject: subject,
+        text: body
+    };
+
+    return mailTransport.sendMail(mailOptions).then(() => {
+        console.log('email sent to:', to);
     });
 }
 
@@ -102,12 +128,12 @@ exports.getUserBySecretId = functions.https.onRequest((req, res) => {
             .then((usnap) => {
                 if (usnap.size > 1) {
                     //find the oldest one
-                    var min = usnap.docs.reduce(function (a, b) {
+                    var min = usnap.docs.reduce(function(a, b) {
                         return new Date(a.data().joinDate) < new Date(b.data().joinDate) ? a : b;
                     });
                     var user = min.data();
                     res.json(cleanUser(user));
-                    
+
                     //wipe out the other one
                     usnap.docs.forEach((d) => {
                         var doc = d.data();
@@ -166,7 +192,13 @@ exports.dailyCleanup = functions.https.onRequest((req, res) => {
                                     var oldObj = oldSnap.data();
                                     db.collection('games').doc(playTest.gameId).update({ priority: oldObj.priority + 1 });
 
-                                    sendCleanupMessage(playTest.id);
+                                    internalSendMessage({
+                                        id: '',
+                                        subject: "Hmm...",
+                                        text: "Your playtest has been active for an entire week. We have removed it so that the game is not unfairly punished by someone not playtesting it for too long. If you still desire to playtest it, you can sign up again.\r\n\r\n-PlaytestHub",
+                                        sender: '',
+                                        recipient: playTest.id
+                                    });
                                 });
                             db.collection('playtests').doc(playTest.id).delete();
 

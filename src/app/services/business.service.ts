@@ -37,7 +37,7 @@ export class BusinessService {
     }
 
     getGames(): Promise<Observable<Game[]>> {
-        return this.db.getGames();
+        return this.db.getGames(-1);
     }
 
     getPlaytestByUserId(id: string): Promise<Observable<Playtest>> {

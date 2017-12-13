@@ -71,6 +71,8 @@ export class LoginInfoService {
                     loginUser.displayName = user.displayName;
                     loginUser.photoUrl = user.photoUrl;
                     loginUser.personalInfo = user.personalInfo;
+                    loginUser.allowsPrivateMessages = user.allowsPrivateMessages;
+                    loginUser.forwardMessages = user.forwardMessages;
                     this.user = loginUser;
                     this.userObs.next(loginUser);
                     this.userObs.complete();
