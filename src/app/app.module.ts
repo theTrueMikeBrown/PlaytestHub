@@ -36,6 +36,7 @@ import { ModalComponent } from './modal/modal.component';
 import { AboutPageComponent } from './about-page/about-page.component';
 import { UpperRightMenuComponent } from './upper-right-menu/upper-right-menu.component';
 import { ThanksPageComponent } from './thanks-page/thanks-page.component';
+import { MessageSenderComponent } from './message-sender/message-sender.component';
 
 const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
     providers: [
@@ -68,7 +69,8 @@ const firebaseUiAuthConfig: FirebaseUIAuthConfig = {
         ModalComponent,
         AboutPageComponent,
         UpperRightMenuComponent,
-        ThanksPageComponent
+        ThanksPageComponent,
+        MessageSenderComponent
     ],
     imports: [
         BrowserModule,

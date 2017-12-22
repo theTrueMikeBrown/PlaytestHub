@@ -1,0 +1,34 @@
+﻿<div class="upperLeft">
+    <a class="action-button" routerLink="/games" data-tooltip="Home">
+        <span class="glyphicon glyphicon-home"></span>
+    </a>
+</div>
+<menu></menu>
+<div *ngIf="user" class="left indent internallyPadded">
+    <fieldset>
+        <legend>Send message to user</legend>
+        <div class="form-group">
+            <label for="messageRecipient">To:</label>
+            <input type="text" class="form-control" id="messageRecipient" [(ngModel)]="messageRecipient" />
+
+            <form class="example-form">
+                <mat-form-field class="example-full-width">
+                    <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete">
+                        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                            {{ option }}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </form>
+        </div>
+        <div class="form-group">
+            <label for="messageSubject">Subject:</label>
+            <input type="text" class="form-control" id="messageSubject" [(ngModel)]="messageSubject" rows="5" />
+        </div>
+        <div class="form-group">
+            <textarea class="form-control" id="messageText" [(ngModel)]="messageText"></textarea>
+            <button class="btn btn-primary" (click)="sendMessage()">send</button>
+        </div>
+    </fieldset>
+</div>
